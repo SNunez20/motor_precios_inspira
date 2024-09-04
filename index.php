@@ -39,6 +39,7 @@ $version = '?v=1.0.1';
 
     include './views/modals/afiliacion_grupo_familiar/modal_datos_venta_grupo_familiar.php';
     include './views/modals/afiliacion_grupo_familiar/modal_agregar_datos_beneficiarios.php';
+    include './views/modals/afiliacion_grupo_familiar/modal_mostrar_listado_beneficiarios.php';
     ?>
 
 

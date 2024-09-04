@@ -1,18 +1,36 @@
 <!-- Modal -->
 <div class="modal fade" id="modal_cargar_beneficiarios_grupo_familiar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="staticBackdropLabel">Cargar Beneficiario - <span class="fw-bolder" id="span_cedula_beneficiario_grupo_familiar"></span></h1>
+            <div class="modal-header bg-success">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">
+                    Cargar Beneficiario 👉
+                    <span class="fw-bolder" id="span_cedula_beneficiario_grupo_familiar"></span>
+                </h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
 
 
+                <svg xmlns="http://www.w3.org/2000/svg" class="d-none mt-3 mb-4">
+                    <symbol id="exclamation-triangle-fill" viewBox="0 0 16 16">
+                        <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"></path>
+                    </symbol>
+                </svg>
+                <div class="alert alert-warning d-flex align-items-center mt-2 mb-4" role="alert">
+                    <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Warning:">
+                        <use xlink:href="#exclamation-triangle-fill"></use>
+                    </svg>
+                    <div>
+                        IMPORTANTE: Los campos con <span class="text-danger fw-bolder">*</span> son obligatorios
+                    </div>
+                </div>
+
+
                 <div class="row">
                     <div class="col-lg-4 col-md-4 col-sm-2">
                         <div class="form-floating mb-4">
-                            <input type="text" class="form-control" id="txt_cedula_beneficiario_grupo_familiar" placeholder="Cédula" disabled>
+                            <input type="text" class="form-control solo_numeros" id="txt_cedula_beneficiario_grupo_familiar" placeholder="Cédula" disabled>
                             <label for="txt_cedula_beneficiario_grupo_familiar">Cédula:</label>
                         </div>
                     </div>
@@ -20,7 +38,7 @@
 
                     <div class="col-lg-4 col-md-4 col-sm-2">
                         <div class="form-floating mb-4">
-                            <input type="text" class="form-control" id="txt_nombre_beneficiario_grupo_familiar" placeholder="Nombre completo">
+                            <input type="text" class="form-control solo_letras" id="txt_nombre_beneficiario_grupo_familiar" placeholder="Nombre completo">
                             <label for="txt_nombre_beneficiario_grupo_familiar">Nombre completo: <span class="text-danger fw-bolder">*</span></label>
                         </div>
                     </div>
@@ -135,7 +153,7 @@
 
                     <div class="col-auto">
                         <div class="form-floating mb-4">
-                            <input type="text" class="form-control" id="txt_celular_beneficiario_grupo_familiar" placeholder="Celular" maxlength="9">
+                            <input type="text" class="form-control solo_numeros" id="txt_celular_beneficiario_grupo_familiar" placeholder="Celular" maxlength="9">
                             <label for="txt_celular_beneficiario_grupo_familiar">Celular: <span class="text-danger fw-bolder">*</span></label>
                         </div>
                     </div>
@@ -143,7 +161,7 @@
 
                     <div class="col-auto">
                         <div class="form-floating mb-4">
-                            <input type="text" class="form-control" id="txt_telefono_fijo_beneficiario_grupo_familiar" placeholder="Teléfono fijo" maxlength="8">
+                            <input type="text" class="form-control solo_numeros" id="txt_telefono_fijo_beneficiario_grupo_familiar" placeholder="Teléfono fijo" maxlength="8">
                             <label for="txt_telefono_fijo_beneficiario_grupo_familiar">Teléfono fijo:</label>
                         </div>
                     </div>
@@ -151,7 +169,7 @@
 
                     <div class="col-auto">
                         <div class="form-floating mb-4">
-                            <input type="text" class="form-control" id="txt_telefono_alternativo_beneficiario_grupo_familiar" placeholder="Teléfono alternativo" maxlength="8">
+                            <input type="text" class="form-control solo_numeros" id="txt_telefono_alternativo_beneficiario_grupo_familiar" placeholder="Teléfono alternativo" maxlength="8">
                             <label for="txt_telefono_alternativo_beneficiario_grupo_familiar">Teléfono alternativo:</label>
                         </div>
                     </div>
@@ -170,7 +188,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary" onclick="guardar_datos_beneficiario()">Guardar</button>
+                <button type="button" class="btn btn-success" onclick="agregar_datos_beneficiario(false)">Guardar</button>
             </div>
         </div>
     </div>
