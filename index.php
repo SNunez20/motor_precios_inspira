@@ -1,5 +1,5 @@
 <?php
-$version = '?v=1.0.3';
+$version = '?v=1.0.4';
 ?>
 
 <!DOCTYPE html>
@@ -41,6 +41,7 @@ $version = '?v=1.0.3';
     include './views/modals/afiliacion_grupo_familiar/modal_agregar_datos_beneficiarios.php';
     include './views/modals/afiliacion_grupo_familiar/modal_mostrar_listado_beneficiarios.php';
     include './views/modals/afiliacion_grupo_familiar/modal_agregar_servicios_beneficiarios.php';
+    include './views/modals/afiliacion_grupo_familiar/modal_datos_tarjeta.php';
     ?>
 
 
@@ -85,6 +86,8 @@ $version = '?v=1.0.3';
         "general/afiliacion_grupo_familiar/formulario_2/formulario_2.js",
         "general/afiliacion_grupo_familiar/formulario_3/servicios.js",
         "general/afiliacion_grupo_familiar/formulario_3/formulario_3.js",
+        "general/afiliacion_grupo_familiar/formulario_4/tarjeta.js",
+        "general/afiliacion_grupo_familiar/formulario_4/formulario_4.js",
     ];
 
     foreach ($js_cargar as $archivo) {

@@ -1,6 +1,6 @@
 function acciones_formulario_nueva_alta_3() {
   if (array_tarjeta_titular.length <= 0) {
-    select_metodos_de_pago("select_metodo_de_pago_pago");
+    select_metodos_de_pago(1, "select_metodo_de_pago_pago");
 
     $(".div_formulario_onajpu").css("display", "none");
     $(".div_formulario_datos_tarjeta").css("display", "none");
@@ -13,7 +13,7 @@ function acciones_formulario_nueva_alta_3() {
     let id_metodo = $("#select_metodo_de_pago_pago").val();
     mostrar_campos_segun_metodo_pago(id_metodo);
     if (id_metodo == 1) $(".div_formulario_onajpu").css("display", "block");
-    if (["5", "6", "7", "8", "9", "10", "11"].includes(id_metodo))
+    if (["4", "5", "6", "7", "8", "9", "10"].includes(id_metodo))
       $(".div_formulario_datos_tarjeta").css("display", "block");
   }
 
@@ -49,7 +49,7 @@ function afiliar_socios() {
     error("Debe ingresar la cédula del titular");
   } else if (id_metodo_pago == 1 && !comprobarCI(cedula_titular_onajpu)) {
     error("Debe ingresar una cédula válida");
-  } else if (["5", "6", "7", "8", "9", "10", "11"].includes(id_metodo_pago) && array_tarjeta_titular.length <= 0) {
+  } else if (["4", "5", "6", "7", "8", "9", "10"].includes(id_metodo_pago) && array_tarjeta_titular.length <= 0) {
     error("Debe ingresar los datos del titular de la tarjeta");
   } else {
 

@@ -32,22 +32,15 @@ function listar_personas_servicios_grupos_familiares() {
             if (cedula == val['cedula']) cedula_registrada++;
         }));
 
-        let btn_badge =
-            cedula_registrada != 0 ?
-                `<span class="badge text-bg-success rounded-pill me-2">✔</span>` :
-                `<button class="badge text-bg-primary rounded-pill" onclick="agregar_servicios_beneficiario_grupo_familiar(true, ${cedula})">Agregar servicios</button>`;
-        let btn_ver_datos =
-            cedula_registrada != 0 ?
-                `<button class="btn btn-sm btn-outline-info" onclick="ver_servicios_beneficiario_grupo_familiar(${cedula})">📝</button>` :
-                "";
+        let btn_badge = `<button class="badge text-bg-primary rounded-pill" onclick="agregar_servicios_beneficiario_grupo_familiar(true, ${cedula})">Agregar servicios</button>`;
 
         html += `
-      <li class="list-group-item d-flex justify-content-between align-items-start">
-        <div class="ms-2 me-auto">
-          <div class="fw-bold">${cedula} ${btn_ver_datos}</div>
-        </div>
-        ${btn_badge}
-      </li>`;
+        <li class="list-group-item d-flex justify-content-between align-items-start">
+            <div class="ms-2 me-auto">
+            <div class="fw-bold">${cedula}</div>
+            </div>
+            ${btn_badge}
+        </li>`;
     }));
 
     html += "</ol>";
