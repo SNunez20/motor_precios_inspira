@@ -32,14 +32,8 @@ function mostrar_divs_servicios_grupo_familiar(cedula, servicio) {
                     $(".div_promocion_servicios_grupo_familiar").css("display", "none");
                     $(".div_socio_adeom_grupo_familiar").css("display", "block");
                     $("#chbox_socio_adeom_grupo_familiar").prop("checked", false);
-                    $("#chbox_socio_adeom_grupo_familiar").click(function () {
-                        if ($("#chbox_socio_adeom_grupo_familiar").is(":checked")) {
-                            mostrar_promociones_grupo_familiar(cedula, response.mostrar_promociones, servicio);
-                        } else {
-                            $(".div_promocion_servicios_grupo_familiar").css("display", "none");
-                        }
-                    });
                 } else {
+                    $("#select_promocion_servicios_grupo_familiar").html("");
                     $(".div_socio_adeom_grupo_familiar").css("display", "none");
                     mostrar_promociones_grupo_familiar(cedula, response.mostrar_promociones, servicio);
 
@@ -58,27 +52,57 @@ function mostrar_divs_servicios_grupo_familiar(cedula, servicio) {
 }
 
 
-function mostrar_promociones_grupo_familiar(cedula, res_mostrar_promociones, servicio) {
-    let dato_extra = $("#select_dato_extra_grupo_familiar").val();
+$("#chbox_socio_adeom_grupo_familiar").click(function () {
+    if ($("#chbox_socio_adeom_grupo_familiar").is(":checked")) {
+        let cedula = $("#txt_cedula_agregar_servicios_beneficiarios").val();
 
-    array_servicios_agregados_grupo_familiar.map((val => {
-        if (cedula == val['cedula'] && res_mostrar_promociones == 1 && servicio == 1 && dato_extra != "2") {
-            $("#div_promocion_servicios_grupo_familiar").html("");
-            select_promociones_servicios(servicio);
-            $(".div_promocion_servicios_grupo_familiar").css("display", "block");
-        } else if (cedula == val['cedula'] && res_mostrar_promociones == 1 && servicio != 1) {
-            $("#select_promocion_servicios_grupo_familiar").html("");
-            select_promociones_servicios(servicio);
-            $(".div_promocion_servicios_grupo_familiar").css("display", "block");
-        } else {
-            $(".div_promocion_servicios_grupo_familiar").css("display", "none");
-        }
+        $("#select_promocion_servicios_grupo_familiar").html("");
+        mostrar_promociones_grupo_familiar(cedula, 1, 8);
+    } else {
+        $("#select_promocion_servicios_grupo_familiar").html("");
+        $(".div_promocion_servicios_grupo_familiar").css("display", "none");
+    }
+});
+
+
+function mostrar_promociones_grupo_familiar(cedula, res_mostrar_promociones, servicio) {
+    let dato_extra = 0;
+
+    array_datos_beneficiario_grupo_familiar.map((val => {
+        if (val['cedula'] == cedula && val['dato_extra'] == 2) dato_extra++;
     }));
+
+    if (res_mostrar_promociones == 1 && servicio == 1 && dato_extra == 0) {
+        $("#select_promocion_servicios_grupo_familiar").html("");
+        select_promociones_servicios_grupo_familiar(servicio);
+        $(".div_promocion_servicios_grupo_familiar").css("display", "block");
+    } else if (res_mostrar_promociones == 1 && servicio != 1) {
+        $("#select_promocion_servicios_grupo_familiar").html("");
+        select_promociones_servicios_grupo_familiar(servicio);
+        $(".div_promocion_servicios_grupo_familiar").css("display", "block");
+    } else {
+        $("#select_promocion_servicios_grupo_familiar").html("");
+        $(".div_promocion_servicios_grupo_familiar").css("display", "none");
+    }
 }
 
 
+$("#select_servicios_servicios_grupo_familiar").on("change", function () {
+    $("#chbox_socio_adeom_grupo_familiar").prop("checked", false);
+    let servicio = $("#select_servicios_servicios_grupo_familiar").val();
+    let cedula = $("#txt_cedula_agregar_servicios_beneficiarios").val();
+
+    if (servicio == "") {
+        vaciar_form_servicios_grupo_familiar();
+        listar_servicios_agregados_grupo_familiar(cedula);
+    } else {
+        mostrar_divs_servicios_grupo_familiar(cedula, servicio);
+    }
+});
+
+
 function select_promociones_servicios_grupo_familiar(servicio) {
-    let html = `<option value="" selected>Seleccione una opción</option>`;
+    $("#select_promocion_servicios_grupo_familiar").html("");
 
     $.ajax({
         type: "GET",
@@ -92,11 +116,12 @@ function select_promociones_servicios_grupo_familiar(servicio) {
         },
         success: function (response) {
             if (response.error == false) {
+                let html = `<option value="" selected>Seleccione una opción</option>`;
                 let datos = response.datos;
                 datos.map((val) => {
                     html += `<option value="${val["id"]}">${val["nombre"]}</option>`;
                 });
-                $(`#select_promocion_servicios_grupo_familiar`).html(html);
+                $("#select_promocion_servicios_grupo_familiar").html(html);
             }
         },
     });
@@ -125,16 +150,6 @@ function agregar_servicios_beneficiario_grupo_familiar(openModal = false, cedula
                 }
             }));
         }
-
-        $("#select_servicios_servicios_grupo_familiar").on("change", function () {
-            let servicio = $("#select_servicios_servicios_grupo_familiar").val();
-            if (servicio == "") {
-                vaciar_form_servicios_grupo_familiar();
-                listar_servicios_agregados_grupo_familiar();
-            } else {
-                mostrar_divs_servicios_grupo_familiar(cedula, servicio);
-            }
-        });
 
 
         $("#txt_cedula_agregar_servicios_beneficiarios").val("");
@@ -233,11 +248,6 @@ function guardar_datos_servicios() {
         correcto(`Se guardaron los servicios con éxito para la cédula <strong>${cedula}<strong>`);
         $("#modal_agregar_servicios_beneficiario_grupo_familiar").modal("hide");
     }
-}
-
-
-function ver_servicios_beneficiario_grupo_familiar(cedula) {
-    alert("Ver servicios agregados");
 }
 
 
