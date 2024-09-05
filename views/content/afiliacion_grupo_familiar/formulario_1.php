@@ -1,3 +1,19 @@
+<div class="d-flex justify-content-center mb-3">
+    <button class="btn btn-lg btn-outline-primary rounded-circle me-2 active" type="button">
+        1
+    </button>
+    <button class="btn btn-lg btn-outline-primary rounded-circle me-2" type="button">
+        2
+    </button>
+    <button class="btn btn-lg btn-outline-primary rounded-circle me-2" type="button">
+        3
+    </button>
+    <button class="btn btn-lg btn-outline-primary rounded-circle" type="button">
+        4
+    </button>
+</div>
+
+
 <h6 class="mt-3 mb-4">Validar cédula de los integrantes del grupo</h6>
 
 

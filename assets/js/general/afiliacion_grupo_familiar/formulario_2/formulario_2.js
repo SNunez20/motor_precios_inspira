@@ -16,8 +16,8 @@ function validar_formulario_grupo_familiar_2() {
   if (array_datos_beneficiario_grupo_familiar.length != array_personas_grupo_familiar.length) {
     error(`Debe ingresar los datos de los ${array_personas_grupo_familiar.length} beneficiarios`);
   } else {
-    mostrar_div_datos_venta(3);
-    acciones_formulario_nueva_alta_3();
+    mostrar_div_datos_venta_grupo_familiar(3);
+    acciones_formulario_grupo_familiar_formulario_3();
   }
 }
 

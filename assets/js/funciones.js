@@ -271,6 +271,7 @@ function mostrar_div_datos_venta(id) {
 function mostrar_div_datos_venta_grupo_familiar(id) {
   $("#contenedor_formulario_alta_grupo_familiar_1").css("display", "none");
   $("#contenedor_formulario_alta_grupo_familiar_2").css("display", "none");
+  $("#contenedor_formulario_alta_grupo_familiar_3").css("display", "none");
 
   $(`#contenedor_formulario_alta_grupo_familiar_${id}`).css("display", "block");
 }
@@ -288,4 +289,30 @@ function formar_direccion(radio_buttons, apartamento, calle, puerta, esquina, ma
   }
 
   return direccion;
+}
+
+
+function select_convenios_servicios(div) {
+  let html = `<option value="" selected>Seleccione una opción</option>`;
+
+  $.ajax({
+      type: "GET",
+      url: `${url_ajax}afiliacion_individual/servicios/select_convenios.php`,
+      dataType: "JSON",
+      beforeSend: function () {
+          showLoading();
+      },
+      complete: function () {
+          showLoading(false);
+      },
+      success: function (response) {
+          if (response.error == false) {
+              let datos = response.datos;
+              datos.map((val) => {
+                  html += `<option value="${val["sucursal_cobranzas"]}">${val["nombre"]}</option>`;
+              });
+              $(`#${div}`).html(html);
+          }
+      },
+  });
 }

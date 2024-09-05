@@ -16,6 +16,10 @@
                     <?php include __DIR__ . '/../../content/afiliacion_grupo_familiar/formulario_2.php'; ?>
                 </div>
 
+                <div id="contenedor_formulario_alta_grupo_familiar_3">
+                    <?php include __DIR__ . '/../../content/afiliacion_grupo_familiar/formulario_3.php'; ?>
+                </div>
+
             </div>
             <div class="modal-footer">
                 <div id="btn_atras_datos_venta_grupo_familiar"></div>

@@ -36,7 +36,7 @@
 <div class="row">
     <div class="col-lg-4 col-md-4 col-sm-2">
         <div class="form-floating mb-4">
-            <input type="text" class="form-control" id="txt_cedula_beneficiario" placeholder="Cédula" disabled>
+            <input type="text" class="form-control solo_numeros" id="txt_cedula_beneficiario" placeholder="Cédula" disabled>
             <label for="txt_cedula_beneficiario">Cédula:</label>
         </div>
     </div>
@@ -44,7 +44,7 @@
 
     <div class="col-lg-4 col-md-4 col-sm-2">
         <div class="form-floating mb-4">
-            <input type="text" class="form-control" id="txt_nombre_beneficiario" placeholder="Nombre completo">
+            <input type="text" class="form-control solo_letras" id="txt_nombre_beneficiario" placeholder="Nombre completo">
             <label for="txt_nombre_beneficiario">Nombre completo: <span class="text-danger fw-bolder">*</span></label>
         </div>
     </div>
@@ -159,7 +159,7 @@
 
     <div class="col-auto">
         <div class="form-floating mb-4">
-            <input type="text" class="form-control" id="txt_celular_beneficiario" placeholder="Celular" maxlength="9">
+            <input type="text" class="form-control solo_numeros" id="txt_celular_beneficiario" placeholder="Celular" maxlength="9">
             <label for="txt_celular_beneficiario">Celular: <span class="text-danger fw-bolder">*</span></label>
         </div>
     </div>
@@ -167,7 +167,7 @@
 
     <div class="col-auto">
         <div class="form-floating mb-4">
-            <input type="text" class="form-control" id="txt_telefono_fijo_beneficiario" placeholder="Teléfono fijo" maxlength="8">
+            <input type="text" class="form-control solo_numeros" id="txt_telefono_fijo_beneficiario" placeholder="Teléfono fijo" maxlength="8">
             <label for="txt_telefono_fijo_beneficiario">Teléfono fijo:</label>
         </div>
     </div>
@@ -175,7 +175,7 @@
 
     <div class="col-auto">
         <div class="form-floating mb-4">
-            <input type="text" class="form-control" id="txt_telefono_alternativo_beneficiario" placeholder="Teléfono alternativo" maxlength="8">
+            <input type="text" class="form-control solo_numeros" id="txt_telefono_alternativo_beneficiario" placeholder="Teléfono alternativo" maxlength="8">
             <label for="txt_telefono_alternativo_beneficiario">Teléfono alternativo:</label>
         </div>
     </div>

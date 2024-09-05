@@ -56,32 +56,6 @@ function validar_nueva_alta_2() {
 }
 
 
-function select_convenios_servicios(div) {
-  let html = `<option value="" selected>Seleccione una opción</option>`;
-
-  $.ajax({
-    type: "GET",
-    url: `${url_ajax}afiliacion_individual/servicios/select_convenios.php`,
-    dataType: "JSON",
-    beforeSend: function () {
-      showLoading();
-    },
-    complete: function () {
-      showLoading(false);
-    },
-    success: function (response) {
-      if (response.error == false) {
-        let datos = response.datos;
-        datos.map((val) => {
-          html += `<option value="${val["sucursal_cobranzas"]}">${val["nombre"]}</option>`;
-        });
-        $(`#${div}`).html(html);
-      }
-    },
-  });
-}
-
-
 function vaciar_datos_formulario_2() {
   $("#div_lista_servicios").html("");
   $(".div_cantidad_horas_servicios").css("display", "none");
