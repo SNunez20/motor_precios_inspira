@@ -9,8 +9,14 @@ function acciones_formulario_grupo_familiar_formulario_1() {
     }
 
 
-    $("#btn_atras_datos_venta_grupo_familiar").html(`<button type="button" class="btn btn-primary" onclick="$('#modal_tipo_afiliacion').modal('show');">⬅ Atrás</button>`);
+    $("#btn_atras_datos_venta_grupo_familiar").html(`<button type="button" class="btn btn-primary" onclick="volver_modal_tipo_afiliacion_grupo_familiar()">⬅ Atrás</button>`);
     $("#btn_siguente_datos_venta_grupo_familiar").html(`<button type="button" class="btn btn-primary" onclick="validar_formulario_grupo_familiar_1()">Siguiente ➡</button>`);
+}
+
+
+function volver_modal_tipo_afiliacion_grupo_familiar() {
+    $('#modal_tipo_afiliacion').modal('show');
+    $("#modal_datos_venta_grupo_familiar").modal("hide");
 }
 
 

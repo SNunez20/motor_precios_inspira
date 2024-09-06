@@ -49,7 +49,24 @@ function validar_cedula() {
             acciones_formulario_nueva_alta_1();
             $("#modal_datos_venta").modal("show");
           } else {
-            alert("Incremento");
+            mostrar_div_datos_venta_incremento(1);
+            acciones_incremento_formulario_1();
+            let nombre_completo = response.datos.nombre;
+            let fecha_nacimiento = response.datos.fecha_nacimiento;
+            let email = response.datos.email;
+            let celular = response.datos.celular;
+            let telefono_fijo = response.datos.telefono_fijo;
+            let telefono_alternativo = response.datos.telefono_alternativo;
+            $("#txt_cedula_beneficiario_incremento").val(cedula);
+            $("#txt_nombre_beneficiario_incremento").val(nombre_completo);
+            $("#txt_fecha_nacimiento_beneficiario_incremento").val(fecha_nacimiento);
+            $("#txt_correo_electronico_beneficiario_incremento").val(email);
+            $("#txt_celular_beneficiario_incremento").val(celular);
+            $("#txt_telefono_fijo_beneficiario_incremento").val(telefono_fijo);
+            $("#txt_telefono_alternativo_beneficiario_incremento").val(telefono_alternativo);
+            $("#rbtn_beneficiario_incremento").val("Puerta");
+            $("#modal_tipo_afiliacion").modal("hide");
+            $("#modal_datos_venta_incremento").modal("show");
           }
         } else {
           error(response.mensaje);
