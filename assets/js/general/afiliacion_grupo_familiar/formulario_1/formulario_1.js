@@ -81,6 +81,12 @@ function validar_formulario_grupo_familiar_1() {
             data: {
                 array_personas_grupo_familiar
             },
+            beforeSend: function () {
+                showLoading();
+              },
+              complete: function () {
+                showLoading(false);
+              },
             dataType: "JSON",
             success: function (response) {
                 if (response.error === false) {

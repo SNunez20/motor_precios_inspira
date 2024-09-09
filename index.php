@@ -1,5 +1,5 @@
 <?php
-$version = '?v=1.0.5';
+$version = '?v=1.0.6';
 ?>
 
 <!DOCTYPE html>
@@ -92,6 +92,7 @@ $version = '?v=1.0.5';
         "general/afiliacion_grupo_familiar/formulario_4/formulario_4.js",
         "general/incremento/formulario_1/formulario_1.js",
         "general/incremento/formulario_2/formulario_2.js",
+        "general/incremento/formulario_2/servicios.js",
     ];
 
     foreach ($js_cargar as $archivo) {

@@ -29,11 +29,111 @@
 <h3 class="text-center mb-5">NUEVO INCREMENTO</h3>
 
 
+<div class="d-flex justify-content-center mb-5">
+    <ul class="list-group w-50" id="div_listado_servicios_actuales_incremento">
+    </ul>
+</div>
+
+
+<!--
+<div class="row justify-content-center mb-4">
+    <div class="col-lg-4 col-md-6">
+        <div class="form-floating">
+            <select class="form-select mx-auto" id="select_convenio_servicios_incremento" aria-label="Seleccione un convenio">
+            </select>
+            <label for="select_convenio_servicios_incremento">Seleccione un convenio (opcional):</label>
+        </div>
+    </div>
+</div>
+-->
+
+
 <h4 class="mb-4">Seleccione los servicios</h4>
 
 
+<div class="row">
+    <div class="col-auto">
+        <div class="form-floating mb-3">
+            <select class="form-select" id="select_servicios_servicios_incremento" aria-label="Seleccione un servicio">
+            </select>
+            <label for="select_servicios_servicios_incremento">Seleccione un servicio: <span class="text-danger fw-bolder">*</span></label>
+        </div>
+    </div>
 
-<div class="d-flex justify-content-center">
-    <ul class="list-group w-50" id="div_listado_servicios_actuales_incremento">
-    </ul>
+
+    <div class="col-auto div_cantidad_horas_servicios_incremento">
+        <div class="form-floating mb-3">
+            <select class="form-select" id="select_cantidad_horas_servicios_incremento" aria-label="Seleccione un servicio">
+            </select>
+            <label for="select_cantidad_horas_servicios_incremento">Seleccione cantidad de horas: <span class="text-danger fw-bolder">*</span></label>
+        </div>
+    </div>
+
+
+    <div class="col-auto div_lista_de_precios_incremento">
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="chbox_lista_de_precios_incremento">
+            <label class="form-check-label" for="chbox_lista_de_precios_incremento">
+                Sanatorio Estaciones
+            </label>
+        </div>
+    </div>
+
+    <div class="col-auto div_socio_adeom_incremento">
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="chbox_socio_adeom_incremento">
+            <label class="form-check-label" for="chbox_socio_adeom_incremento">
+                Socio por Adeom
+            </label>
+        </div>
+    </div>
+
+
+    <div class="col-auto div_promocion_servicios_incremento">
+        <div class="form-floating mb-3">
+            <select class="form-select" id="select_promocion_servicios_incremento" aria-label="Seleccione un servicio">
+            </select>
+            <label for="select_promocion_servicios_incremento">Seleccione una promo:</label>
+            <div class="form-text" id="basic-addon4">
+                Esta promoción sólo es válida para pago con tarjeta.
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-auto div_ingresar_importe_total_incremento">
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="txt_importe_total_servicios_incremento" placeholder="Ingresar importe">
+            <label for="txt_importe_total_servicios_incremento">Ingresar importe:</label>
+            <div class="form-text" id="basic-addon4">
+                El importe es el equivalente al 50% que abona en la competencia.
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<button class="btn btn-primary me-3 mb-3" onclick="agregar_servicio_incremento()">Agregar servicio</button>
+
+
+<div class="mb-5">
+    <ol class="list-group list-group-numbered" id="div_lista_servicios_incremento">
+    </ol>
+</div>
+
+
+<div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-4">
+        <div class="form-floating mb-3">
+            <textarea class="form-control" placeholder="Escriba una observación" id="txt_observacion_servicios_incremento" style="height: 100px"></textarea>
+            <label for="txt_observacion_servicios_incremento">Observación: <span class="text-danger fw-bolder">*</span></label>
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-4">
+        <div class="alert alert-success border-success d-flex align-items-center justify-content-center" role="alert" style="height: 100px">
+            <p class="fw-bolder">Total ($UY):
+                <span class="text-danger" id="span_total_precio_servicios_incremento">0</span>
+            </p>
+        </div>
+    </div>
 </div>

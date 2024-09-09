@@ -10,7 +10,9 @@ $servicios_actuales = obtener_servicios_actuales($cedula);
 if ($servicios_actuales == false) devolver_error("Ocurrieron errores al obtener los servicios actuales");
 
 
-$array_nombre_servicios_agregados = [];
+$count = 1;
+$total_importe = 0;
+$acotado = 0;
 while ($row = mysqli_fetch_assoc($servicios_actuales)) {
     $numero_servicio = $row['servicio'];
     $nombre_servicio = obtener_datos_servicio($numero_servicio);
@@ -18,53 +20,16 @@ while ($row = mysqli_fetch_assoc($servicios_actuales)) {
     $importe = $row['importe'];
     $cod_promo = $row['cod_promo'];
     $nombre_promo = $cod_promo != "" ? obtener_nombre_promo($cod_promo) : "";
-
-
-    if (count($array_nombre_servicios_agregados) <= 0) {
-        $lista_previa_servicios[] = [
-            "numero_servicio" => $numero_servicio,
-            "nombre_servicio" => $nombre_servicio,
-            "horas" => $horas,
-            "importe" => $importe,
-            "cod_promo" => $cod_promo,
-            "nombre_promo" => $nombre_promo,
-        ];
-        array_push($array_nombre_servicios_agregados, $nombre_servicio);
-    } else {
-
-        foreach ($array_nombre_servicios_agregados as $ansa) {
-            if ($ansa != $nombre_servicio) {
-                $lista_previa_servicios[] = [
-                    "numero_servicio" => $numero_servicio,
-                    "nombre_servicio" => $nombre_servicio,
-                    "horas" => $horas,
-                    "importe" => $importe,
-                    "cod_promo" => $cod_promo,
-                    "nombre_promo" => $nombre_promo,
-                ];
-                array_push($array_nombre_servicios_agregados, $nombre_servicio);
-            }
-        }
-    }
-}
-
-
-
-$count = 1;
-$total_importe = 0;
-while ($row = mysqli_fetch_assoc($lista_previa_servicios)) {
-    $numero_servicio = $row['numero_servicio'];
-    $nombre_servicio = $row['nombre_servicio'];
-    $horas = $row['horas'];
-    $importe = $row['importe'];
-    $cod_promo = $row['cod_promo'];
-    $nombre_promo = $row['nombre_promo'];
-
-    $nombre_servicio = obtener_datos_servicio($numero_servicio);
-    $nombre_promo = $cod_promo != "" ? obtener_nombre_promo($cod_promo) : "";
     $cod_promo = $cod_promo != "" ? "- 🚀 $nombre_promo" : "";
-    $lista_servicios[] = "<li class='list-group-item list-group-item-secondary'><strong>" . $count++ . ".</strong> {$nombre_servicio} - ⏰ {$horas}hrs {$cod_promo}</li>";
+    $promo_estaciones = 0;
+    if ($numero_servicio == "01" && in_array($importe, ["530", "1060", "1590"])) $promo_estaciones++;
+    $promo_estaciones = $promo_estaciones > 0 ? "- <span class='text-success'>Promo Estaciones</span>" : "";
+
+    $lista_servicios[] = "<li class='list-group-item list-group-item-secondary'><strong>" . $count++ . ".</strong> {$nombre_servicio} - ⏰ {$horas}hrs {$promo_estaciones} {$cod_promo}</li>";
     $total_importe = $total_importe + $importe;
+
+    if (in_array($numero_servicio, ["63", "65"])) $acotado++;
+    $array_numeros_servicios[] = $numero_servicio;
 }
 
 
@@ -72,6 +37,8 @@ while ($row = mysqli_fetch_assoc($lista_previa_servicios)) {
 $response['error'] = false;
 $response['lista_servicios'] = $lista_servicios;
 $response['importe_total'] = $total_importe;
+$response['acotado'] = $acotado > 0 ? 1 : 0;
+$response['numeros_servicios'] = $array_numeros_servicios;
 echo json_encode($response);
 
 
@@ -82,8 +49,11 @@ function obtener_servicios_actuales($cedula)
     $conexion = connection(DB);
     $tabla = TABLA_PADRON_PRODUCTO_SOCIO;
 
+    //Con el "NOT IN" filtro los servicios son "duplicados" porque se ofrecen en paquetes EJ. 06 y 08 es Reintegro Opcional.
+    $filtro_paquete = "AND servicio NOT IN (08, 110)";
+
     try {
-        $sql = "SELECT servicio, SUM(hora) AS 'horas', importe, cod_promo FROM {$tabla} WHERE cedula = '$cedula' GROUP BY servicio";
+        $sql = "SELECT servicio, SUM(hora) AS 'horas', importe, cod_promo FROM {$tabla} WHERE cedula = '$cedula' $filtro_paquete GROUP BY servicio";
         $consulta = mysqli_query($conexion, $sql);
     } catch (\Throwable $error) {
         registrar_errores($sql, "lista_servicios_actuales.php", $error);

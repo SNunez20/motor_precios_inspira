@@ -36,6 +36,10 @@ function agregar_datos_beneficiario(openModal = false, cedula = null) {
     contador_caracteres("txt_esquina_beneficiario_grupo_familiar", "span_esquina_beneficiario_grupo_familiar", 20);
     contador_caracteres("txt_apartamento_beneficiario_grupo_familiar", "span_apartamento_beneficiario_grupo_familiar", 4);
 
+    $("#rbtn_beneficiario_grupo_familiar_1").prop("checked", true);
+    $(".div_rbtn_1_beneficiario_grupo_familiar").css("display", "block");
+    $(".div_rbtn_2_beneficiario_grupo_familiar").css("display", "none");
+
     $("input[name=rbtn_beneficiario_grupo_familiar]").click(function () {
       if ($("input:radio[name=rbtn_beneficiario_grupo_familiar]:checked").val() == "Puerta") {
         $("#txt_solar_beneficiario_grupo_familiar").val("");

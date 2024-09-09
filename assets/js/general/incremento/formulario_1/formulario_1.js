@@ -2,7 +2,6 @@ let array_datos_beneficiario_incremento = [];
 function acciones_incremento_formulario_1() {
     if (array_datos_beneficiario_incremento.length <= 0) {
         $("#txt_calle_beneficiario_incremento").val("");
-        $(".div_rbtn_1_beneficiario_incremento").css("display", "block");
         $("#txt_puerta_beneficiario_incremento").val("");
         $("#txt_solar_beneficiario_incremento").val("");
         $("#txt_manzana_beneficiario_incremento").val("");
@@ -13,6 +12,7 @@ function acciones_incremento_formulario_1() {
 
         select_localidades("select_localidades_beneficiario_incremento");
 
+        $("#rbtn_beneficiario_incremento_1").prop("checked", true);
         $(".div_rbtn_1_beneficiario_incremento").css("display", "block");
         $(".div_rbtn_2_beneficiario_incremento").css("display", "none");
     }
@@ -38,14 +38,15 @@ function acciones_incremento_formulario_1() {
     });
 
 
-    $("#btn_atras_datos_venta_incremento").html(`<button type="button" class="btn btn-primary" onclick="volver_a_tipo_afiliacion_incremento()">⬅ Atrás</button>`);
+    $("#btn_atras_datos_venta_incremento").html(`<button type="button" class="btn btn-primary" onclick="volver_a_validacion_cedula()">⬅ Atrás</button>`);
     $("#btn_siguente_datos_venta_incremento").html(`<button type="button" class="btn btn-primary" onclick="validar_nuevo_incremento_1()">Siguiente ➡</button>`);
 }
 
 
-function volver_a_tipo_afiliacion_incremento() {
+function volver_a_validacion_cedula() {
     $("#modal_datos_venta_incremento").modal("hide");
     vaciar_datos_beneficiario_incremento();
+    $("#modal_validar_cedula").modal("show");
 }
 
 
@@ -136,7 +137,6 @@ function vaciar_datos_beneficiario_incremento() {
     $("#txt_nombre_beneficiario_incremento").val("");
     $("#txt_fecha_nacimiento_beneficiario_incremento").val("");
     $("#txt_calle_beneficiario_incremento").val("");
-    $("input:radio[name=rbtn_beneficiario_incremento]").prop("checked", false);
     $("#txt_puerta_beneficiario_incremento").val("");
     $("#txt_solar_beneficiario_incremento").val("");
     $("#txt_manzana_beneficiario_incremento").val("");
@@ -148,7 +148,8 @@ function vaciar_datos_beneficiario_incremento() {
     $("#txt_celular_beneficiario_incremento").val("");
     $("#txt_telefono_fijo_beneficiario_incremento").val("");
     $("#txt_telefono_alternativo_beneficiario_incremento").val("");
+    $("#rbtn_beneficiario_incremento_1").prop("checked", true);
     //Oculto los divs
-    $(".div_rbtn_1_beneficiario_incremento").css("display", "none");
+    $(".div_rbtn_1_beneficiario_incremento").css("display", "block");
     $(".div_rbtn_2_beneficiario_incremento").css("display", "none");
 }

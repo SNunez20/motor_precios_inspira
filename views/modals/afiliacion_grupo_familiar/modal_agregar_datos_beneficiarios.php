@@ -66,14 +66,14 @@
                     <div class="col-auto mb-4">
                         <div>Elige una opción: <span class="text-danger fw-bolder">*</span></div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="rbtn_beneficiario_grupo_familiar" id="rbtn_beneficiario_grupo_familiar" value="Puerta">
-                            <label class="form-check-label" for="rbtn_beneficiario_grupo_familiar">
+                            <input class="form-check-input" type="radio" name="rbtn_beneficiario_grupo_familiar" id="rbtn_beneficiario_grupo_familiar_1" value="Puerta">
+                            <label class="form-check-label" for="rbtn_beneficiario_grupo_familiar_1">
                                 Puerta
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="rbtn_beneficiario_grupo_familiar" id="rbtn_beneficiario_grupo_familiar" value="Solar/manzana">
-                            <label class="form-check-label" for="rbtn_beneficiario_grupo_familiar">
+                            <input class="form-check-input" type="radio" name="rbtn_beneficiario_grupo_familiar" id="rbtn_beneficiario_grupo_familiar_2" value="Solar/manzana">
+                            <label class="form-check-label" for="rbtn_beneficiario_grupo_familiar_2">
                                 Solar/manzana
                             </label>
                         </div>

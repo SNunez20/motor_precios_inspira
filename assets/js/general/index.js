@@ -66,6 +66,7 @@ function validar_cedula() {
             $("#txt_telefono_alternativo_beneficiario_incremento").val(telefono_alternativo);
             $("#rbtn_beneficiario_incremento").val("Puerta");
             $("#modal_tipo_afiliacion").modal("hide");
+            $("#modal_validar_cedula").modal("hide");
             $("#modal_datos_venta_incremento").modal("show");
           }
         } else {

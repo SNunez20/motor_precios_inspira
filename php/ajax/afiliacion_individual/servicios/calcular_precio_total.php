@@ -14,7 +14,7 @@ $edad = $fecha_actual - $fecha_nacimiento;
 $precio_total = 0;
 foreach ($datos as $data) {
     $numero_servicio = $data['numero_servicio'];
-    $cantidad_horas = $data['cantidad_horas'];
+    $cantidad_horas = $data['cantidad_horas'] != "" ? $data['cantidad_horas'] : 8;
     $promo_estaciones = $data['promo_estaciones'];
     $total_importe = $data['total_importe'];
 

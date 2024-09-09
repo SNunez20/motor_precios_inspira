@@ -43,7 +43,7 @@ echo json_encode($response);
 
 function comprobar_cedula($opcion, $cedula)
 {
-    $conexion = $opcion == 1 ? connection(DB_CALL) : connection(DB);
+    $conexion = $opcion == 1 ? connection(DB_CALL, false) : connection(DB, false);
     $tabla = TABLA_PADRON_DATOS_SOCIO;
 
     try {

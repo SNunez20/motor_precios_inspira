@@ -72,6 +72,12 @@ function afiliar_socios() {
         importe_total,
       },
       dataType: "JSON",
+      beforeSend: function () {
+        showLoading();
+      },
+      complete: function () {
+        showLoading(false);
+      },
       success: function (response) {
         if (response.error == false) {
           correcto(response.mensaje);

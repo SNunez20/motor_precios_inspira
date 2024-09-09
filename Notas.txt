@@ -1,0 +1,22 @@
+Panel de Nicolas:
+-> Tabla (Nombre, Cédula, Radio, Ruta, Sucursal, Método de pago, Estado, Fecha de carga, observación, Tipo Afiliación).
+-> Acciones en tabla:
+	*Editar datos.
+	*Ver y editar servicios contratados.
+	*Aprobar.
+	*Seleccionar ruta.
+	*Historial.
+	*Eliminar afiliación.
+	*Marcar como pendiente.
+-> Filtros: (Fecha desde y hasta, Ruta, Sucursal, Método de pago, Estado, Tipo de Afiliación).
+
+
+
+-> Modal editar datos: 
+*Datos: (Nombre, Cédula, Télefono, Localidad, Sucursal, Rutas, Dirección, Radio, Observación, Fecha nacimiento, Tarjeta, Tipo tarjeta, Nombre títular, Cédula títular, Télefono títular, Año vencimiento, Mes vencimiento, Cuotas mercadopago, CVV, Count, Email, Email títular, Total importe $UY, Cédula vendedor, Nombre vendedor, Títular grupo familiar, Banco emisor).
+*Acciones: (Confirmar dirección, Ver servicios contratados).
+
+
+
+-> Modal ver y editar servicios contratados:
+*Datos: (Lista de productos con sus horas y importe, permitir actualizar observación y mostrar precio total).

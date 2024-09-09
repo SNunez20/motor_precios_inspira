@@ -51,6 +51,12 @@ function afiliar_socios_grupo_familiar() {
                 array_tarjeta_titular_grupo_familiar,
             },
             dataType: "JSON",
+            beforeSend: function () {
+                showLoading();
+              },
+              complete: function () {
+                showLoading(false);
+              },
             success: function (response) {
                 if (response.error == false) {
                     correcto(response.mensaje);

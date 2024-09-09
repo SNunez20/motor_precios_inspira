@@ -72,13 +72,13 @@
     <div class="col-auto mb-4">
         <div>Elige una opción: <span class="text-danger fw-bolder">*</span></div>
         <div class="form-check">
-            <input class="form-check-input" type="radio" name="rbtn_beneficiario_incremento" id="rbtn_beneficiario_incremento" value="Puerta" checked>
+            <input class="form-check-input" type="radio" name="rbtn_beneficiario_incremento" id="rbtn_beneficiario_incremento_1" value="Puerta">
             <label class="form-check-label" for="rbtn_beneficiario_incremento">
                 Puerta
             </label>
         </div>
         <div class="form-check">
-            <input class="form-check-input" type="radio" name="rbtn_beneficiario_incremento" id="rbtn_beneficiario_incremento" value="Solar/manzana">
+            <input class="form-check-input" type="radio" name="rbtn_beneficiario_incremento" id="rbtn_beneficiario_incremento_2" value="Solar/manzana">
             <label class="form-check-label" for="rbtn_beneficiario_incremento">
                 Solar/manzana
             </label>

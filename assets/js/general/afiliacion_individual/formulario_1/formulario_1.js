@@ -6,7 +6,6 @@ function acciones_formulario_nueva_alta_1() {
     $("#txt_nombre_beneficiario").val("");
     $("#txt_fecha_nacimiento_beneficiario").val("");
     $("#txt_calle_beneficiario").val("");
-    $("input:radio[name=rbtn_beneficiario]").prop("checked", false);
     $("#txt_puerta_beneficiario").val("");
     $("#txt_solar_beneficiario").val("");
     $("#txt_manzana_beneficiario").val("");
@@ -24,7 +23,8 @@ function acciones_formulario_nueva_alta_1() {
     select_localidades("select_localidades_beneficiario");
     select_promociones("select_promocion_beneficiario");
 
-    $(".div_rbtn_1_beneficiario").css("display", "none");
+    $("#rbtn_beneficiario_1").prop("checked", true);
+    $(".div_rbtn_1_beneficiario").css("display", "block");
     $(".div_rbtn_2_beneficiario").css("display", "none");
   }
 
