@@ -1,7 +1,7 @@
 let array_servicios_agregados_incremento = [];
 function acciones_incremento_formulario_2() {
     if (array_servicios_agregados_incremento.length <= 0) {
-        //select_convenios_servicios("select_convenio_servicios_incremento");
+        select_convenios_servicios("select_convenio_servicios_incremento");
         select_servicios("select_servicios_servicios_incremento");
     
         $("#select_servicios_servicios_incremento").html("");
@@ -66,11 +66,11 @@ function listar_servicios_actuales_incremento() {
             },
             dataType: "JSON",
             beforeSend: function () {
-                showLoading();
-              },
-              complete: function () {
-                showLoading(false);
-              },
+              showLoading();
+            },
+            complete: function () {
+              showLoading(false);
+            },
             success: function (response) {
                 if (response.error == false) {
                     let lista_servicios = response.lista_servicios;
@@ -115,11 +115,11 @@ function listar_filtrado_servicios_incremento(acotado, array_numeros_servicios)
         },
         dataType: "JSON",
         beforeSend: function () {
-            showLoading();
-          },
-          complete: function () {
-            showLoading(false);
-          },
+          showLoading();
+        },
+        complete: function () {
+          showLoading(false);
+        },
         success: function (response) {
             if (response.error == false) {
                 let lista_servicios = response.lista_servicios;

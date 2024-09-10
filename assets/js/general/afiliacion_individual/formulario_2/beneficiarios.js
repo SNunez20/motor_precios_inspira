@@ -149,7 +149,7 @@ function vaciar_datos_beneficiario_servicio() {
   //Elimino los datos del array
   array_beneficiarios_servicio = [];
   //Limpio los campos
-  $("#txt_numero_servicio_beneficiarios_servicio").val(numero_servicio);
+  $("#txt_numero_servicio_beneficiarios_servicio").val("");
   $("#div_lista_beneficiarios_servicios").html("");
   $("#txt_nombre_beneficiario_servicio").val("");
   $("#txt_cedula_beneficiario_servicio").val("");

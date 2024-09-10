@@ -281,7 +281,6 @@ function mostrar_div_datos_venta_incremento(id) {
   $("#contenedor_formulario_incremento_1").css("display", "none");
   $("#contenedor_formulario_incremento_2").css("display", "none");
   $("#contenedor_formulario_incremento_3").css("display", "none");
-  $("#contenedor_formulario_incremento_4").css("display", "none");
 
   $(`#contenedor_formulario_incremento_${id}`).css("display", "block");
 }

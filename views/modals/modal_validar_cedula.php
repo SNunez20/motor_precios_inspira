@@ -8,12 +8,9 @@
             <div class="modal-body">
 
                 <h6 class="mt-3">Validar cédula del beneficiario en el padrón</h6>
-                <p>Tarjetas con 12 cuotas Mercadopago: <span class="fw-bolder">- amex - oca</span> <br>
-                    Tarjeta Mercadopago: VISA, MASTER, OCA, LIDER, AMERICAN EXPRESS, DINERS
-                </p>
 
                 <div class="form-floating mt-4 mb-3">
-                    <input type="text" class="form-control" id="txt_cedula" value="53249776" placeholder="Ingrese una cédula" maxlength="8">
+                    <input type="text" class="form-control" id="txt_cedula" placeholder="Ingrese una cédula" maxlength="8">
                     <label for="txt_cedula">Ingrese una cédula:</label>
                 </div>
 

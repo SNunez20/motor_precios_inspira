@@ -7,10 +7,10 @@ function mostrar_divs_servicios_grupo_familiar(cedula, servicio) {
         dataType: "JSON",
         beforeSend: function () {
             showLoading();
-        },
-        complete: function () {
+          },
+          complete: function () {
             showLoading(false);
-        },
+          },
         success: function (response) {
             if (response.error == false) {
                 if (response.mostrar_horas == 1) {
@@ -23,6 +23,15 @@ function mostrar_divs_servicios_grupo_familiar(cedula, servicio) {
                 if (response.mostrar_lista_precios == 1) {
                     $(".div_lista_de_precios_grupo_familiar").css("display", "block");
                     $("#chbox_lista_de_precios_grupo_familiar").prop("checked", false);
+
+                    $("#chbox_lista_de_precios_grupo_familiar").change(function () {
+                        if (this.checked) {
+                          $("#select_promocion_servicios_grupo_familiar").val("");
+                          $(".div_promocion_servicios_grupo_familiar").css("display", "none");
+                        } else {
+                          $(".div_promocion_servicios_grupo_familiar").css("display", "block");
+                        }
+                      });
                 } else {
                     $(".div_lista_de_precios_grupo_familiar").css("display", "none");
                 }
@@ -110,10 +119,10 @@ function select_promociones_servicios_grupo_familiar(servicio) {
         dataType: "JSON",
         beforeSend: function () {
             showLoading();
-        },
-        complete: function () {
+          },
+          complete: function () {
             showLoading(false);
-        },
+          },
         success: function (response) {
             if (response.error == false) {
                 let html = `<option value="" selected>Seleccione una opción</option>`;
@@ -316,10 +325,10 @@ function calcular_total_grupo_familiar(cedula) {
             dataType: "JSON",
             beforeSend: function () {
                 showLoading();
-            },
-            complete: function () {
+              },
+              complete: function () {
                 showLoading(false);
-            },
+              },
             success: function (response) {
                 if (response.error == false) {
                     let precio = response.precio;

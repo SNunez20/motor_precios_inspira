@@ -39,6 +39,10 @@ $id_socio_padron = agregar_padron_datos_socios();
 if ($id_socio_padron == false) devolver_error("Ocurrieron errores al registrar al socio");
 
 
+$registrar_direccion = registrar_direccion_socio($id_socio_padron);
+if ($registrar_direccion == false) devolver_error("Ocurrieron errores al registrar la dirección del socio");
+
+
 if (count($array_servicios) > 0) {
     $registrar_productos = agregar_padron_producto_socios(
         $array_datos_beneficiario,
@@ -217,7 +221,7 @@ function agregar_padron_datos_socios()
                 id_usuario = '0'";
         $consulta = mysqli_query($conexion, $sql);
     } catch (\Throwable $error) {
-        registrar_errores($sql, "completar_afiliacion.php", $error);
+        registrar_errores($sql, "completar_afiliacion_individual.php", $error);
         $consulta = false;
     }
 
@@ -228,11 +232,12 @@ function agregar_padron_datos_socios()
 }
 
 
-function registrar_direccion_socio($id_socio_padron, $array_datos_beneficiario)
+function registrar_direccion_socio($id_socio_padron)
 {
     $conexion = connection(DB, false);
     $tabla = TABLA_DIRECCIONES_SOCIOS;
 
+    $array_datos_beneficiario = $_REQUEST['array_datos_beneficiario'];
     $cedula = $array_datos_beneficiario["cedula"];
     $calle = mysqli_real_escape_string($conexion, $array_datos_beneficiario["calle"]);
     $puerta = $array_datos_beneficiario["puerta"];
@@ -243,33 +248,23 @@ function registrar_direccion_socio($id_socio_padron, $array_datos_beneficiario)
     $referencia = mysqli_real_escape_string($conexion, $array_datos_beneficiario["referencia"]);
 
     try {
-        $sql = "INSERT INTO {$tabla} (
-             id_socio,
-             calle,
-             puerta,
-             manzana,
-             solar,
-             apartamento,
-             esquina,
-             referencia,
-             cedula_socio
-            ) VALUES (
-             $id_socio_padron,
-             '$calle',
-             '$puerta',
-             '$manzana',
-             '$solar',
-             '$apartamento',
-             '$esquina',
-             '$referencia',
-             '$cedula')";
+        $sql = "INSERT INTO {$tabla} SET 
+                id_socio = '$id_socio_padron',
+                calle = '$calle',
+                puerta = '$puerta',
+                manzana = '$manzana',
+                solar = '$solar',
+                apartamento = '$apartamento',
+                esquina = '$esquina',
+                referencia = '$referencia',
+                cedula_socio = '$cedula'";
         $consulta = mysqli_query($conexion, $sql);
     } catch (\Throwable $error) {
-        registrar_errores($sql, "completar_afiliacion.php", $error);
+        registrar_errores($sql, "completar_afiliacion_individual.php", $error);
         $consulta = false;
     }
 
-    mysqli_query($conexion, $sql);
+    mysqli_close($conexion);
     return $consulta;
 }
 
@@ -347,7 +342,7 @@ function agregar_padron_producto_socios($datos_beneficiario, $observacion, $arra
                     cedula_titular_gf = NULL";
                     $consulta = mysqli_query($conexion, $sql);
                 } catch (\Throwable $error) {
-                    registrar_errores($sql, "completar_afiliacion.php", $error);
+                    registrar_errores($sql, "completar_afiliacion_individual.php", $error);
                     $errores++;
                 }
             }
@@ -435,7 +430,7 @@ function agregar_padron_productos_grupo_familiar($datos_beneficiario, $array_ben
                                 cedula_titular_gf = '$cedula'";
                         $consulta = mysqli_query($conexion, $sql);
                     } catch (\Throwable $error) {
-                        registrar_errores($sql, "completar_afiliacion.php", $error);
+                        registrar_errores($sql, "completar_afiliacion_individual.php", $error);
                         $errores++;
                     }
                 }

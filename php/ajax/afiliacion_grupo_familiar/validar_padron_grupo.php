@@ -7,7 +7,7 @@ if (count($afiliados) <= 0) devolver_error(ERROR_GENERAL);
 
 foreach ($afiliados as $key => $val) {
     $cedula = $val['cedula'];
-    $mensaje = "";
+    $response["mensaje"] = "";
 
     $comprobar_padron = comprobar_existe_socio(2, $cedula);
     if (!$comprobar_padron) $response["mensaje"] .= "Ocurrieron errores al verificar la cédula $cedula en padrón";

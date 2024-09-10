@@ -25,8 +25,11 @@ $mensaje = "";
 foreach ($array_cedula_integrantes as $integrante) {
     $cedula = $integrante['cedula'];
 
-    $registrar_socio = agregar_padron_datos_socios($cedula, $id_metodo_pago, $metodo_pago);
-    if ($registrar_socio == false) $mensaje .= "Error al registrar el socio de cédula <strong>$cedula</strong>";
+    $id_socio_padron = agregar_padron_datos_socios($cedula, $id_metodo_pago, $metodo_pago);
+    if ($id_socio_padron == false) $mensaje .= "Error al registrar el socio de cédula <strong>$cedula</strong>";
+
+    $registrar_direccion = registrar_direccion_socio($id_socio_padron, $cedula);
+    if ($registrar_direccion == false) $mensaje .= "Ocurrieron errores al registrar la dirección del socio <strong>$cedula</strong>";
 
     $registrar_productos = agregar_padron_producto_socios($cedula, $id_metodo_pago);
     if ($registrar_productos == false) $mensaje .= "Error al registrar productos para la cédula <strong>$cedula</strong>";
@@ -198,48 +201,43 @@ function agregar_padron_datos_socios($cedula_persona, $id_metodo_pago, $metodo_p
 }
 
 
-function registrar_direccion_socio($id_socio_padron, $array_datos_beneficiario)
+function registrar_direccion_socio($id_socio_padron, $cedula)
 {
     $conexion = connection(DB, false);
     $tabla = TABLA_DIRECCIONES_SOCIOS;
 
-    $cedula = $array_datos_beneficiario["cedula"];
-    $calle = mysqli_real_escape_string($conexion, $array_datos_beneficiario["calle"]);
-    $puerta = $array_datos_beneficiario["puerta"];
-    $manzana = $array_datos_beneficiario["manzana"];
-    $solar = $array_datos_beneficiario["solar"];
-    $apartamento = $array_datos_beneficiario["apartamento"];
-    $esquina = mysqli_real_escape_string($conexion, $array_datos_beneficiario["esquina"]);
-    $referencia = mysqli_real_escape_string($conexion, $array_datos_beneficiario["referencia"]);
 
-    try {
-        $sql = "INSERT INTO {$tabla} (
-             id_socio,
-             calle,
-             puerta,
-             manzana,
-             solar,
-             apartamento,
-             esquina,
-             referencia,
-             cedula_socio
-            ) VALUES (
-             $id_socio_padron,
-             '$calle',
-             '$puerta',
-             '$manzana',
-             '$solar',
-             '$apartamento',
-             '$esquina',
-             '$referencia',
-             '$cedula')";
-        $consulta = mysqli_query($conexion, $sql);
-    } catch (\Throwable $error) {
-        registrar_errores($sql, "completar_afiliacion_grupo_familiar.php", $error);
-        $consulta = false;
+    foreach ($_REQUEST['array_datos_beneficiario_grupo_familiar'] as $datos_beneficiario) {
+        if ($cedula == $datos_beneficiario["cedula"]) {
+            $cedula = $datos_beneficiario["cedula"];
+            $calle = mysqli_real_escape_string($conexion, $datos_beneficiario["calle"]);
+            $puerta = $datos_beneficiario["puerta"];
+            $manzana = $datos_beneficiario["manzana"];
+            $solar = $datos_beneficiario["solar"];
+            $apartamento = $datos_beneficiario["apartamento"];
+            $esquina = mysqli_real_escape_string($conexion, $datos_beneficiario["esquina"]);
+            $referencia = mysqli_real_escape_string($conexion, $datos_beneficiario["referencia"]);
+
+            try {
+                $sql = "INSERT INTO {$tabla} SET 
+                id_socio = '$id_socio_padron',
+                calle = '$calle',
+                puerta = '$puerta',
+                manzana = '$manzana',
+                solar = '$solar',
+                apartamento = '$apartamento',
+                esquina = '$esquina',
+                referencia = '$referencia',
+                cedula_socio = '$cedula'";
+                $consulta = mysqli_query($conexion, $sql);
+            } catch (\Throwable $error) {
+                registrar_errores($sql, "completar_afiliacion_grupo_familiar.php", $error);
+                $consulta = false;
+            }
+        }
     }
 
-    mysqli_query($conexion, $sql);
+    mysqli_close($conexion);
     return $consulta;
 }
 

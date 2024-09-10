@@ -1,5 +1,5 @@
 <?php
-$version = '?v=1.0.6';
+$version = '?v=1.0.7';
 ?>
 
 <!DOCTYPE html>
@@ -33,17 +33,22 @@ $version = '?v=1.0.6';
     <?php
     include './views/modals/modal_tipo_afiliacion.php';
     include './views/modals/modal_validar_cedula.php';
+
+    /* Afiliación individual */
     include './views/modals/afiliacion_individual/modal_datos_venta.php';
     include './views/modals/afiliacion_individual/modal_agregar_beneficiarios.php';
     include './views/modals/afiliacion_individual/modal_datos_tarjeta.php';
 
+    /* Afiliación Grupo Familiar */
     include './views/modals/afiliacion_grupo_familiar/modal_datos_venta_grupo_familiar.php';
     include './views/modals/afiliacion_grupo_familiar/modal_agregar_datos_beneficiarios.php';
     include './views/modals/afiliacion_grupo_familiar/modal_mostrar_listado_beneficiarios.php';
     include './views/modals/afiliacion_grupo_familiar/modal_agregar_servicios_beneficiarios.php';
     include './views/modals/afiliacion_grupo_familiar/modal_datos_tarjeta.php';
 
+    /* Incremento */
     include './views/modals/incremento/modal_datos_venta.php';
+    include './views/modals/incremento/modal_datos_tarjeta.php';
     ?>
 
 
@@ -78,21 +83,29 @@ $version = '?v=1.0.6';
         "utils.js",
         "funciones.js",
         "general/index.js",
+
+        /* Afiliación individual */
         "general/afiliacion_individual/formulario_1/formulario_1.js",
         "general/afiliacion_individual/formulario_2/formulario_2.js",
         "general/afiliacion_individual/formulario_2/servicios.js",
         "general/afiliacion_individual/formulario_2/beneficiarios.js",
         "general/afiliacion_individual/formulario_3/tarjeta.js",
         "general/afiliacion_individual/formulario_3/formulario_3.js",
+
+        /* Afiliación Grupo Familiar */
         "general/afiliacion_grupo_familiar/formulario_1/formulario_1.js",
         "general/afiliacion_grupo_familiar/formulario_2/formulario_2.js",
         "general/afiliacion_grupo_familiar/formulario_3/servicios.js",
         "general/afiliacion_grupo_familiar/formulario_3/formulario_3.js",
         "general/afiliacion_grupo_familiar/formulario_4/tarjeta.js",
         "general/afiliacion_grupo_familiar/formulario_4/formulario_4.js",
+
+        /* Incremento */
         "general/incremento/formulario_1/formulario_1.js",
         "general/incremento/formulario_2/formulario_2.js",
         "general/incremento/formulario_2/servicios.js",
+        "general/incremento/formulario_3/tarjeta.js",
+        "general/incremento/formulario_3/formulario_3.js",
     ];
 
     foreach ($js_cargar as $archivo) {

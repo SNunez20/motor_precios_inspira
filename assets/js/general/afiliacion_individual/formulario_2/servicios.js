@@ -23,6 +23,15 @@ function mostrar_divs_servicios(servicio) {
         if (response.mostrar_lista_precios == 1) {
           $(".div_lista_de_precios").css("display", "block");
           $("#chbox_lista_de_precios").prop("checked", false);
+
+          $("#chbox_lista_de_precios").change(function () {
+            if (this.checked) {
+              $("#select_promocion_servicios").val("");
+              $(".div_promocion_servicios").css("display", "none");
+            } else {
+              $(".div_promocion_servicios").css("display", "block");
+            }
+          });
         } else {
           $(".div_lista_de_precios").css("display", "none");
         }
@@ -51,12 +60,10 @@ function mostrar_divs_servicios(servicio) {
             $(".div_ingresar_importe_total").css("display", "none");
           }
         }
-
       }
-    }
+    },
   });
 }
-
 
 function mostrar_promociones(res_mostrar_promociones, servicio) {
   let dato_extra = $("#select_dato_extra").val();
@@ -73,7 +80,6 @@ function mostrar_promociones(res_mostrar_promociones, servicio) {
     $(".div_promocion_servicios").css("display", "none");
   }
 }
-
 
 function select_promociones_servicios(servicio) {
   let html = `<option value="" selected>Seleccione una opción</option>`;
@@ -99,7 +105,6 @@ function select_promociones_servicios(servicio) {
     },
   });
 }
-
 
 function agregar_servicio() {
   let nro_servicio = $("#select_servicios_servicios").val();
@@ -155,7 +160,6 @@ function agregar_servicio() {
   }
 }
 
-
 function listar_servicios_agregados(calcular_precio = true) {
   $("#div_lista_servicios").html("");
   $("#select_servicios_servicios").val("");
@@ -198,7 +202,6 @@ function listar_servicios_agregados(calcular_precio = true) {
   });
 }
 
-
 function quitar_servicio(numero_servicio, nombre_servicio) {
   if (numero_servicio == 13 || numero_servicio == 15) {
     $("#txt_nombre_beneficiario_servicio").val("");
@@ -224,7 +227,6 @@ function quitar_servicio(numero_servicio, nombre_servicio) {
   );
   listar_servicios_agregados();
 }
-
 
 function calcular_total() {
   $("#span_total_precio_servicios").text("?");
@@ -258,7 +260,6 @@ function calcular_total() {
     });
   }
 }
-
 
 function vaciar_datos_servicio() {
   //Elimino los datos del array

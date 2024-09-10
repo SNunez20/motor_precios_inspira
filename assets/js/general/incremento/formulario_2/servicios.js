@@ -23,6 +23,15 @@ function mostrar_divs_servicios_incremento(servicio) {
         if (response.mostrar_lista_precios == 1) {
           $(".div_lista_de_precios_incremento").css("display", "block");
           $("#chbox_lista_de_precios_incremento").prop("checked", false);
+
+          $("#chbox_lista_de_precios_incremento").change(function () {
+            if (this.checked) {
+              $("#select_promocion_servicios_incremento").val("");
+              $(".div_promocion_servicios_incremento").css("display", "none");
+            } else {
+              $(".div_promocion_servicios_incremento").css("display", "block");
+            }
+          });
         } else {
           $(".div_lista_de_precios_incremento").css("display", "none");
         }

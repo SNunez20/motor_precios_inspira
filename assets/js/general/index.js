@@ -20,6 +20,13 @@ function validar_afiliacion() {
   }
 }
 
+
+/** Si esta abierto el modal se autoselecciona el campo password **/
+$('#modal_validar_cedula').on('shown.bs.modal', function (e) {
+  $('#txt_cedula').focus();
+});
+
+
 function validar_cedula() {
   let cedula = $("#txt_cedula").val();
 

@@ -17,10 +17,13 @@ function acciones_formulario_nueva_alta_3() {
       $(".div_formulario_datos_tarjeta").css("display", "block");
   }
 
-  $("#btn_atras_datos_venta").html(`<button type="button" class="btn btn-primary" onclick="mostrar_div_datos_venta(2), acciones_formulario_nueva_alta_2()">⬅ Atrás</button>`);
-  $("#btn_siguente_datos_venta").html(`<button type="button" class="btn btn-primary" onclick="afiliar_socios()">Siguiente ➡</button>`);
+  $("#btn_atras_datos_venta").html(
+    `<button type="button" class="btn btn-primary" onclick="mostrar_div_datos_venta(2), acciones_formulario_nueva_alta_2()">⬅ Atrás</button>`
+  );
+  $("#btn_siguente_datos_venta").html(
+    `<button type="button" class="btn btn-primary" onclick="afiliar_socios()">Siguiente ➡</button>`
+  );
 }
-
 
 function mostrar_campos_segun_metodo_pago(id_metodo) {
   $(".div_formulario_onajpu").css("display", "none");
@@ -30,7 +33,6 @@ function mostrar_campos_segun_metodo_pago(id_metodo) {
   if (["4", "5", "6", "7", "8", "9", "10"].includes(id_metodo))
     $(".div_formulario_datos_tarjeta").css("display", "block");
 }
-
 
 function afiliar_socios() {
   let convenio = $("#select_convenio_servicios").val();
@@ -49,11 +51,16 @@ function afiliar_socios() {
     error("Debe ingresar la cédula del titular");
   } else if (id_metodo_pago == 1 && !comprobarCI(cedula_titular_onajpu)) {
     error("Debe ingresar una cédula válida");
-  } else if (["4", "5", "6", "7", "8", "9", "10"].includes(id_metodo_pago) && array_tarjeta_titular.length <= 0) {
+  } else if (
+    ["4", "5", "6", "7", "8", "9", "10"].includes(id_metodo_pago) &&
+    array_tarjeta_titular.length <= 0
+  ) {
     error("Debe ingresar los datos del titular de la tarjeta");
   } else {
-
-    array_beneficiarios_servicio = array_beneficiarios_servicio.length > 0 ? array_beneficiarios_servicio : [];
+    array_beneficiarios_servicio =
+      array_beneficiarios_servicio.length > 0
+        ? array_beneficiarios_servicio
+        : [];
 
     $.ajax({
       type: "POST",
@@ -71,31 +78,40 @@ function afiliar_socios() {
         observacion,
         importe_total,
       },
-      dataType: "JSON",
       beforeSend: function () {
-        showLoading();
+        mostrarLoader();
       },
       complete: function () {
-        showLoading(false);
+        mostrarLoader("O");
       },
+      dataType: "JSON",
       success: function (response) {
         if (response.error == false) {
-          correcto(response.mensaje);
-          //vaciar_todo_alta();
+          Swal.fire({
+            title: "Exito!",
+            html: response.mensaje,
+            icon: "success",
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "OK",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              vaciar_todo_alta();
+              $("#modal_datos_venta").modal("hide");
+              $("#modal_tipo_afiliacion").modal("show");
+              $("#select_tipo_afiliacion").val("");
+            }
+          });
         } else {
           error(response.mensaje);
         }
       },
     });
-
   }
 }
-
 
 function vaciar_datos_formulario_3() {
   $("#select_metodo_de_pago_pago").val("");
 }
-
 
 function vaciar_todo_alta() {
   vaciar_datos_beneficiario();

@@ -64,6 +64,8 @@ function vaciar_datos_formulario_2() {
   $(".div_promocion_servicios").css("display", "none");
   $(".div_ingresar_importe_total").css("display", "none");
   $("#chbox_socio_adeom").prop("checked", false);
+  $("#txt_observacion_servicios").val("");
+  $("#select_convenio_servicios").val("");
 }
 
 

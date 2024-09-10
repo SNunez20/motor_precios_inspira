@@ -35,7 +35,6 @@
 </div>
 
 
-<!--
 <div class="row justify-content-center mb-4">
     <div class="col-lg-4 col-md-6">
         <div class="form-floating">
@@ -45,7 +44,6 @@
         </div>
     </div>
 </div>
--->
 
 
 <h4 class="mb-4">Seleccione los servicios</h4>
