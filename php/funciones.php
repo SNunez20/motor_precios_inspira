@@ -256,7 +256,8 @@ function obtener_id_convenio($convenio)
 }
 
 
-function obtener_metodo_pago($radio){
+function obtener_metodo_pago($radio)
+{
     $conexion = connection(DB, false);
     $tabla = TABLA_METODOS_DE_PAGO;
 
@@ -273,6 +274,37 @@ function obtener_metodo_pago($radio){
     mysqli_close($conexion);
     return $resultado;
 }
+
+
+function obtener_datos_actuales_pago($cedula)
+{
+    $conexion = connection(DB);
+    $tabla1 = TABLA_PADRON_DATOS_SOCIO;
+    $tabla2 = TABLA_METODOS_DE_PAGO;
+
+    try {
+        $sql = "SELECT
+	             mdp.id,
+	             mdp.radio,
+	             mdp.nombre,
+	             mdp.id_tipo_medios_pago 
+                FROM
+	             {$tabla1} pds
+	             INNER JOIN {$tabla2} mdp ON pds.metodo_pago = mdp.id_tipo_medios_pago 
+                WHERE
+	             pds.radio = mdp.radio AND 
+                 pds.cedula = '$cedula' AND 
+                 mdp.activo = 1";
+        $consulta = mysqli_query($conexion, $sql);
+    } catch (\Throwable $error) {
+        registrar_errores($sql, "funciones.php", $error);
+        $consulta = false;
+    }
+
+    mysqli_close($conexion);
+    return $consulta;
+}
+
 
 
 

@@ -338,6 +338,7 @@ function modificar_padron_socios()
     $empresa_rut = "05";
     $id_relacion = in_array($id_metodo_pago, ["4", "5", "6", "7", "8", "9", "10"]) ? "99-$cedula" : "$empresa_rut-$cedula"; // Si es tarjeta 99-cedula
     $rutcentralizado = $id_metodo_pago == '3' ? $empresa_rut : '99';
+    $metodo_pago = obtener_metodo_pago($radio);
 
     try {
         $sql = "UPDATE {$tabla} SET
@@ -385,7 +386,7 @@ function modificar_padron_socios()
                  radioViejo = '0',
                  extra = '0',
                  nomodifica = '0',
-                 metodo_pago = '$id_metodo_pago',
+                 metodo_pago = '$metodo_pago',
                  cvv = '$cvv_tarjeta',
                  existe_padron = '1',
                  email = '$correo_electronico',

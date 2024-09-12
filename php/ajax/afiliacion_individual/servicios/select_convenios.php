@@ -2,14 +2,18 @@
 include_once '../../../configuraciones.php';
 
 $opcion = $_REQUEST['opcion'];
-$array = $_REQUEST['array'];
 
 if ($opcion == 1) {
     $obtener_datos = obtener_convenios();
     if ($obtener_datos == false) devolver_error("Ocurrieron errores al obtener los convenios");
+
+    while ($row = mysqli_fetch_assoc($obtener_datos)) {
+        $array_datos[] = $row;
+    }
 }
 
 if ($opcion == 2) {
+    $array = $_REQUEST['array'];
     $cedula = $array['cedula'];
 
     $socio_tiene_convenio = comprobar_convenio_socio($cedula);
@@ -21,6 +25,8 @@ if ($opcion == 2) {
         while ($row = mysqli_fetch_assoc($obtener_datos)) {
             $array_datos[] = $row;
         }
+
+        $response['sin_convenios'] = true;
     }else{
         $convenio = mysqli_fetch_assoc($socio_tiene_convenio)['sucursal_cobranza_num'];
         $obtener_datos = obtener_convenios("sucursal_cobranzas = '$convenio' AND");
@@ -31,6 +37,8 @@ if ($opcion == 2) {
         while ($row = mysqli_fetch_assoc($obtener_datos)) {
             $array_datos[] = $row;
         }
+
+        $response['sin_convenios'] = false;
     }
 }
 

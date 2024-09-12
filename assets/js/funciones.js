@@ -154,11 +154,17 @@ function select_servicios(opcion, div) {
 }
 
 function select_metodos_de_pago(opcion, div) {
-  let html = `<option value="" selected>Seleccione una opción</option>`;
+  let html = "";
+  if (opcion != 3)
+    html = `<option value="" selected>Seleccione una opción</option>`;
 
   $.ajax({
     type: "GET",
     url: `${url_ajax}afiliacion_individual/pago/select_metodos_de_pago.php?opcion=${opcion}`,
+    data: {
+      opcion,
+      array: array_datos_beneficiario_incremento,
+    },
     dataType: "JSON",
     beforeSend: function () {
       showLoading();
@@ -175,6 +181,11 @@ function select_metodos_de_pago(opcion, div) {
         });
 
         $(`#${div}`).html(html);
+
+        if (opcion == 3) {
+          let id_metodo = datos[0]["id"];
+          mostrar_campos_segun_metodo_pago_incremento(id_metodo);
+        }
       }
     },
   });
@@ -335,10 +346,17 @@ function select_convenios_servicios(opcion, div) {
     },
     success: function (response) {
       if (response.error == false) {
+        if (opcion == 2 && response.sin_convenios == true)
+          html = `<option value="" selected>Seleccione una opción</option>`;
+
         let datos = response.datos;
         datos.map((val) => {
           html += `<option value="${val["sucursal_cobranzas"]}">${val["nombre"]}</option>`;
         });
+
+        if (opcion == 2 && response.sin_convenios == false)
+          html += `<option value="">Seleccione una opción</option>`;
+
         $(`#${div}`).html(html);
       }
     },

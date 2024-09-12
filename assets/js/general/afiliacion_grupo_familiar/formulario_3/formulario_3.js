@@ -12,7 +12,17 @@ function acciones_formulario_grupo_familiar_formulario_3() {
 
 
 function validar_formulario_grupo_familiar_3() {
-    if (array_servicios_agregados_grupo_familiar.length <= 0) {
+    let cedula_servicio_falta = 0;
+    array_personas_grupo_familiar.map((val => {
+        let cedula_persona = val['cedula'];
+        let resultado;
+        resultado = array_servicios_agregados_grupo_familiar.filter(
+            (cedula) => cedula["cedula"] == cedula_persona
+        );
+        resultado = resultado.length <= 0 ? cedula_servicio_falta++ : resultado;
+    }));
+
+    if (array_servicios_agregados_grupo_familiar.length <= 0 || cedula_servicio_falta > 0) {
         error(`Debe ingresar los servicios para los ${array_personas_grupo_familiar.length} beneficiarios`);
     } else {
         mostrar_div_datos_venta_grupo_familiar(4);

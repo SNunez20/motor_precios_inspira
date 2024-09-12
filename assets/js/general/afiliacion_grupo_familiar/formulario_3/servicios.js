@@ -26,9 +26,11 @@ function mostrar_divs_servicios_grupo_familiar(cedula, servicio) {
 
                     $("#chbox_lista_de_precios_grupo_familiar").change(function () {
                         if (this.checked) {
+                          $("#chbox_lista_de_precios_grupo_familiar").prop("checked", false);
                           $("#select_promocion_servicios_grupo_familiar").val("");
                           $(".div_promocion_servicios_grupo_familiar").css("display", "none");
                         } else {
+                            $("#chbox_lista_de_precios_grupo_familiar").prop("checked", true);
                             $("#select_promocion_servicios_grupo_familiar").val("");
                             array_datos_beneficiario_grupo_familiar.map((val => {
                                 (val['cedula'] == cedula && val['dato_extra'] != 2) ?
@@ -145,9 +147,20 @@ function select_promociones_servicios_grupo_familiar(servicio) {
 function agregar_servicios_beneficiario_grupo_familiar(openModal = false, cedula = null) {
     if (openModal == true) {
         let nombre_completo = "";
+        let fecha_nacimiento;
         array_datos_beneficiario_grupo_familiar.map((val => {
-            if (val['cedula'] == cedula) nombre_completo = val['nombre_completo'];
+            if (val['cedula'] == cedula){
+                nombre_completo = val['nombre_completo'];
+                fecha_nacimiento = val['fecha_nacimiento'];
+            }
         }));
+
+        
+        $("#txt_cedula_agregar_servicios_beneficiarios").val("");
+        $("#txt_cedula_agregar_servicios_beneficiarios").val(cedula);
+        $("#txt_fecha_nacimiento_beneficiario_grupo_familiar").val("");
+        $("#txt_fecha_nacimiento_beneficiario_grupo_familiar").val(fecha_nacimiento);
+
 
         $("#select_convenio_servicios_grupo_familiar").val("");
         $("#txt_observacion_servicios_grupo_familiar").val("");
@@ -165,9 +178,6 @@ function agregar_servicios_beneficiario_grupo_familiar(openModal = false, cedula
             }));
         }
 
-
-        $("#txt_cedula_agregar_servicios_beneficiarios").val("");
-        $("#txt_cedula_agregar_servicios_beneficiarios").val(cedula);
 
         $("#span_cedula_nombre_beneficiario_servicio_grupo_familiar").text(`${cedula} - ${nombre_completo}`);
         $("#modal_agregar_servicios_beneficiario_grupo_familiar").modal("show");

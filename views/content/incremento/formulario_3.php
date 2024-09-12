@@ -22,6 +22,18 @@
             <label for="select_metodo_de_pago_pago_incremento">Seleccione un método de pago:</label>
         </div>
     </div>
+    <div class="col-auto div_formulario_onajpu_incremento">
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control solo_letras" id="txt_nombre_titular_onajpu_incremento" placeholder="Nombre Titular">
+            <label for="txt_nombre_titular_onajpu_incremento">Nombre Titular:</label>
+        </div>
+    </div>
+    <div class="col-auto div_formulario_onajpu_incremento">
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control solo_numeros" id="txt_cedula_titular_onajpu_incremento" placeholder="Cédula Titular">
+            <label for="txt_cedula_titular_onajpu_incremento">Cédula Titular:</label>
+        </div>
+    </div>
     <div class="col-auto div_formulario_datos_tarjeta_incremento">
         <button class="btn btn-warning" onclick="validar_datos_tarjeta_incremento(true)">Datos tarjeta de crédito</button>
     </div>
