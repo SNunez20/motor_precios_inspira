@@ -1,8 +1,8 @@
 let array_servicios_agregados = [];
 function acciones_formulario_nueva_alta_2() {
   if (array_servicios_agregados.length <= 0) {
-    select_convenios_servicios("select_convenio_servicios");
-    select_servicios("select_servicios_servicios");
+    select_convenios_servicios(1, "select_convenio_servicios");
+    select_servicios(1, "select_servicios_servicios");
 
     $("#div_lista_servicios").html("");
     $(".div_cantidad_horas_servicios").css("display", "none");

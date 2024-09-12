@@ -78,6 +78,9 @@ const TABLA_BANCOS_EMISORES          = "bancos_emisores";
 const TABLA_CONVENIOS                = "convenios";
 const TABLA_RUTAS_COBRADOR           = "rutas_cobrador";
 const TABLA_BAJAS                    = "bajas";
+const TABLA_HISTORICO_VENTA          = "historico_venta";
+const TABLA_RELACION_SOCIO_CONVENIO  = "relacion_socio_convenio_especial";
+const TABLA_TIPO_MEDIOS_PAGO         = "tipo_medios_pago";
 const TABLA_LOG_ERRORES              = "log_errores";
 
 

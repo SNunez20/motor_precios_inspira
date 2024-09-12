@@ -21,40 +21,62 @@ if (
 
 
 
-$comprobar_direccion_socio = comprobar_direccion_socio();
-if ($comprobar_direccion_socio == false) devolver_error("Ocurrieron errores al comprobar la dirección");
-$cantidad_direccion = mysqli_num_rows($comprobar_direccion_socio);
-
-if ($cantidad_direccion <= 0) {
-    $registrar_direccion = registrar_direccion_socio($id_socio_padron);
-    if ($registrar_direccion == false) devolver_error("Ocurrieron errores al registrar la dirección del socio");
-} else {
-    $modificar_padron_socios = modificar_padron_socios();
-    if ($modificar_padron_socios == false) devolver_error("Ocurrieron errores al actualizar en padrón");
-}
+$cedula = $array_datos_beneficiario['cedula'];
 
 
-
+/** Se comprueba que exista el socio en piscina*/
 $existe_socio_piscina = comprobar_existe_socio(1, $cedula);
 if ($existe_socio_piscina == false) devolver_error("Ocurrieron errores al verificar si existe el socio en piscina");
 $cantidad_socio_piscina = mysqli_num_rows($existe_socio_piscina);
 
+/** Se comprueba que exista el socio en padrón*/
 $existe_socio_padron = comprobar_existe_socio(2, $cedula);
 if ($existe_socio_padron == false) devolver_error("Ocurrieron errores al verificar si existe el socio en padrón");
 $cantidad_socio_padron = mysqli_num_rows($existe_socio_padron);
 
+/** Si no existe socio con la cédula ingresada se retornara un error */
+if ($cantidad_socio_piscina <= 0 && $cantidad_socio_padron <= 0)
+    devolver_error("No se han encontrado socios con la cédula ingresada");
 
-if ($cantidad_socio_piscina <= 0 && $cantidad_socio_padron <= 0) {
-    $id_socio_padron = agregar_padron_datos_socios();
-    if ($id_socio_padron == false) devolver_error("Ocurrieron errores al registrar el socio");
-} else {
-    $id_socio_padron = modificar_padron_socios();
-    if ($id_socio_padron == false) devolver_error("Ocurrieron errores al actualizar los datos del socio");
+
+if ($cantidad_socio_piscina > 0 && $cantidad_socio_padron <= 0) {
+    /** Si el socio esta en piscina, se actualizan los datos **/
+    $modificar_padron_socios = modificar_padron_socios();
+    if ($modificar_padron_socios == false) devolver_error("Ocurrieron errores al actualizar los datos del socio en piscina");
+} else if ($cantidad_socio_piscina <= 0 && $cantidad_socio_padron > 0) {
+    /** Si el socio esta en padrón, se actualizan los datos **/
+    $modificar_padron_socios = modificar_padron_socios();
+    if ($modificar_padron_socios == false) devolver_error("Ocurrieron errores al actualizar los datos del socio en padrón");
 }
 
 
+/** Se comprueba con la cédula que el socio tenga una dirección registrada */
+$comprobar_direccion_socio = comprobar_direccion_socio();
+if ($comprobar_direccion_socio == false) devolver_error("Ocurrieron errores al comprobar la dirección del socio");
+
+if (mysqli_num_rows($comprobar_direccion_socio) <= 0) {
+    /** Si no tiene una dirección registrada se le agrega */
+    $registrar_direccion = registrar_direccion_socio($id_socio_padron);
+    if ($registrar_direccion == false) devolver_error("Ocurrieron errores al registrar la dirección del socio");
+} else {
+    /** Si tiene una dirección registrada se le actualizan */
+    $modificar_direccion_socio = modificar_direccion_socio();
+    if ($modificar_direccion_socio == false) devolver_error("Ocurrieron errores al actualizar la dirección del socio");
+}
+
+
+/** Se le agregan los nuevos productos y los incrementos */
 $registrar_productos = agregar_padron_producto_socios($observacion, $id_metodo_pago);
 if ($registrar_productos == false) devolver_error("Ocurrieron errores al registrar los productos");
+
+
+$datos_piscina = mysqli_fetch_assoc($existe_socio_piscina);
+$datos_padron = mysqli_fetch_assoc($existe_socio_padron);
+$id_padron = $datos_piscina != "" ? $datos_piscina['id'] : $datos_padron['id'];
+
+/** Se registra en el historial de venta */
+$registro_historial = registrar_historial_venta($id_padron, "INCREMENTO A TRAVES DE CALL");
+if ($registrar_productos == false) devolver_error("Ocurrieron errores al registrar en el historial de venta");
 
 
 
@@ -65,6 +87,7 @@ echo json_encode($response);
 
 
 
+/** Función para comprobar si existe el socio con $opcion=1 piscina y $opcion=2 padron */
 function comprobar_existe_socio($opcion, $cedula)
 {
     $conexion = $opcion == 1 ? connection(DB_CALL) : connection(DB, false);
@@ -83,6 +106,7 @@ function comprobar_existe_socio($opcion, $cedula)
 }
 
 
+/** Función para agregar socio */
 function agregar_padron_datos_socios()
 {
     $conexion = connection(DB, false);
@@ -146,7 +170,7 @@ function agregar_padron_datos_socios()
     */
     //$ruta = ($convenio == "1373") ? "000AJUPECS" : (($cantidad_radio_ruta > 1) ? "" : $resultados_radio_ruta['ruta']);
     $ruta = $cantidad_radio_ruta > 1 ? "" : $resultados_radio_ruta['ruta'];
-    $radio = $cantidad_radio_ruta > 1 ? $resultados_radio_ruta['radio'][0] : $resultados_radio_ruta['radio'];
+    $radio = $resultados_radio_ruta['radio'];
 
     $sucursal = "1372";
     $sucursal_cobranzas = $convenio != "" ? $convenio : $sucursal;
@@ -154,6 +178,7 @@ function agregar_padron_datos_socios()
     $empresa_rut = "05";
     $id_relacion = in_array($id_metodo_pago, ["4", "5", "6", "7", "8", "9", "10"]) ? "99-$cedula" : "$empresa_rut-$cedula"; // Si es tarjeta 99-cedula
     $rutcentralizado = $id_metodo_pago == '3' ? $empresa_rut : '99';
+    $metodo_pago = obtener_metodo_pago($radio);
 
     try {
         $sql = "INSERT INTO {$tabla} SET 
@@ -203,7 +228,7 @@ function agregar_padron_datos_socios()
                 radioViejo = '0',
                 extra = '0',
                 nomodifica = '0',
-                metodo_pago = '$id_metodo_pago',
+                metodo_pago = '$metodo_pago',
                 cvv = '$cvv_tarjeta',
                 existe_padron = '0',
                 email = '$correo_electronico',
@@ -227,11 +252,22 @@ function agregar_padron_datos_socios()
 
     $resultados = $consulta ? mysqli_insert_id($conexion) : false;
 
+
+    if ($convenio != "" && $resultados != false) {
+        $id_convenio = obtener_id_convenio($convenio);
+        if ($id_convenio == false) devolver_error("Ocurrieron errores al consultar el convenio");
+
+        $registro_relacion_socio_convenio = registrar_relacion_socio_convenio($resultados, $id_convenio);
+        if ($registro_relacion_socio_convenio == false) devolver_error("Ocurrieron errores al registrar el convenio");
+    }
+
+
     mysqli_close($conexion);
     return $resultados;
 }
 
 
+/** Función para actualizar los datos del socio */
 function modificar_padron_socios()
 {
     $conexion = connection(DB, false);
@@ -261,7 +297,6 @@ function modificar_padron_socios()
     $fecha_nacimiento = $array_datos_beneficiario["fecha_nacimiento"];
     $edad = date("Y") - date("Y", strtotime($fecha_nacimiento));
     $correo_electronico = $array_datos_beneficiario["correo_electronico"] != "" ? $array_datos_beneficiario["correo_electronico"] : "";
-    $dato_extra = $array_datos_beneficiario["dato_extra"];
     /** End Datos del beneficiario **/
 
     /** Datos de la tarjeta **/
@@ -352,18 +387,18 @@ function modificar_padron_socios()
                  nomodifica = '0',
                  metodo_pago = '$id_metodo_pago',
                  cvv = '$cvv_tarjeta',
-                 existe_padron = '0',
+                 existe_padron = '1',
                  email = '$correo_electronico',
                  email_titular = '$email_titular',
                  tarjeta_vida = '0',
                  banco_emisor = '$banco_emisor',
-                 accion = '1',
+                 accion = '4',
                  estado = '1',
                  localidad = '$id_localidad',
-                 dato_extra = '$dato_extra',
+                 dato_extra = '3',
                  llamada_entrante = '0',
                  origen_venta = '0',
-                 alta = '1',
+                 alta = '0',
                  es_admin = '0',
                  id_usuario = '0'
                 WHERE
@@ -374,13 +409,12 @@ function modificar_padron_socios()
         $consulta = false;
     }
 
-    $resultados = $consulta ? mysqli_insert_id($conexion) : false;
-
     mysqli_close($conexion);
-    return $resultados;
+    return $consulta;
 }
 
 
+/** Función para comprobar la dirección del socio */
 function comprobar_direccion_socio()
 {
     $conexion = connection(DB, false);
@@ -402,6 +436,7 @@ function comprobar_direccion_socio()
 }
 
 
+/** Función para registrar la dirección del socio */
 function registrar_direccion_socio($id_socio_padron)
 {
     $conexion = connection(DB, false);
@@ -439,6 +474,7 @@ function registrar_direccion_socio($id_socio_padron)
 }
 
 
+/** Función para actualizar la dirección del socio */
 function modificar_direccion_socio()
 {
     $conexion = connection(DB, false);
@@ -476,6 +512,7 @@ function modificar_direccion_socio()
 }
 
 
+/** Función para agregar los productos */
 function agregar_padron_producto_socios($observacion, $id_metodo_pago)
 {
     $conexion = connection(DB, false);
@@ -547,7 +584,7 @@ function agregar_padron_producto_socios($observacion, $id_metodo_pago)
                     precioOriginal = '$total_importe',
                     abitab = '0',
                     id_padron = '0',
-                    accion = '5',
+                    accion = '1',
                     cedula_titular_gf = NULL";
                     $consulta = mysqli_query($conexion, $sql);
                 } catch (\Throwable $error) {

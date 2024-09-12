@@ -29,7 +29,11 @@ function mostrar_divs_servicios(servicio) {
               $("#select_promocion_servicios").val("");
               $(".div_promocion_servicios").css("display", "none");
             } else {
-              $(".div_promocion_servicios").css("display", "block");
+              $("#select_promocion_servicios").val("");
+              let dato_extra = $("#select_dato_extra").val();
+              dato_extra != "2" ?
+                $(".div_promocion_servicios").css("display", "block") :
+                $(".div_promocion_servicios").css("display", "none");
             }
           });
         } else {
@@ -77,6 +81,7 @@ function mostrar_promociones(res_mostrar_promociones, servicio) {
     select_promociones_servicios(servicio);
     $(".div_promocion_servicios").css("display", "block");
   } else {
+    $("#select_promocion_servicios").html("");
     $(".div_promocion_servicios").css("display", "none");
   }
 }

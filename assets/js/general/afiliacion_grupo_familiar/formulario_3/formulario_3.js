@@ -1,8 +1,8 @@
 let array_guardar_datos_servicios = [];
 let array_servicios_agregados_grupo_familiar = [];
 function acciones_formulario_grupo_familiar_formulario_3() {
-    select_convenios_servicios("select_convenio_servicios_grupo_familiar");
-    select_servicios("select_servicios_servicios_grupo_familiar");
+    select_convenios_servicios(1, "select_convenio_servicios_grupo_familiar");
+    select_servicios(2, "select_servicios_servicios_grupo_familiar");
     listar_personas_servicios_grupos_familiares();
 
 

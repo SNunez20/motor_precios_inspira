@@ -34,7 +34,7 @@ function obtener_datos_servicios($opcion)
     //die(json_encode($where));
 
     try {
-        $sql = "SELECT * FROM {$tabla} WHERE $where AND activo = 1";
+        $sql = "SELECT * FROM {$tabla} WHERE $where AND mostrar = 1 AND activo = 1";
         $consulta = mysqli_query($conexion, $sql);
     } catch (\Throwable $error) {
         registrar_errores($sql, "lista_servicios_permitidos.php", $error);

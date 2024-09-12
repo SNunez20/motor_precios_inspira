@@ -29,7 +29,12 @@ function mostrar_divs_servicios_grupo_familiar(cedula, servicio) {
                           $("#select_promocion_servicios_grupo_familiar").val("");
                           $(".div_promocion_servicios_grupo_familiar").css("display", "none");
                         } else {
-                          $(".div_promocion_servicios_grupo_familiar").css("display", "block");
+                            $("#select_promocion_servicios_grupo_familiar").val("");
+                            array_datos_beneficiario_grupo_familiar.map((val => {
+                                (val['cedula'] == cedula && val['dato_extra'] != 2) ?
+                                    $(".div_promocion_servicios_grupo_familiar").css("display", "block") :
+                                    $(".div_promocion_servicios_grupo_familiar").css("display", "none");
+                            }));
                         }
                       });
                 } else {

@@ -1,6 +1,6 @@
 function acciones_incremento_formulario_3() {
   if (array_tarjeta_titular_incremento.length <= 0) {
-    select_metodos_de_pago(2, "select_metodo_de_pago_pago_incremento");
+    select_metodos_de_pago(1, "select_metodo_de_pago_pago_incremento");
 
     $(".div_formulario_datos_tarjeta_incremento").css("display", "none");
 
@@ -77,7 +77,7 @@ function afiliar_socios_incremento() {
             confirmButtonText: "OK",
           }).then((result) => {
             if (result.isConfirmed) {
-              vaciar_todo_alta_incremento();
+              vaciar_todo_incremento();
               $("#modal_datos_venta_incremento").modal("hide");
               $("#select_tipo_afiliacion").val("");
               $("#modal_tipo_afiliacion").modal("show");

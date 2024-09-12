@@ -15,6 +15,7 @@ function validar_afiliacion() {
       $("#modal_datos_venta_grupo_familiar").modal("show");
     } else {
       $("#modal_tipo_afiliacion").modal("hide");
+      $('#txt_cedula').val("");
       $("#modal_validar_cedula").modal("show");
     }
   }

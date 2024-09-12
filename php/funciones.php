@@ -3,7 +3,7 @@
 /** Registrar errores en la base de datos **/
 function registrar_errores($consulta, $nombre_archivo, $error)
 {
-    $conexion = connection(DB);
+    $conexion = connection(DB, false);
     $tabla = TABLA_LOG_ERRORES;
 
     $consulta = str_replace("'", '"', $consulta);
@@ -200,6 +200,80 @@ function calcular_precio_servicio($edad, $id_servicio, $cantidad_horas, $promo_e
 }
 
 
+function registrar_historial_venta($id_padron, $observacion)
+{
+    $conexion = connection(DB, false);
+    $tabla = TABLA_HISTORICO_VENTA;
+
+    try {
+        $sql = "INSERT INTO {$tabla} VALUES (null, 30, '$id_padron', 1, NOW(), '$observacion', 11)";
+        $consulta = mysqli_query($conexion, $sql);
+    } catch (\Throwable $error) {
+        registrar_errores($sql, "funciones.php", $error);
+        $consulta = false;
+    }
+
+    mysqli_close($conexion);
+    return $consulta;
+}
+
+
+function registrar_relacion_socio_convenio($id_socio, $id_convenio)
+{
+    $conexion = connection(DB, false);
+    $tabla = TABLA_RELACION_SOCIO_CONVENIO;
+
+    try {
+        $sql = "INSERT INTO {$tabla} (`id_socio`, `id_convenio_especial`, `created_at`) VALUE ('{$id_socio}', '{$id_convenio}', NOW());";
+        $consulta = mysqli_query($conexion, $sql);
+    } catch (\Throwable $error) {
+        registrar_errores($sql, "funciones.php", $error);
+        $consulta = false;
+    }
+
+    mysqli_close($conexion);
+    return $consulta;
+}
+
+
+function obtener_id_convenio($convenio)
+{
+    $conexion = connection(DB, false);
+    $tabla = TABLA_CONVENIOS;
+
+    try {
+        $sql = "SELECT id FROM {$tabla} WHERE sucursal_cobranzas = '$convenio'";
+        $consulta = mysqli_query($conexion, $sql);
+    } catch (\Throwable $error) {
+        registrar_errores($sql, "funciones.php", $error);
+        $consulta = false;
+    }
+
+    $resultado = $consulta != false ? mysqli_fetch_assoc($consulta)['id'] : false;
+
+    mysqli_close($conexion);
+    return $resultado;
+}
+
+
+function obtener_metodo_pago($radio){
+    $conexion = connection(DB, false);
+    $tabla = TABLA_METODOS_DE_PAGO;
+
+    try {
+        $sql = "SELECT id_tipo_medios_pago FROM {$tabla} WHERE radio = '$radio'";
+        $consulta = mysqli_query($conexion, $sql);
+    } catch (\Throwable $error) {
+        registrar_errores($sql, "funciones.php", $error);
+        $consulta = false;
+    }
+
+    $resultado = $consulta != false ? mysqli_fetch_assoc($consulta)['id_tipo_medios_pago'] : false;
+
+    mysqli_close($conexion);
+    return $resultado;
+}
+
 
 
 
@@ -250,10 +324,7 @@ function comprobar_produccion_con_url()
 /** Obtener el primer celular o número teléfonico de un string **/
 function buscarNumero($numeros)
 {
-    if ($numeros == "") {
-        $respuesta = false;
-    } else {
-
+    if ($numeros != "") {
         $primer_numero = substr($numeros, 0, 1);
         $primeros_dos_numeros = substr($numeros, 0, 2);
 
@@ -262,7 +333,7 @@ function buscarNumero($numeros)
         } else if (($primer_numero == "2" || $primer_numero == "4") && strlen($numeros) > 7) {
             $respuesta = substr($numeros, 0, 8);
         }
-    }
+    } else $respuesta = false;
 
     return $respuesta == "" ? "0" : $respuesta;
 }
@@ -271,12 +342,7 @@ function buscarNumero($numeros)
 /** Verificar si el string esta vacío **/
 function verificar_letras($cadena)
 {
-    if (preg_match("/^(?=.{3,18}$)[a-zñA-ZÑ](\s?[a-zñA-ZÑ])*$/", $cadena)) {
-        $respuesta = true;
-    } else {
-        $respuesta = false;
-    }
-
+    $respuesta = preg_match("/^(?=.{3,18}$)[a-zñA-ZÑ](\s?[a-zñA-ZÑ])*$/", $cadena) ? true : false;
     return $respuesta;
 }
 
@@ -319,7 +385,7 @@ function remplazarAcentos($texto)
     //  $texto_parseado = eliminarAcentos($texto);
     $texto_parseado = $texto;
 
-    $remplazar_array = array(
+    $remplazar_array = [
         "'" => '',
         '"' => ' ',
         '`' => ' ',
@@ -394,8 +460,8 @@ function remplazarAcentos($texto)
         '™' => ' ',
         '€' => '',
         'Âº' => '',
-        '/' => '/'
-    );
+        '/' => '/',
+    ];
 
     $texto_parseado = strtr($texto_parseado, $remplazar_array);
     $texto_parseado = preg_replace('([^A-Za-z0-9 ])', '', $texto_parseado);
@@ -445,12 +511,7 @@ function controlarExtension($files, $tipo)
     $valido = 0;
     for ($i = 0; $i < count($files["name"]); $i++) {
         $extension_archivo = strtolower(pathinfo(basename($files["name"][$i]), PATHINFO_EXTENSION));
-
-        if (in_array($extension_archivo, $validar_extension)) {
-            $valido++;
-        } else {
-            $valido = 0;
-        }
+        in_array($extension_archivo, $validar_extension) ? $valido++ : $valido = 0;
     }
     return $valido;
 }

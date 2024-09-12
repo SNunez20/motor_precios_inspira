@@ -73,6 +73,19 @@ if (count($array_servicio_grupo_familiar) > 0) {
 }
 
 
+$registro_historial = registrar_historial_venta($id_socio_padron, "ALTA A TRAVES DE CALL");
+if ($registrar_productos == false) devolver_error("Ocurrieron errores al registrar en el historial de venta");
+
+
+if ($convenio != "") {
+    $id_convenio = obtener_id_convenio($convenio);
+    if ($id_convenio == false) devolver_error("Ocurrieron errores al consultar el convenio");
+
+    $registro_relacion_socio_convenio = registrar_relacion_socio_convenio($id_socio_padron, $id_convenio);
+    if ($registro_relacion_socio_convenio == false) devolver_error("Ocurrieron errores al registrar el convenio");
+}
+
+
 
 $response['error'] = false;
 $response['mensaje'] = 'Se ha completado la afiliación con éxito!';
@@ -146,7 +159,7 @@ function agregar_padron_datos_socios()
     */
     //$ruta = ($convenio == "1373") ? "000AJUPECS" : (($cantidad_radio_ruta > 1) ? "" : $resultados_radio_ruta['ruta']);
     $ruta = $cantidad_radio_ruta > 1 ? "" : $resultados_radio_ruta['ruta'];
-    $radio = $cantidad_radio_ruta > 1 ? $resultados_radio_ruta['radio'][0] : $resultados_radio_ruta['radio'];
+    $radio = $resultados_radio_ruta['radio'];
 
     $sucursal = "1372";
     $sucursal_cobranzas = $convenio != "" ? $convenio : $sucursal;
@@ -154,6 +167,7 @@ function agregar_padron_datos_socios()
     $empresa_rut = "05";
     $id_relacion = in_array($id_metodo_pago, ["4", "5", "6", "7", "8", "9", "10"]) ? "99-$cedula" : "$empresa_rut-$cedula"; // Si es tarjeta 99-cedula
     $rutcentralizado = $id_metodo_pago == '3' ? $empresa_rut : '99';
+    $metodo_pago = obtener_metodo_pago($radio);
 
     try {
         $sql = "INSERT INTO {$tabla} SET 
@@ -203,7 +217,7 @@ function agregar_padron_datos_socios()
                 radioViejo = '0',
                 extra = '0',
                 nomodifica = '0',
-                metodo_pago = '$id_metodo_pago',
+                metodo_pago = '$metodo_pago',
                 cvv = '$cvv_tarjeta',
                 existe_padron = '0',
                 email = '$correo_electronico',
@@ -291,7 +305,8 @@ function agregar_padron_producto_socios($datos_beneficiario, $observacion, $arra
         $total_importe = $total_importe != "false" ? $total_importe : calcular_precio_servicio($edad, $id_servicio, $cantidad_horas, $promo_estaciones, $total_importe);
         $empresa_rut = "05";
         $id_relacion = in_array($id_metodo_pago, ["4", "5", "6", "7", "8", "9", "10"]) ? "99-$cedula" : "$empresa_rut-$cedula"; // Si es tarjeta 99-cedula
-
+        if ($id_servicio == "13") $numeros_servicio = "63";
+        if ($id_servicio == "15") $numeros_servicio = "65";
 
         //Recorro los números de servicio
         while ($row = mysqli_fetch_assoc($numeros_servicio)) {
@@ -338,7 +353,7 @@ function agregar_padron_producto_socios($datos_beneficiario, $observacion, $arra
                     precioOriginal = '$total_importe',
                     abitab = '0',
                     id_padron = '0',
-                    accion = '5',
+                    accion = '1',
                     cedula_titular_gf = NULL";
                     $consulta = mysqli_query($conexion, $sql);
                 } catch (\Throwable $error) {
@@ -379,6 +394,8 @@ function agregar_padron_productos_grupo_familiar($datos_beneficiario, $array_ben
             $numero_promo = obtener_datos_promocion($array_servicios['numero_promo']);
             $total_importe = $array_servicios['total_importe'];
             $total_importe = $total_importe != "false" ? $total_importe : calcular_precio_servicio($edad, $id_servicio, $cantidad_horas, $promo_estaciones, $total_importe);
+            if ($id_servicio == "13") $numeros_servicio = "64";
+            if ($id_servicio == "15") $numeros_servicio = "66";
 
             //Recorro los números de servicio
             while ($row = mysqli_fetch_assoc($numeros_servicio)) {
@@ -426,7 +443,7 @@ function agregar_padron_productos_grupo_familiar($datos_beneficiario, $array_ben
                                 precioOriginal = '0',
                                 abitab = '0',
                                 id_padron = '0',
-                                accion = '5',
+                                accion = '1',
                                 cedula_titular_gf = '$cedula'";
                         $consulta = mysqli_query($conexion, $sql);
                     } catch (\Throwable $error) {

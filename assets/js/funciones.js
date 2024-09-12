@@ -126,12 +126,12 @@ function select_cantidad_horas(servicio, div) {
   });
 }
 
-function select_servicios(div) {
+function select_servicios(opcion, div) {
   let html = `<option value="" selected>Seleccione una opción</option>`;
 
   $.ajax({
     type: "GET",
-    url: `${url_ajax}afiliacion_individual/servicios/select_servicios.php`,
+    url: `${url_ajax}afiliacion_individual/servicios/select_servicios.php?opcion=${opcion}`,
     dataType: "JSON",
     beforeSend: function () {
       showLoading();
@@ -234,12 +234,14 @@ function select_anio_vencimiento(div) {
   });
 }
 
-
 function llenar_campos() {
   $("#txt_nombre_beneficiario").val("Prueba Prueba");
   $("#txt_fecha_nacimiento_beneficiario").val("2002-04-30");
   $("#txt_calle_beneficiario").val("Prueba");
-  $("input[type='radio'][name='rbtn_beneficiario'][value='Puerta']").prop("checked", true);
+  $("input[type='radio'][name='rbtn_beneficiario'][value='Puerta']").prop(
+    "checked",
+    true
+  );
   $("#txt_puerta_beneficiario").val("1212");
   /*
   $("#txt_solar_beneficiario").val();
@@ -256,7 +258,6 @@ function llenar_campos() {
   $("#select_promocion_beneficiario").val();
 }
 
-
 function mostrar_div_datos_venta(id) {
   $("#contenedor_formulario_alta_1").css("display", "none");
   $("#contenedor_formulario_alta_2").css("display", "none");
@@ -266,7 +267,6 @@ function mostrar_div_datos_venta(id) {
 
   $(`#contenedor_formulario_alta_${id}`).css("display", "block");
 }
-
 
 function mostrar_div_datos_venta_grupo_familiar(id) {
   $("#contenedor_formulario_alta_grupo_familiar_1").css("display", "none");
@@ -285,28 +285,47 @@ function mostrar_div_datos_venta_incremento(id) {
   $(`#contenedor_formulario_incremento_${id}`).css("display", "block");
 }
 
-
-function formar_direccion(radio_buttons, apartamento, calle, puerta, esquina, manzana, solar) {
+function formar_direccion(
+  radio_buttons,
+  apartamento,
+  calle,
+  puerta,
+  esquina,
+  manzana,
+  solar
+) {
   let direccion = "";
 
   if (radio_buttons == "Puerta") {
-    direccion = apartamento != "" ? `${calle.substr(0, 14)} ${puerta}/${apartamento} E:` : `${calle.substr(0, 17)} ${puerta} E:`;
+    direccion =
+      apartamento != ""
+        ? `${calle.substr(0, 14)} ${puerta}/${apartamento} E:`
+        : `${calle.substr(0, 17)} ${puerta} E:`;
     direccion += esquina.substr(0, 36 - direccion.length); //di
   } else {
-    direccion = apartamento != "" ? `${calle.substr(0, 14)} M:${manzana} S:${solar}/${apartamento}` : `${calle.substr(0, 14)} M:${manzana} S:${solar} E:`;
-    direccion += apartamento == "" ? esquina.substr(0, 36 - direccion.length) : ""; //di
+    direccion =
+      apartamento != ""
+        ? `${calle.substr(0, 14)} M:${manzana} S:${solar}/${apartamento}`
+        : `${calle.substr(0, 14)} M:${manzana} S:${solar} E:`;
+    direccion +=
+      apartamento == "" ? esquina.substr(0, 36 - direccion.length) : ""; //di
   }
 
   return direccion;
 }
 
-
-function select_convenios_servicios(div) {
-  let html = `<option value="" selected>Seleccione una opción</option>`;
+function select_convenios_servicios(opcion, div) {
+  let html = "";
+  if (opcion == 1)
+    html = `<option value="" selected>Seleccione una opción</option>`;
 
   $.ajax({
     type: "GET",
     url: `${url_ajax}afiliacion_individual/servicios/select_convenios.php`,
+    data: {
+      opcion,
+      array: array_datos_beneficiario_incremento,
+    },
     dataType: "JSON",
     beforeSend: function () {
       showLoading();

@@ -1,8 +1,8 @@
 let array_servicios_agregados_incremento = [];
 function acciones_incremento_formulario_2() {
     if (array_servicios_agregados_incremento.length <= 0) {
-        select_convenios_servicios("select_convenio_servicios_incremento");
-        select_servicios("select_servicios_servicios_incremento");
+        select_convenios_servicios(2, "select_convenio_servicios_incremento");
+        select_servicios(2, "select_servicios_servicios_incremento");
     
         $("#select_servicios_servicios_incremento").html("");
         $(".div_cantidad_horas_servicios_incremento").css("display", "none");

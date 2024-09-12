@@ -33,6 +33,9 @@ foreach ($array_cedula_integrantes as $integrante) {
 
     $registrar_productos = agregar_padron_producto_socios($cedula, $id_metodo_pago);
     if ($registrar_productos == false) $mensaje .= "Error al registrar productos para la cédula <strong>$cedula</strong>";
+
+    $registro_historial = registrar_historial_venta($id_socio_padron, "ALTA A TRAVES DE CALL");
+    if ($registrar_productos == false) $mensaje .= "Ocurrieron errores al registrar en el historial de venta del socio <strong>$cedula</strong>";
 }
 
 
@@ -115,7 +118,7 @@ function agregar_padron_datos_socios($cedula_persona, $id_metodo_pago, $metodo_p
     $cantidad_radio_ruta = mysqli_num_rows($obtener_radio_ruta);
     $resultados_radio_ruta = mysqli_fetch_assoc($obtener_radio_ruta);
     $ruta = $cantidad_radio_ruta > 1 ? "" : $resultados_radio_ruta['ruta'];
-    $radio = $cantidad_radio_ruta > 1 ? $resultados_radio_ruta['radio'][0] : $resultados_radio_ruta['radio'];
+    $radio = $resultados_radio_ruta['radio'];
 
     $sucursal = "1372";
     $sucursal_cobranzas = $convenio != "" ? $convenio : $sucursal;
@@ -123,6 +126,7 @@ function agregar_padron_datos_socios($cedula_persona, $id_metodo_pago, $metodo_p
     $empresa_rut = "05";
     $id_relacion = "99-$cedula"; // Si es tarjeta 99-cedula
     $rutcentralizado = '99';
+    $metodo_pago = obtener_metodo_pago($radio);
 
     try {
         $sql = "INSERT INTO {$tabla} SET 
@@ -172,7 +176,7 @@ function agregar_padron_datos_socios($cedula_persona, $id_metodo_pago, $metodo_p
                 radioViejo = '0',
                 extra = '0',
                 nomodifica = '0',
-                metodo_pago = '$id_metodo_pago',
+                metodo_pago = '$metodo_pago',
                 cvv = '$cvv_tarjeta',
                 existe_padron = '0',
                 email = '$correo_electronico',
@@ -195,6 +199,16 @@ function agregar_padron_datos_socios($cedula_persona, $id_metodo_pago, $metodo_p
     }
 
     $resultados = $consulta ? mysqli_insert_id($conexion) : false;
+
+
+    if ($convenio != "" && $resultados != false) {
+        $id_convenio = obtener_id_convenio($convenio);
+        if ($id_convenio == false) devolver_error("Ocurrieron errores al consultar el convenio");
+
+        $registro_relacion_socio_convenio = registrar_relacion_socio_convenio($resultados, $id_convenio);
+        if ($registro_relacion_socio_convenio == false) devolver_error("Ocurrieron errores al registrar el convenio");
+    }
+
 
     mysqli_close($conexion);
     return $resultados;
@@ -333,7 +347,7 @@ function agregar_padron_producto_socios($cedula_persona, $id_metodo_pago)
                                 precioOriginal = '$total_importe',
                                 abitab = '0',
                                 id_padron = '0',
-                                accion = '5',
+                                accion = '1',
                                 cedula_titular_gf = NULL";
                         $consulta = mysqli_query($conexion, $sql);
                     } catch (\Throwable $error) {
