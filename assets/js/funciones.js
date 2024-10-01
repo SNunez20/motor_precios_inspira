@@ -1,10 +1,12 @@
 const produccion = true;
-const protocolo = "https";
-const server = produccion ? "vida-apps.com" : "vida-apps.com";
-const app = produccion ? "motor_precios_inspira" : "motor_precios_inspira";
+const protocolo = produccion ? "https" : "http";
+const server = produccion ? "vida-apps.com" : "localhost";
+const app = produccion ? "motor_precios_inspira" : "carga_inspira";
 const url_app = `${protocolo}://${server}/${app}`;
 const url_ajax = `${url_app}/php/ajax/`;
 const url_lenguage = `${url_app}/assets/js/lenguage.json`;
+
+
 
 $(document).ready(function () {
   $(".solo_numeros").keydown(function (e) {
@@ -16,19 +18,22 @@ $(document).ready(function () {
   });
 });
 
+
+
 //Cambiar clase y nombre de botón
 function cambiar_div(div, clase, nombre) {
   document.getElementById(`${div}`).className = `${clase}`;
   document.getElementById(`${div}`).innerHTML = `${nombre}`;
 }
 
+
 //Ir al div anterior
 function modal_anterior(div_actual, div_anterior) {
   if (div_anterior == "modal_validar_cedula") $("#txt_cedula").val("");
-
   $(`#${div_actual}`).modal("hide");
   $(`#${div_anterior}`).modal("show");
 }
+
 
 //Contador de caracteres
 function contador_caracteres(div, span, cantidad) {
@@ -43,6 +48,7 @@ function contador_caracteres(div, span, cantidad) {
     }
   });
 }
+
 
 function select_localidades(div) {
   let html = `<option value="" selected>Seleccione una opción</option>`;
@@ -70,6 +76,7 @@ function select_localidades(div) {
     },
   });
 }
+
 
 function select_promociones(div) {
   let html = `<option value="" selected>No aplica</option>`;
@@ -99,6 +106,7 @@ function select_promociones(div) {
   });
 }
 
+
 function select_cantidad_horas(servicio, div) {
   let html = `<option value="" selected>Seleccione una opción</option>`;
 
@@ -126,6 +134,7 @@ function select_cantidad_horas(servicio, div) {
   });
 }
 
+
 function select_servicios(opcion, div) {
   let html = `<option value="" selected>Seleccione una opción</option>`;
 
@@ -152,6 +161,7 @@ function select_servicios(opcion, div) {
     },
   });
 }
+
 
 function select_metodos_de_pago(opcion, div) {
   let html = "";
@@ -191,6 +201,7 @@ function select_metodos_de_pago(opcion, div) {
   });
 }
 
+
 function select_bancos_emisores(div) {
   let html = `<option value="" selected>Seleccione una opción</option>`;
 
@@ -217,6 +228,7 @@ function select_bancos_emisores(div) {
     },
   });
 }
+
 
 function select_anio_vencimiento(div) {
   let html = `<option value="" selected>Seleccione una opción</option>`;
@@ -245,29 +257,49 @@ function select_anio_vencimiento(div) {
   });
 }
 
-function llenar_campos() {
-  $("#txt_nombre_beneficiario").val("Prueba Prueba");
-  $("#txt_fecha_nacimiento_beneficiario").val("2002-04-30");
-  $("#txt_calle_beneficiario").val("Prueba");
-  $("input[type='radio'][name='rbtn_beneficiario'][value='Puerta']").prop(
-    "checked",
-    true
-  );
-  $("#txt_puerta_beneficiario").val("1212");
+
+function llenar_campos(opcion = 1) {
+  let formulario = "";
+  if (opcion == 2) formulario = "_grupo_familiar";
+  if (opcion == 3) formulario = "_incremento";
+
+  $(`#txt_nombre_beneficiario${formulario}`).val("Prueba Prueba");
+  $(`#txt_fecha_nacimiento_beneficiario${formulario}`).val("1958-09-10");
+  $(`#txt_calle_beneficiario${formulario}`).val("Prueba");
+  $(`input[type='radio'][name='rbtn_beneficiario${formulario}'][value='Puerta']`).prop("checked", true);
+  $(`#txt_puerta_beneficiario${formulario}`).val("1111");
   /*
-  $("#txt_solar_beneficiario").val();
-  $("#txt_manzana_beneficiario").val();
+  $(`#txt_solar_beneficiario${formulario}`).val();
+  $(`#txt_manzana_beneficiario${formulario}`).val();
   */
-  $("#txt_esquina_beneficiario").val("Prueba");
-  $("#txt_apartamento_beneficiario").val();
-  $("#txt_referencia_beneficiario").val("1212");
-  $("#select_localidades_beneficiario").val(6);
-  $("#txt_correo_electronico_beneficiario").val();
-  $("#txt_celular_beneficiario").val("093300741");
-  $("#txt_telefono_fijo_beneficiario").val();
-  $("#txt_telefono_alternativo_beneficiario").val();
-  $("#select_promocion_beneficiario").val();
+  $(`#txt_esquina_beneficiario${formulario}`).val("Prueba");
+  $(`#txt_apartamento_beneficiario${formulario}`).val();
+  $(`#txt_referencia_beneficiario${formulario}`).val("Prueba");
+  $(`#select_localidades_beneficiario${formulario}`).val("175");
+  $(`#txt_correo_electronico_beneficiario${formulario}`).val();
+  $(`#txt_celular_beneficiario${formulario}`).val("091111111");
+  $(`#txt_telefono_fijo_beneficiario${formulario}`).val();
+  $(`#txt_telefono_alternativo_beneficiario${formulario}`).val();
+  $(`#select_promocion_beneficiario${formulario}`).val(3);
 }
+
+
+function llenar_campos_tarjeta(opcion = 1) {
+  let formulario = "";
+  if (opcion == 2) formulario = "_grupo_familiar";
+  if (opcion == 3) formulario = "_incremento";
+  $(`#txt_numero_tarjeta_pago${formulario}`).val("5222222222222222");
+  $(`#txt_numero_cvv_tarjeta_pago${formulario}`).val("123");
+  $(`#select_banco_emisor_tarjeta_pago${formulario}`).val("1");
+  $(`#txt_cedula_titular_tarjeta_pago${formulario}`).val("12121212");
+  $(`#txt_nombre_titular_tarjeta_pago${formulario}`).val("Prueba");
+  $(`#select_mes_vencimiento_tarjeta_pago${formulario}`).val("12");
+  $(`#select_anio_vencimiento_tarjeta_pago${formulario}`).val("2024");
+  $(`#txt_correo_electronico_titular_tarjeta_pago${formulario}`).val("prueba@gmail.com");
+  $(`#txt_celular_titular_tarjeta_pago${formulario}`).val("091111111");
+  $(`#txt_telefono_titular_tarjeta_pago${formulario}`).val("52111111");
+}
+
 
 function mostrar_div_datos_venta(id) {
   $("#contenedor_formulario_alta_1").css("display", "none");
@@ -279,6 +311,7 @@ function mostrar_div_datos_venta(id) {
   $(`#contenedor_formulario_alta_${id}`).css("display", "block");
 }
 
+
 function mostrar_div_datos_venta_grupo_familiar(id) {
   $("#contenedor_formulario_alta_grupo_familiar_1").css("display", "none");
   $("#contenedor_formulario_alta_grupo_familiar_2").css("display", "none");
@@ -288,6 +321,7 @@ function mostrar_div_datos_venta_grupo_familiar(id) {
   $(`#contenedor_formulario_alta_grupo_familiar_${id}`).css("display", "block");
 }
 
+
 function mostrar_div_datos_venta_incremento(id) {
   $("#contenedor_formulario_incremento_1").css("display", "none");
   $("#contenedor_formulario_incremento_2").css("display", "none");
@@ -296,34 +330,21 @@ function mostrar_div_datos_venta_incremento(id) {
   $(`#contenedor_formulario_incremento_${id}`).css("display", "block");
 }
 
-function formar_direccion(
-  radio_buttons,
-  apartamento,
-  calle,
-  puerta,
-  esquina,
-  manzana,
-  solar
-) {
+
+function formar_direccion(radio_buttons, apartamento, calle, puerta, esquina, manzana, solar) {
   let direccion = "";
 
   if (radio_buttons == "Puerta") {
-    direccion =
-      apartamento != ""
-        ? `${calle.substr(0, 14)} ${puerta}/${apartamento} E:`
-        : `${calle.substr(0, 17)} ${puerta} E:`;
+    direccion = apartamento != "" ? `${calle.substr(0, 14)} ${puerta}/${apartamento} E:` : `${calle.substr(0, 17)} ${puerta} E:`;
     direccion += esquina.substr(0, 36 - direccion.length); //di
   } else {
-    direccion =
-      apartamento != ""
-        ? `${calle.substr(0, 14)} M:${manzana} S:${solar}/${apartamento}`
-        : `${calle.substr(0, 14)} M:${manzana} S:${solar} E:`;
-    direccion +=
-      apartamento == "" ? esquina.substr(0, 36 - direccion.length) : ""; //di
+    direccion = apartamento != "" ? `${calle.substr(0, 14)} M:${manzana} S:${solar}/${apartamento}` : `${calle.substr(0, 14)} M:${manzana} S:${solar} E:`;
+    direccion += apartamento == "" ? esquina.substr(0, 36 - direccion.length) : ""; //di
   }
 
   return direccion;
 }
+
 
 function select_convenios_servicios(opcion, div) {
   let html = "";
@@ -361,4 +382,15 @@ function select_convenios_servicios(opcion, div) {
       }
     },
   });
+}
+
+
+function mostrar_spinning(div, color) {
+  $(`#${div}`).html(`
+    <div class="btn-toolbar">
+      <div class="spinner-border text-${color}" role="status">
+        <span class="visually-hidden">Cargando ...</span>
+      </div>
+      <spna class="text-${color} fw-bolder ms-2 mt-1">Cargando ...</span>
+    </div>`);
 }

@@ -60,9 +60,8 @@ function mostrar_divs_servicios_incremento(servicio) {
             $(".div_ingresar_importe_total_incremento").css("display", "none");
           }
         }
-
       }
-    }
+    },
   });
 }
 
@@ -103,6 +102,7 @@ function select_promociones_servicios_incremento(servicio) {
   });
 }
 
+
 function agregar_servicio_incremento() {
   let nro_servicio = $("#select_servicios_servicios_incremento").val();
   let nombre_servicio = $("#select_servicios_servicios_incremento option:selected").text();
@@ -114,7 +114,6 @@ function agregar_servicio_incremento() {
   let total_importe_visible = $("#txt_importe_total_servicios_incremento").is(":visible");
   let total_importe = $("#txt_importe_total_servicios_incremento").val();
 
-
   if (nro_servicio == "") {
     error("Debe seleccionar un servicio");
   } else if (cant_horas_visible != false && cant_horas == "") {
@@ -124,7 +123,6 @@ function agregar_servicio_incremento() {
   } else if (total_importe_visible != false && total_importe <= 300) {
     error("Debe ingresar un importe mayor a $300");
   } else {
-
     let cedula = $("#txt_cedula_beneficiario_incremento").val();
 
     $.ajax({
@@ -142,7 +140,7 @@ function agregar_servicio_incremento() {
       },
       dataType: "JSON",
       success: function (response) {
-        if(response.error == false) {
+        if (response.error == false) {
           $(`#select_servicios_servicios_incremento option[value='${nro_servicio}']`).remove();
 
           $(".div_cantidad_horas_servicios_incremento").css("display", "none");
@@ -170,9 +168,8 @@ function agregar_servicio_incremento() {
         } else {
           error(response.mensaje);
         }
-      }
+      },
     });
-
   }
 }
 
@@ -194,19 +191,18 @@ function listar_servicios_agregados_incremento(calcular_precio = true) {
     let nombre_servicio = val["nombre_servicio"];
 
     let promocion = nombre_promo != "" ? `/ <span class="text-danger">${nombre_promo}</span>` : "";
-    let horas = cantidad_horas != "" ? 
-      `/ ${cantidad_horas}hrs` : ""; promo_estaciones = promo_estaciones ? 
-      `/ <span class="text-success">Sanatorio Estaciones</span>` : "";
+    let horas = cantidad_horas != "" ? `/ ${cantidad_horas}hrs` : "";
+    promo_estaciones = promo_estaciones ? `/ <span class="text-success">Sanatorio Estaciones</span>` : "";
 
     document.getElementById("div_lista_servicios_incremento").innerHTML += `
-        <li class="list-group-item d-flex justify-content-between align-items-start">
-            <div class="ms-2 me-auto">
-                <div class="fw-bold">
-                    ${nombre_servicio} ${horas} ${promo_estaciones} ${promocion}
-                </div>
+    <li class="list-group-item d-flex justify-content-between align-items-start">
+        <div class="ms-2 me-auto">
+            <div class="fw-bold">
+                ${nombre_servicio} ${horas} ${promo_estaciones} ${promocion}
             </div>
-            <button class="btn btn-sm btn-danger rounded-circle" onclick="quitar_servicio_incremento(${numero_servicio}, '${nombre_servicio}')">❌</button>
-        </li>`;
+        </div>
+        <button class="btn btn-sm btn-danger rounded-circle" onclick="quitar_servicio_incremento(${numero_servicio}, '${nombre_servicio}')">❌</button>
+    </li>`;
   });
 }
 
@@ -221,9 +217,10 @@ function quitar_servicio_incremento(numero_servicio, nombre_servicio) {
   });
   $("#select_servicios_servicios_incremento").html(selectList);
 
-  array_servicios_agregados_incremento = array_servicios_agregados_incremento.filter(
-    (servicio) => servicio["numero_servicio"] != numero_servicio
-  );
+  array_servicios_agregados_incremento =
+    array_servicios_agregados_incremento.filter(
+      (servicio) => servicio["numero_servicio"] != numero_servicio
+    );
   listar_servicios_agregados_incremento();
 }
 
@@ -244,10 +241,7 @@ function calcular_total_incremento() {
       },
       dataType: "JSON",
       beforeSend: function () {
-        showLoading();
-      },
-      complete: function () {
-        showLoading(false);
+        mostrar_spinning("span_total_precio_servicios_incremento", "danger");
       },
       success: function (response) {
         if (response.error == false) {
@@ -272,6 +266,7 @@ function vaciar_datos_servicio_incremento() {
   $("#select_cantidad_horas_servicios_incremento").val("");
   $("#chbox_lista_de_precios_incremento").prop("checked", false);
   $("#select_promocion_servicios_incremento").val("");
+  $("#txt_observacion_servicios_incremento").val("");
   $("#txt_importe_total_servicios_incremento").val("");
   //Oculto los divs
   $(".div_cantidad_horas_servicios_incremento").css("display", "none");

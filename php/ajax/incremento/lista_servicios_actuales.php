@@ -6,8 +6,17 @@ $cedula = $_REQUEST['cedula'];
 if ($cedula == "") devolver_error(ERROR_GENERAL);
 
 
-$servicios_actuales = obtener_servicios_actuales($cedula);
-if ($servicios_actuales == false) devolver_error("Ocurrieron errores al obtener los servicios actuales");
+$servicios_actuales_piscina = obtener_servicios_actuales(1, $cedula);
+if ($servicios_actuales_piscina == false) devolver_error("Ocurrieron errores al obtener los servicios actuales de piscina");
+$cantidad_piscina = mysqli_num_rows($servicios_actuales_piscina);
+
+$servicios_actuales_padron = obtener_servicios_actuales(2, $cedula);
+if ($servicios_actuales_padron == false) devolver_error("Ocurrieron errores al obtener los servicios actuales de padrón");
+$cantidad_padron = mysqli_num_rows($servicios_actuales_padron);
+
+
+if ($cantidad_piscina <= 0 && $cantidad_padron <= 0) devolver_error("No se pudieron encontrar los productos");
+$servicios_actuales = $cantidad_piscina > 0 ? $servicios_actuales_piscina : $servicios_actuales_padron;
 
 
 $count = 1;
@@ -19,7 +28,7 @@ while ($row = mysqli_fetch_assoc($servicios_actuales)) {
     $horas = $row['horas'];
     $importe = $row['importe'];
     $cod_promo = $row['cod_promo'];
-    $nombre_promo = $cod_promo != "" ? obtener_nombre_promo($cod_promo) : "";
+    $nombre_promo = in_array($cod_promo, ["", null]) ? obtener_nombre_promo($cod_promo) : "";
     $cod_promo = $cod_promo != "" ? "- 🚀 $nombre_promo" : "";
     $promo_estaciones = 0;
     if ($numero_servicio == "01" && in_array($importe, ["530", "1060", "1590"])) $promo_estaciones++;
@@ -44,9 +53,9 @@ echo json_encode($response);
 
 
 
-function obtener_servicios_actuales($cedula)
+function obtener_servicios_actuales($opcion, $cedula)
 {
-    $conexion = connection(DB);
+    $conexion = $opcion == 1 ? connection(DB) : connection(DB);
     $tabla = TABLA_PADRON_PRODUCTO_SOCIO;
 
     //Con el "NOT IN" filtro los servicios son "duplicados" porque se ofrecen en paquetes EJ. 06 y 08 es Reintegro Opcional.

@@ -18,9 +18,9 @@ function registrar_errores($consulta, $nombre_archivo, $error)
 
 
 /** Obtener datos de padron del socio **/
-function obtener_datos_padron_del_socio($cedula)
+function obtener_datos_padron_del_socio($cedula, $opcion = 1)
 {
-    $conexion = connection(DB_ABMMOD);
+    $conexion = $opcion == 1 ? connection(DB) : connection(DB);
     $tabla = TABLA_PADRON_DATOS_SOCIO;
 
     try {
@@ -41,7 +41,7 @@ function obtener_datos_padron_del_socio($cedula)
 /** Obtener datos de padron del socio **/
 function obtener_productos_del_socio($cedula)
 {
-    $conexion = connection(DB_ABMMOD);
+    $conexion = connection(DB);
     $tabla = TABLA_PADRON_PRODUCTO_SOCIO;
 
     try {
@@ -85,7 +85,7 @@ function obtener_radio_ruta($id_metodo_pago, $metodo_pago, $nombre_localidad)
     $where = $id_metodo_pago == 3 ? $nombre_localidad : $metodo_pago;
 
     try {
-        $sql = "SELECT * FROM {$tabla} WHERE localidad = '$where'";
+        $sql = "SELECT * FROM {$tabla} WHERE localidad = '$where' AND activo = 1";
         $consulta = mysqli_query($conexion, $sql);
     } catch (\Throwable $error) {
         registrar_errores($sql, "funciones.php", $error);
@@ -218,24 +218,6 @@ function registrar_historial_venta($id_padron, $observacion)
 }
 
 
-function registrar_relacion_socio_convenio($id_socio, $id_convenio)
-{
-    $conexion = connection(DB, false);
-    $tabla = TABLA_RELACION_SOCIO_CONVENIO;
-
-    try {
-        $sql = "INSERT INTO {$tabla} (`id_socio`, `id_convenio_especial`, `created_at`) VALUE ('{$id_socio}', '{$id_convenio}', NOW());";
-        $consulta = mysqli_query($conexion, $sql);
-    } catch (\Throwable $error) {
-        registrar_errores($sql, "funciones.php", $error);
-        $consulta = false;
-    }
-
-    mysqli_close($conexion);
-    return $consulta;
-}
-
-
 function obtener_id_convenio($convenio)
 {
     $conexion = connection(DB, false);
@@ -278,23 +260,26 @@ function obtener_metodo_pago($radio)
 
 function obtener_datos_actuales_pago($cedula)
 {
+    $datos_padron = obtener_datos_padron_del_socio($cedula, 2);
+    if ($datos_padron == false) devolver_error("Ocurrieron errores al obtener el medio de pago de piscina");
+    $metodo_pago = $datos_padron['metodo_pago'];
+    $radio_pago = $datos_padron['radio'];
+
     $conexion = connection(DB);
-    $tabla1 = TABLA_PADRON_DATOS_SOCIO;
-    $tabla2 = TABLA_METODOS_DE_PAGO;
+    $tabla = TABLA_METODOS_DE_PAGO;
 
     try {
         $sql = "SELECT
-	             mdp.id,
-	             mdp.radio,
-	             mdp.nombre,
-	             mdp.id_tipo_medios_pago 
+	             id,
+	             radio,
+	             nombre,
+	             id_tipo_medios_pago 
                 FROM
-	             {$tabla1} pds
-	             INNER JOIN {$tabla2} mdp ON pds.metodo_pago = mdp.id_tipo_medios_pago 
+	             {$tabla}
                 WHERE
-	             pds.radio = mdp.radio AND 
-                 pds.cedula = '$cedula' AND 
-                 mdp.activo = 1";
+                 id_tipo_medios_pago = '$metodo_pago' AND
+	             radio = '$radio_pago' AND 
+                 activo = 1";
         $consulta = mysqli_query($conexion, $sql);
     } catch (\Throwable $error) {
         registrar_errores($sql, "funciones.php", $error);

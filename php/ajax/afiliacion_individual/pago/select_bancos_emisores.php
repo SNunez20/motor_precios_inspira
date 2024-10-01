@@ -21,7 +21,7 @@ echo json_encode($response);
 
 function obtener_bancos_emisores()
 {
-    $conexion = connection(DB_CALL);
+    $conexion = connection(DB);
     $tabla = TABLA_BANCOS_EMISORES;
 
     $sql = "SELECT id, banco AS 'nombre' FROM {$tabla} WHERE mostrar = '1'";

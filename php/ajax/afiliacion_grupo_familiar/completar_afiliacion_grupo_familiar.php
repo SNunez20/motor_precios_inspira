@@ -82,11 +82,25 @@ function agregar_padron_datos_socios($cedula_persona, $id_metodo_pago, $metodo_p
         if ($cedula_persona == $datos_servicios["cedula"]) {
             $id_servicio = $datos_servicios["numero_servicio"];
             $cantidad_horas = $datos_servicios["cantidad_horas"] == "" ? 8 : $datos_servicios["cantidad_horas"];
+
             $promo_estaciones = $datos_servicios["promo_estaciones"];
-            $total_importe = $datos_servicios['total_importe'];
-            $importe_total = $importe_total + calcular_precio_servicio($edad, $id_servicio, $cantidad_horas, $promo_estaciones, $total_importe);
+            $precio = $datos_servicios['total_importe'];
+            $precio = calcular_precio_servicio($edad, $id_servicio, $cantidad_horas, $promo_estaciones, $precio);
+
+            if ($id_servicio == 1) {
+                $porcentaje = 0;
+                if (count($_REQUEST['array_datos_beneficiario_grupo_familiar']) == 2) $porcentaje = 0.10; //10%
+                if (count($_REQUEST['array_datos_beneficiario_grupo_familiar']) == 3) $porcentaje = 0.15; //15%
+                if (count($_REQUEST['array_datos_beneficiario_grupo_familiar']) >= 4) $porcentaje = 0.20; //20%
+
+                $descuento = $precio * $porcentaje;
+                $precio = round(intval($precio) - intval($descuento));
+            }
+
+            $importe_total = intval($importe_total) + intval($precio);
         }
     }
+
 
     foreach ($_REQUEST['array_guardar_datos_servicios'] as $datos) {
         if ($cedula_persona == $datos["cedula"]) {
@@ -182,7 +196,7 @@ function agregar_padron_datos_socios($cedula_persona, $id_metodo_pago, $metodo_p
                 existe_padron = '0',
                 email = '$correo_electronico',
                 email_titular = '$email_titular',
-                tarjeta_vida = '0',
+                tarjeta_vida = '1',
                 banco_emisor = '$banco_emisor',
                 accion = '1',
                 estado = '1',
@@ -201,14 +215,6 @@ function agregar_padron_datos_socios($cedula_persona, $id_metodo_pago, $metodo_p
 
     $resultados = $consulta ? mysqli_insert_id($conexion) : false;
 
-
-    if ($convenio != "" && $resultados != false) {
-        $id_convenio = obtener_id_convenio($convenio);
-        if ($id_convenio == false) devolver_error("Ocurrieron errores al consultar el convenio");
-
-        $registro_relacion_socio_convenio = registrar_relacion_socio_convenio($resultados, $id_convenio);
-        if ($registro_relacion_socio_convenio == false) devolver_error("Ocurrieron errores al registrar el convenio");
-    }
 
 
     mysqli_close($conexion);
@@ -295,12 +301,27 @@ function agregar_padron_producto_socios($cedula_persona, $id_metodo_pago)
             $numeros_servicio = obtener_numeros_servicio($id_servicio);
             $cantidad_horas = $servicios['cantidad_horas'] != "" ? $servicios['cantidad_horas'] : 8;
             $modulos_horas = $cantidad_horas == 8 ? 1 : ($cantidad_horas == 16 ? 2 : 3);
-            $promo_estaciones = $servicios['promo_estaciones'];
-            $numero_promo = obtener_datos_promocion($servicios['numero_promo']);
-            $total_importe = $servicios['total_importe'];
-            $total_importe = calcular_precio_servicio($edad, $id_servicio, $cantidad_horas, $promo_estaciones, $total_importe);
+            $numero_promo = $servicios['numero_promo'];
+            $numero_promo = !in_array($numero_promo, ["", null]) ? obtener_datos_promocion($numero_promo) : 0;
             $empresa_rut = "05";
             $id_relacion = "99-$cedula"; // Si es tarjeta 99-cedula
+
+            $promo_estaciones = $servicios['promo_estaciones'];
+            $precio = $servicios['total_importe'];
+            $precio = calcular_precio_servicio($edad, $id_servicio, $cantidad_horas, $promo_estaciones, $precio);
+
+            if ($id_servicio == 1) {
+                $porcentaje = 0;
+                $cantidad_beneficiarios = count($_REQUEST['array_datos_beneficiario_grupo_familiar']);
+                if ($cantidad_beneficiarios == 2) $porcentaje = 0.10; //10%
+                if ($cantidad_beneficiarios == 3) $porcentaje = 0.15; //15%
+                if ($cantidad_beneficiarios >= 4) $porcentaje = 0.20; //20%
+
+                $descuento = $precio * $porcentaje;
+                $precio = round($precio - $descuento);
+            }
+
+            $total_importe = $precio;
 
 
             //Recorro los números de servicio

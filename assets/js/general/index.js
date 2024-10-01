@@ -3,6 +3,7 @@ $(document).ready(function () {
 });
 
 
+
 function validar_afiliacion() {
   let tipo_afiliacion = $("#select_tipo_afiliacion").val();
 
@@ -15,7 +16,7 @@ function validar_afiliacion() {
       $("#modal_datos_venta_grupo_familiar").modal("show");
     } else {
       $("#modal_tipo_afiliacion").modal("hide");
-      $('#txt_cedula').val("");
+      $("#txt_cedula").val("");
       $("#modal_validar_cedula").modal("show");
     }
   }
@@ -23,8 +24,8 @@ function validar_afiliacion() {
 
 
 /** Si esta abierto el modal se autoselecciona el campo password **/
-$('#modal_validar_cedula').on('shown.bs.modal', function (e) {
-  $('#txt_cedula').focus();
+$("#modal_validar_cedula").on("shown.bs.modal", function (e) {
+  $("#txt_cedula").focus();
 });
 
 
@@ -43,10 +44,10 @@ function validar_cedula() {
         cedula,
       },
       beforeSend: function () {
-        showLoading();
+        mostrarLoader();
       },
       complete: function () {
-        showLoading(false);
+        mostrarLoader("O");
       },
       dataType: "JSON",
       success: function (response) {
@@ -57,30 +58,40 @@ function validar_cedula() {
             acciones_formulario_nueva_alta_1();
             $("#modal_datos_venta").modal("show");
           } else {
-            mostrar_div_datos_venta_incremento(1);
-            acciones_incremento_formulario_1();
-            let nombre_completo = response.datos.nombre;
-            let fecha_nacimiento = response.datos.fecha_nacimiento;
-            let email = response.datos.email;
-            let celular = response.datos.celular;
-            let telefono_fijo = response.datos.telefono_fijo;
-            let telefono_alternativo = response.datos.telefono_alternativo;
-            $("#txt_cedula_beneficiario_incremento").val(cedula);
-            $("#txt_nombre_beneficiario_incremento").val(nombre_completo);
-            $("#txt_fecha_nacimiento_beneficiario_incremento").val(fecha_nacimiento);
-            $("#txt_correo_electronico_beneficiario_incremento").val(email);
-            $("#txt_celular_beneficiario_incremento").val(celular);
-            $("#txt_telefono_fijo_beneficiario_incremento").val(telefono_fijo);
-            $("#txt_telefono_alternativo_beneficiario_incremento").val(telefono_alternativo);
-            $("#rbtn_beneficiario_incremento").val("Puerta");
-            $("#modal_tipo_afiliacion").modal("hide");
-            $("#modal_validar_cedula").modal("hide");
-            $("#modal_datos_venta_incremento").modal("show");
+            comprobar_puede_incrementar(response.datos, response.puede_incrementar);
           }
         } else {
           error(response.mensaje);
         }
       },
     });
+  }
+}
+
+
+function comprobar_puede_incrementar(datos, puede_incrementar) {
+  if (puede_incrementar) {
+    mostrar_div_datos_venta_incremento(1);
+    acciones_incremento_formulario_1();
+    let cedula = datos.cedula;
+    let nombre_completo = datos.nombre;
+    let fecha_nacimiento = datos.fecha_nacimiento;
+    let email = datos.email;
+    let celular = datos.celular;
+    let telefono_fijo = datos.telefono_fijo;
+    let telefono_alternativo = datos.telefono_alternativo;
+    $("#txt_cedula_beneficiario_incremento").val(cedula);
+    $("#txt_nombre_beneficiario_incremento").val(nombre_completo);
+    $("#txt_fecha_nacimiento_beneficiario_incremento").val(fecha_nacimiento);
+    $("#txt_correo_electronico_beneficiario_incremento").val(email);
+    $("#txt_celular_beneficiario_incremento").val(celular);
+    $("#txt_telefono_fijo_beneficiario_incremento").val(telefono_fijo);
+    $("#txt_telefono_alternativo_beneficiario_incremento").val(telefono_alternativo);
+    $("#rbtn_beneficiario_incremento").val("Puerta");
+    $("#modal_tipo_afiliacion").modal("hide");
+    $("#modal_validar_cedula").modal("hide");
+    $("#modal_datos_venta_incremento").modal("show");
+  } else {
+    error("La cédula ingresada ya está en proceso de afiliación");
   }
 }

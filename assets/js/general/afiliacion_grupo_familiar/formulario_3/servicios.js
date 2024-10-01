@@ -7,10 +7,10 @@ function mostrar_divs_servicios_grupo_familiar(cedula, servicio) {
         dataType: "JSON",
         beforeSend: function () {
             showLoading();
-          },
-          complete: function () {
+        },
+        complete: function () {
             showLoading(false);
-          },
+        },
         success: function (response) {
             if (response.error == false) {
                 if (response.mostrar_horas == 1) {
@@ -22,23 +22,6 @@ function mostrar_divs_servicios_grupo_familiar(cedula, servicio) {
 
                 if (response.mostrar_lista_precios == 1) {
                     $(".div_lista_de_precios_grupo_familiar").css("display", "block");
-                    $("#chbox_lista_de_precios_grupo_familiar").prop("checked", false);
-
-                    $("#chbox_lista_de_precios_grupo_familiar").change(function () {
-                        if (this.checked) {
-                          $("#chbox_lista_de_precios_grupo_familiar").prop("checked", false);
-                          $("#select_promocion_servicios_grupo_familiar").val("");
-                          $(".div_promocion_servicios_grupo_familiar").css("display", "none");
-                        } else {
-                            $("#chbox_lista_de_precios_grupo_familiar").prop("checked", true);
-                            $("#select_promocion_servicios_grupo_familiar").val("");
-                            array_datos_beneficiario_grupo_familiar.map((val => {
-                                (val['cedula'] == cedula && val['dato_extra'] != 2) ?
-                                    $(".div_promocion_servicios_grupo_familiar").css("display", "block") :
-                                    $(".div_promocion_servicios_grupo_familiar").css("display", "none");
-                            }));
-                        }
-                      });
                 } else {
                     $(".div_lista_de_precios_grupo_familiar").css("display", "none");
                 }
@@ -126,10 +109,10 @@ function select_promociones_servicios_grupo_familiar(servicio) {
         dataType: "JSON",
         beforeSend: function () {
             showLoading();
-          },
-          complete: function () {
+        },
+        complete: function () {
             showLoading(false);
-          },
+        },
         success: function (response) {
             if (response.error == false) {
                 let html = `<option value="" selected>Seleccione una opción</option>`;
@@ -149,18 +132,16 @@ function agregar_servicios_beneficiario_grupo_familiar(openModal = false, cedula
         let nombre_completo = "";
         let fecha_nacimiento;
         array_datos_beneficiario_grupo_familiar.map((val => {
-            if (val['cedula'] == cedula){
+            if (val['cedula'] == cedula) {
                 nombre_completo = val['nombre_completo'];
                 fecha_nacimiento = val['fecha_nacimiento'];
             }
         }));
 
-        
         $("#txt_cedula_agregar_servicios_beneficiarios").val("");
         $("#txt_cedula_agregar_servicios_beneficiarios").val(cedula);
         $("#txt_fecha_nacimiento_beneficiario_grupo_familiar").val("");
         $("#txt_fecha_nacimiento_beneficiario_grupo_familiar").val(fecha_nacimiento);
-
 
         $("#select_convenio_servicios_grupo_familiar").val("");
         $("#txt_observacion_servicios_grupo_familiar").val("");
@@ -178,6 +159,21 @@ function agregar_servicios_beneficiario_grupo_familiar(openModal = false, cedula
             }));
         }
 
+        $("#chbox_lista_de_precios_grupo_familiar").change(function () {
+            $(".div_promocion_servicios_grupo_familiar").css("display", "none");
+
+            if ($("#chbox_lista_de_precios_grupo_familiar").is(":checked")) {
+                $("#select_promocion_servicios_grupo_familiar").val("");
+                $(".div_promocion_servicios_grupo_familiar").css("display", "none");
+            } else {
+                $("#select_promocion_servicios_grupo_familiar").val("");
+                array_datos_beneficiario_grupo_familiar.map((val => {
+                    if (val['cedula'] == cedula && val['dato_extra'] == 3) {
+                        $(".div_promocion_servicios_grupo_familiar").css("display", "block");
+                    }
+                }));
+            }
+        });
 
         $("#span_cedula_nombre_beneficiario_servicio_grupo_familiar").text(`${cedula} - ${nombre_completo}`);
         $("#modal_agregar_servicios_beneficiario_grupo_familiar").modal("show");
@@ -333,17 +329,15 @@ function calcular_total_grupo_familiar(cedula) {
             type: "GET",
             url: `${url_ajax}afiliacion_grupo_familiar/servicios/calcular_precio_total.php`,
             data: {
-                cedula: cedula,
-                fecha_nacimiento: fecha_nacimiento,
-                array_servicios_agregados_grupo_familiar: array_servicios_agregados_grupo_familiar,
+                cedula,
+                fecha_nacimiento,
+                array_servicios_agregados_grupo_familiar,
+                array_datos_beneficiario_grupo_familiar,
             },
             dataType: "JSON",
             beforeSend: function () {
-                showLoading();
-              },
-              complete: function () {
-                showLoading(false);
-              },
+                mostrar_spinning("span_total_precio_servicios_grupo_familiar", "danger");
+            },
             success: function (response) {
                 if (response.error == false) {
                     let precio = response.precio;

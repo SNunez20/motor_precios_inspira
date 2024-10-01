@@ -25,7 +25,7 @@
         </div>
     </div>
     <div class="col-lg-4">
-        <button class="btn btn-success" onclick="agregar_persona_grupo_familiar()">Agregar persona</button>
+        <button class="btn btn-success mt-2" onclick="agregar_persona_grupo_familiar()">Agregar persona</button>
     </div>
 </div>
 

@@ -2,11 +2,9 @@ let array_servicios_agregados_incremento = [];
 function acciones_incremento_formulario_2() {
   if (array_servicios_agregados_incremento.length <= 0) {
     let convenios_cargados = $("#select_convenio_servicios_incremento").length;
-    if (convenios_cargados <= 2)
-      select_convenios_servicios(2, "select_convenio_servicios_incremento");
+    if (convenios_cargados <= 2) select_convenios_servicios(2, "select_convenio_servicios_incremento");
     let servicios_cargados = $("#select_servicios_servicios_incremento").length;
-    if (servicios_cargados <= 2)
-      select_servicios(2, "select_servicios_servicios_incremento");
+    if (servicios_cargados <= 2) select_servicios(2, "select_servicios_servicios_incremento");
 
     $("#select_servicios_servicios_incremento").html("");
     $(".div_cantidad_horas_servicios_incremento").css("display", "none");
@@ -34,12 +32,14 @@ function acciones_incremento_formulario_2() {
   });
 
   $("#btn_atras_datos_venta_incremento").html(
-    `<button type="button" class="btn btn-primary" onclick="mostrar_div_datos_venta_incremento(1), acciones_incremento_formulario_1();">⬅ Atrás</button>`
+    `<button type="button" class="btn btn-primary" onclick="
+    mostrar_div_datos_venta_incremento(1), 
+    acciones_incremento_formulario_1();
+    ">⬅ Atrás</button>`
   );
-  $("#btn_siguente_datos_venta_incremento").html(
-    `<button type="button" class="btn btn-primary" onclick="validar_nuevo_incremento_2()">Siguiente ➡</button>`
-  );
+  $("#btn_siguente_datos_venta_incremento").html(`<button type="button" class="btn btn-primary" onclick="validar_nuevo_incremento_2()">Siguiente ➡</button>`);
 }
+
 
 function validar_nuevo_incremento_2() {
   let observacion = $("#txt_observacion_servicios_incremento").val();
@@ -53,6 +53,7 @@ function validar_nuevo_incremento_2() {
     acciones_incremento_formulario_3();
   }
 }
+
 
 function listar_servicios_actuales_incremento() {
   $("#div_listado_servicios_actuales_incremento").html("");
@@ -86,18 +87,15 @@ function listar_servicios_actuales_incremento() {
           });
 
           html += `
-                    <li class="list-group-item active text-end fw-bolder list-group-item-secondary" aria-current="true">
-                        Total ($UY): <span class="text-danger">${importe_total}</span>
-                    </li>`;
+          <li class="list-group-item active text-end fw-bolder list-group-item-secondary" aria-current="true">
+            Total ($UY): <span class="text-danger">${importe_total}</span>
+          </li>`;
           $("#div_listado_servicios_actuales_incremento").html(html);
 
           let acotado = response.acotado;
           let array_numeros_servicios = response.numeros_servicios;
 
-          listar_filtrado_servicios_incremento(
-            acotado,
-            array_numeros_servicios
-          );
+          listar_filtrado_servicios_incremento(acotado, array_numeros_servicios);
         } else {
           error(response.mensaje);
         }
@@ -106,10 +104,8 @@ function listar_servicios_actuales_incremento() {
   }
 }
 
-function listar_filtrado_servicios_incremento(
-  acotado,
-  array_numeros_servicios
-) {
+
+function listar_filtrado_servicios_incremento(acotado, array_numeros_servicios) {
   $("#select_servicios_servicios_incremento").html("");
 
   $.ajax({
@@ -133,7 +129,6 @@ function listar_filtrado_servicios_incremento(
         lista_servicios.map((val) => {
           html += `<option value="${val["id"]}">${val["nombre_servicio"]}</option>`;
         });
-
         $("#select_servicios_servicios_incremento").html(html);
       } else {
         error(response.mensaje);

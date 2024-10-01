@@ -35,6 +35,7 @@ if ($resultados_padron) {
 
 $response['error'] = false;
 $response['socio'] = $resultados_piscina || $resultados_padron ? true : false;
+$response['puede_incrementar'] = $resultados_padron;
 $response['datos'] = $datos != "" ? $datos : false;
 echo json_encode($response);
 
@@ -43,7 +44,7 @@ echo json_encode($response);
 
 function comprobar_cedula($opcion, $cedula)
 {
-    $conexion = $opcion == 1 ? connection(DB_CALL, false) : connection(DB, false);
+    $conexion = $opcion == 1 ? connection(DB, false) : connection(DB, false);
     $tabla = TABLA_PADRON_DATOS_SOCIO;
 
     try {

@@ -55,7 +55,7 @@ echo json_encode($response);
 
 function comprobar_existe_socio($opcion, $cedula)
 {
-    $conexion = $opcion == 1 ? connection(DB_CALL) : connection(DB_ABMMOD);
+    $conexion = $opcion == 1 ? connection(DB) : connection(DB);
     $tabla = TABLA_PADRON_DATOS_SOCIO;
 
     try {

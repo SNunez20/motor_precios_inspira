@@ -5,8 +5,10 @@ function acciones_formulario_grupo_familiar_formulario_3() {
     select_servicios(2, "select_servicios_servicios_grupo_familiar");
     listar_personas_servicios_grupos_familiares();
 
-
-    $("#btn_atras_datos_venta_grupo_familiar").html(`<button type="button" class="btn btn-primary" onclick="mostrar_div_datos_venta_grupo_familiar(2), acciones_formulario_grupo_familiar_formulario_2()">⬅ Atrás</button>`);
+    $("#btn_atras_datos_venta_grupo_familiar").html(`<button type="button" class="btn btn-primary" onclick="
+        mostrar_div_datos_venta_grupo_familiar(2), 
+        acciones_formulario_grupo_familiar_formulario_2()
+    ">⬅ Atrás</button>`);
     $("#btn_siguente_datos_venta_grupo_familiar").html(`<button type="button" class="btn btn-primary" onclick="validar_formulario_grupo_familiar_3()">Siguiente ➡</button>`);
 }
 

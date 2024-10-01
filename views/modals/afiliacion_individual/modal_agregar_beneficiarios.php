@@ -1,5 +1,5 @@
 <div class="modal fade" id="modal_agregar_beneficiarios" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    aria-labelledby="staticBackdropLabel">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header bg-primary">
@@ -35,6 +35,11 @@
                             <label for="txt_fecha_nacimiento_beneficiario_servicio">Fecha de nacimiento:</label>
                         </div>
                     </div>
+                    <div class="col-auto">
+                        <div class="mb-3">
+                            <button type="button" class="btn btn-success mt-2" onclick="agregar_beneficiarios(false)">Agregar</button>
+                        </div>
+                    </div>
                 </div>
 
 
@@ -59,7 +64,6 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-primary" onclick="agregar_beneficiarios(false)">Guardar</button>
             </div>
         </div>
     </div>

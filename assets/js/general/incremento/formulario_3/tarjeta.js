@@ -120,17 +120,3 @@ function vaciar_datos_titular_tarjeta_incremento() {
   $("#txt_celular_titular_tarjeta_pago_incremento").val("");
   $("#txt_telefono_titular_tarjeta_pago_incremento").val("");
 }
-
-
-function llenar_datos_tarjeta_incremento() {
-  $("#txt_numero_tarjeta_pago_incremento").val("5222222222222222");
-  $("#txt_numero_cvv_tarjeta_pago_incremento").val("123");
-  $("#select_banco_emisor_tarjeta_pago_incremento").val("1");
-  $("#txt_cedula_titular_tarjeta_pago_incremento").val("53249776");
-  $("#txt_nombre_titular_tarjeta_pago_incremento").val("Sebastian Nuñez");
-  $("#select_mes_vencimiento_tarjeta_pago_incremento").val("10");
-  $("#select_anio_vencimiento_tarjeta_pago_incremento").val("2024");
-  $("#txt_correo_electronico_titular_tarjeta_pago_incremento").val("sebanunez019@gmail.com");
-  $("#txt_celular_titular_tarjeta_pago_incremento").val("093300741");
-  $("#txt_telefono_titular_tarjeta_pago_incremento").val("52657894");
-}

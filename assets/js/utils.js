@@ -193,7 +193,7 @@ function correcto_pasajero(mensaje) {
 function btn_cargando(div, color) {
   $(`#${div}`).html(`
     <button class="btn btn-${color}" id="btn_cargando" type="button" disabled>
-        <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+        <span class="spinner-border spinner-border-sm"></span>
         <span role="status">Cargando...</span>
     </button>`);
 }

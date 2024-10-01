@@ -5,7 +5,6 @@ $id_metodo_pago = $_REQUEST['id_metodo_pago'];
 $metodo_pago = $_REQUEST['metodo_pago'];
 $array_datos_beneficiario = $_REQUEST['array_datos_beneficiario_incremento'];
 $array_servicios_agregados = $_REQUEST['array_servicios_agregados_incremento'];
-$array_tarjeta_titular = $_REQUEST['array_tarjeta_titular_incremento'];
 $observacion = $_REQUEST['observacion'];
 $importe_total = $_REQUEST['importe_total'];
 
@@ -14,7 +13,6 @@ if (
     $metodo_pago == "" ||
     count($array_datos_beneficiario) <= 0 ||
     count($array_servicios_agregados) <= 0 ||
-    count($array_tarjeta_titular) <= 0 ||
     $observacion == "" ||
     $importe_total == ""
 ) devolver_error(ERROR_GENERAL);
@@ -24,44 +22,39 @@ if (
 $cedula = $array_datos_beneficiario['cedula'];
 
 
-/** Se comprueba que exista el socio en piscina*/
-$existe_socio_piscina = comprobar_existe_socio(1, $cedula);
-if ($existe_socio_piscina == false) devolver_error("Ocurrieron errores al verificar si existe el socio en piscina");
-$cantidad_socio_piscina = mysqli_num_rows($existe_socio_piscina);
-
 /** Se comprueba que exista el socio en padrón*/
 $existe_socio_padron = comprobar_existe_socio(2, $cedula);
 if ($existe_socio_padron == false) devolver_error("Ocurrieron errores al verificar si existe el socio en padrón");
 $cantidad_socio_padron = mysqli_num_rows($existe_socio_padron);
+if ($cantidad_socio_padron <= 0) devolver_error("No se pudo encontrar el socio en padrón");
 
-/** Si no existe socio con la cédula ingresada se retornara un error */
-if ($cantidad_socio_piscina <= 0 && $cantidad_socio_padron <= 0)
-    devolver_error("No se han encontrado socios con la cédula ingresada");
+$datos_actuales_padron = mysqli_fetch_assoc($existe_socio_padron);
+$id_socio_padron = $datos_actuales_padron['id'];
 
 
-if ($cantidad_socio_piscina > 0 && $cantidad_socio_padron <= 0) {
-    /** Si el socio esta en piscina, se actualizan los datos **/
-    $modificar_padron_socios = modificar_padron_socios();
-    if ($modificar_padron_socios == false) devolver_error("Ocurrieron errores al actualizar los datos del socio en piscina");
-} else if ($cantidad_socio_piscina <= 0 && $cantidad_socio_padron > 0) {
-    /** Si el socio esta en padrón, se actualizan los datos **/
-    $modificar_padron_socios = modificar_padron_socios();
-    if ($modificar_padron_socios == false) devolver_error("Ocurrieron errores al actualizar los datos del socio en padrón");
+$actualizar_datos_piscina = actualizar_datos_piscina($datos_actuales_padron);
+if ($actualizar_datos_piscina == false) devolver_error("Ocurrieron errores al actualizar los datos del socio en piscina");
+
+
+$comprobar_direccion_socio_piscina = comprobar_direccion_socio(1);
+if ($comprobar_direccion_socio_piscina == false) devolver_error("Ocurrieron errores al comprobar la dirección del socio en piscina");
+if (mysqli_num_rows($comprobar_direccion_socio_piscina) > 0) {
+    $modificar_direccion_socio_piscina = modificar_direccion_socio(1);
+    if ($modificar_direccion_socio_piscina == false) devolver_error("Ocurrieron errores al actualizar la dirección del socio en piscina");
+} else {
+    $registrar_direccion_socio_piscina = registrar_direccion_socio($id_socio_padron);
+    if ($registrar_direccion_socio_piscina == false) devolver_error("Ocurrieron errores al actualizar la dirección del socio en piscina");
 }
 
 
-/** Se comprueba con la cédula que el socio tenga una dirección registrada */
-$comprobar_direccion_socio = comprobar_direccion_socio();
-if ($comprobar_direccion_socio == false) devolver_error("Ocurrieron errores al comprobar la dirección del socio");
-
-if (mysqli_num_rows($comprobar_direccion_socio) <= 0) {
-    /** Si no tiene una dirección registrada se le agrega */
-    $registrar_direccion = registrar_direccion_socio($id_socio_padron);
-    if ($registrar_direccion == false) devolver_error("Ocurrieron errores al registrar la dirección del socio");
+$comprobar_direccion_socio_padron = comprobar_direccion_socio(2);
+if ($comprobar_direccion_socio_padron == false) devolver_error("Ocurrieron errores al comprobar la dirección del socio en padrón");
+if (mysqli_num_rows($comprobar_direccion_socio_padron) > 0) {
+    $modificar_direccion_socio_padron = modificar_direccion_socio(2);
+    if ($modificar_direccion_socio_padron == false) devolver_error("Ocurrieron errores al actualizar la dirección del socio en padrón");
 } else {
-    /** Si tiene una dirección registrada se le actualizan */
-    $modificar_direccion_socio = modificar_direccion_socio();
-    if ($modificar_direccion_socio == false) devolver_error("Ocurrieron errores al actualizar la dirección del socio");
+    $registrar_direccion_socio_padron = registrar_direccion_socio($id_socio_padron);
+    if ($registrar_direccion_socio_padron == false) devolver_error("Ocurrieron errores al actualizar la dirección del socio en padrón");
 }
 
 
@@ -70,12 +63,8 @@ $registrar_productos = agregar_padron_producto_socios($observacion, $id_metodo_p
 if ($registrar_productos == false) devolver_error("Ocurrieron errores al registrar los productos");
 
 
-$datos_piscina = mysqli_fetch_assoc($existe_socio_piscina);
-$datos_padron = mysqli_fetch_assoc($existe_socio_padron);
-$id_padron = $datos_piscina != "" ? $datos_piscina['id'] : $datos_padron['id'];
-
 /** Se registra en el historial de venta */
-$registro_historial = registrar_historial_venta($id_padron, "INCREMENTO A TRAVES DE CALL");
+$registro_historial = registrar_historial_venta($id_socio_padron, "INCREMENTO A TRAVES DE CALL");
 if ($registrar_productos == false) devolver_error("Ocurrieron errores al registrar en el historial de venta");
 
 
@@ -90,7 +79,7 @@ echo json_encode($response);
 /** Función para comprobar si existe el socio con $opcion=1 piscina y $opcion=2 padron */
 function comprobar_existe_socio($opcion, $cedula)
 {
-    $conexion = $opcion == 1 ? connection(DB_CALL) : connection(DB, false);
+    $conexion = $opcion == 1 ? connection(DB) : connection(DB, false);
     $tabla = TABLA_PADRON_DATOS_SOCIO;
 
     try {
@@ -106,178 +95,24 @@ function comprobar_existe_socio($opcion, $cedula)
 }
 
 
-/** Función para agregar socio */
-function agregar_padron_datos_socios()
+function actualizar_datos_piscina($datos_actuales_padron)
 {
     $conexion = connection(DB, false);
     $tabla = TABLA_PADRON_DATOS_SOCIO;
 
-    $observacion = $_REQUEST['observacion'];
-    $id_metodo_pago = $_REQUEST['id_metodo_pago'];
-    $metodo_pago = $_REQUEST['metodo_pago'];
-    $importe_total = $_REQUEST['importe_total'];
-    $convenio = $_REQUEST['convenio'];
 
-    /** Datos del beneficiario **/
-    $array_datos_beneficiario = $_REQUEST['array_datos_beneficiario_incremento'];
-    $nombre_completo = $array_datos_beneficiario["nombre_completo"];
-    $celular = $array_datos_beneficiario["celular"];
-    $telefono_fijo = $array_datos_beneficiario["telefono_fijo"];
-    $telefono_alternativo = $array_datos_beneficiario["telefono_alternativo"];
-    $tel = "";
-    if ($celular != "") $tel .= "$celular ";
-    if ($telefono_fijo != "") $tel .= "$telefono_fijo ";
-    if ($telefono_alternativo != "") $tel .= $telefono_alternativo;
-    $tel = trim($tel);
-    $cedula = $array_datos_beneficiario["cedula"];
-    $direccion = $array_datos_beneficiario["direccion"];
-    $id_localidad = $array_datos_beneficiario["id_localidad"];
-    $nombre_localidad = $array_datos_beneficiario["nombre_localidad"];
-    $fecha_nacimiento = $array_datos_beneficiario["fecha_nacimiento"];
-    $edad = date("Y") - date("Y", strtotime($fecha_nacimiento));
-    $correo_electronico = $array_datos_beneficiario["correo_electronico"] != "" ? $array_datos_beneficiario["correo_electronico"] : "";
-    $dato_extra = $array_datos_beneficiario["dato_extra"];
-    /** End Datos del beneficiario **/
+    $radio = $datos_actuales_padron['radio'];
+    $medio_pago_anterior = obtener_metodo_pago($radio);
+    $anio_e_anterior = $datos_actuales_padron['anio_e'];
+    $mes_e_anterior = $datos_actuales_padron['mes_e'];
+    $nombre_titular_anterior = $datos_actuales_padron['nombre_titular'];
+    $importe_total_actual = $datos_actuales_padron['total_importe'];
 
-    /** Datos de la tarjeta **/
-    $array_tarjeta_titular = isset($_REQUEST['array_tarjeta_titular_incremento']) ? $_REQUEST['array_tarjeta_titular_incremento'] : [];
-    $numero_tarjeta = count($array_tarjeta_titular) > 0 ? $array_tarjeta_titular["numero_tarjeta"] : 0;
-    $tipo_tarjeta = count($array_tarjeta_titular) > 0 ? $array_tarjeta_titular["tipo_tarjeta"] : 0;
-    $cvv_tarjeta = count($array_tarjeta_titular) > 0 ? $array_tarjeta_titular["cvv_tarjeta"] : 0;
-    $banco_emisor = count($array_tarjeta_titular) > 0 ? $array_tarjeta_titular["banco_emisor"] : 0;
-    $cedula_titular = (count($array_tarjeta_titular) > 0) ? $array_tarjeta_titular["cedula_titular"] : 0;
-    $nombre_titular = count($array_tarjeta_titular) > 0 ? $array_tarjeta_titular["nombre_titular"] : 0;
-    $nombre_titular = (count($array_tarjeta_titular) > 0) ? $array_tarjeta_titular["nombre_titular"] : 0;
-    $mes_vencimiento = count($array_tarjeta_titular) > 0 ? $array_tarjeta_titular["mes_vencimiento"] : 0;
-    $anio_vencimiento = count($array_tarjeta_titular) > 0 ? $array_tarjeta_titular["anio_vencimiento"] : 0;
-    $email_titular = count($array_tarjeta_titular) > 0 ? $array_tarjeta_titular["email_titular"] : "";
-    $tel_titular = "";
-    if (count($array_tarjeta_titular) > 0) {
-        $celular_tarjeta_titular = $array_tarjeta_titular["celular_titular"];
-        $telefono_tarjeta_titular = $array_tarjeta_titular["telefono_titular"];
-        $tel_titular =
-            ($celular_tarjeta_titular != "" && $telefono_tarjeta_titular != "") ?
-            "$celular_tarjeta_titular $telefono_tarjeta_titular" : (($celular_tarjeta_titular != "" && $telefono_tarjeta_titular == "") ? $celular : (($telefono_tarjeta_titular != "" && $telefono_tarjeta_titular == "") ? $telefono_tarjeta_titular : ""));
-    }
-    /** End Datos de la tarjeta **/
-
-    $obtener_radio_ruta = obtener_radio_ruta($id_metodo_pago, $metodo_pago, $nombre_localidad);
-    $cantidad_radio_ruta = mysqli_num_rows($obtener_radio_ruta);
-    $resultados_radio_ruta = mysqli_fetch_assoc($obtener_radio_ruta);
-    /*
-    La ruta si es convenio con AJUPECS toma la ruta de la misma. Si no tiene convenio con AJUPECS y la localidad tiene varias rutas 
-    se ingresa vació para que en comercial lo actualicen y si se tiene solo una ruta de esa localidad entonces se registra la misma.
-    */
-    //$ruta = ($convenio == "1373") ? "000AJUPECS" : (($cantidad_radio_ruta > 1) ? "" : $resultados_radio_ruta['ruta']);
-    $ruta = $cantidad_radio_ruta > 1 ? "" : $resultados_radio_ruta['ruta'];
-    $radio = $resultados_radio_ruta['radio'];
-
-    $sucursal = "1372";
-    $sucursal_cobranzas = $convenio != "" ? $convenio : $sucursal;
-    $sucursal_cobranza_num = in_array($radio, ["1372", "13728"]) ? '1372' : '99';
-    $empresa_marca = in_array($radio, ["1372", "13728"]) ? '18' : '99';
-    $empresa_rut = "08";
-    $id_relacion = in_array($id_metodo_pago, ["4", "5", "6", "7", "8", "9", "10"]) ? "99-$cedula" : "$empresa_rut-$cedula"; // Si es tarjeta 99-cedula
-    $rutcentralizado = '08';
-    $metodo_pago = obtener_metodo_pago($radio);
-
-    try {
-        $sql = "INSERT INTO {$tabla} SET 
-                id = NULL,
-                nombre = '$nombre_completo',
-                tel = '$tel',
-                cedula = '$cedula',
-                direccion = '$direccion',
-                sucursal = '$sucursal',
-                ruta = '$ruta',
-                radio = '$radio',
-                activo = '1',
-                fecha_nacimiento = '$fecha_nacimiento',
-                edad = '$edad',
-                tarjeta = '$tipo_tarjeta',
-                tipo_tarjeta = '$tipo_tarjeta',
-                numero_tarjeta = '$numero_tarjeta',
-                nombre_titular = '$nombre_titular',
-                cedula_titular = '$cedula_titular',
-                telefono_titular = '$tel_titular',
-                anio_e = '$anio_vencimiento',
-                mes_e = '$mes_vencimiento',
-                cuotas_mercadopago = '0', 
-                sucursal_cobranzas = '$sucursal_cobranzas',
-                sucursal_cobranza_num = '$sucursal_cobranza_num',
-                empresa_marca = '$empresa_marca',
-                flag = '1',
-                count = '0',
-                observaciones = '$observacion',
-                grupo = '0',
-                idrelacion = '$id_relacion',
-                empresa_rut = '$empresa_rut',
-                total_importe = '$importe_total',
-                nactual = '1',
-                `version` = '1',
-                flagchange = '1',
-                rutcentralizado = '$rutcentralizado',
-                `PRINT` = '0',
-                EMITIDO = '1',
-                movimientoabm = 'ALTA',
-                abm = 'ALTA',
-                abmactual = '1',
-                `check` = '0',
-                usuario = '0',
-                usuariod = '0',
-                fechafil = NOW(),
-                radioViejo = '0',
-                extra = '0',
-                nomodifica = '0',
-                metodo_pago = '$metodo_pago',
-                cvv = '$cvv_tarjeta',
-                existe_padron = '0',
-                email = '$correo_electronico',
-                email_titular = '$email_titular',
-                tarjeta_vida = '0',
-                banco_emisor = '$banco_emisor',
-                accion = '1',
-                estado = '1',
-                localidad = '$id_localidad',
-                dato_extra = '$dato_extra',
-                llamada_entrante = '0',
-                origen_venta = '0',
-                alta = '1',
-                es_admin = '0',
-                id_usuario = '0'";
-        $consulta = mysqli_query($conexion, $sql);
-    } catch (\Throwable $error) {
-        registrar_errores($sql, "completar_afiliacion_incremento.php", $error);
-        $consulta = false;
-    }
-
-    $resultados = $consulta ? mysqli_insert_id($conexion) : false;
-
-
-    if ($convenio != "" && $resultados != false) {
-        $id_convenio = obtener_id_convenio($convenio);
-        if ($id_convenio == false) devolver_error("Ocurrieron errores al consultar el convenio");
-
-        $registro_relacion_socio_convenio = registrar_relacion_socio_convenio($resultados, $id_convenio);
-        if ($registro_relacion_socio_convenio == false) devolver_error("Ocurrieron errores al registrar el convenio");
-    }
-
-
-    mysqli_close($conexion);
-    return $resultados;
-}
-
-
-/** Función para actualizar los datos del socio */
-function modificar_padron_socios()
-{
-    $conexion = connection(DB, false);
-    $tabla = TABLA_PADRON_DATOS_SOCIO;
 
     $observacion = $_REQUEST['observacion'];
     $id_metodo_pago = $_REQUEST['id_metodo_pago'];
     $metodo_pago = $_REQUEST['metodo_pago'];
-    $importe_total = $_REQUEST['importe_total'];
+    $importe_total = $_REQUEST['importe_total'] + $importe_total_actual;
     $convenio = $_REQUEST['convenio'];
 
     /** Datos del beneficiario **/
@@ -321,6 +156,13 @@ function modificar_padron_socios()
             "$celular_tarjeta_titular $telefono_tarjeta_titular" : (($celular_tarjeta_titular != "" && $telefono_tarjeta_titular == "") ? $celular : (($telefono_tarjeta_titular != "" && $telefono_tarjeta_titular == "") ? $telefono_tarjeta_titular : ""));
     }
     /** End Datos de la tarjeta **/
+
+    /** Datos Convenio OJAJPU */
+    if (isset($_REQUEST['nombre_titular_onajpu']) && isset($_REQUEST['cedula_titular_onajpu'])) {
+        $nombre_titular = $_REQUEST['nombre_titular_onajpu'];
+        $cedula_titular = $_REQUEST['cedula_titular_onajpu'];
+    }
+    /** End Datos Convenio OJAJPU */
 
     $obtener_radio_ruta = obtener_radio_ruta($id_metodo_pago, $metodo_pago, $nombre_localidad);
     $cantidad_radio_ruta = mysqli_num_rows($obtener_radio_ruta);
@@ -342,70 +184,81 @@ function modificar_padron_socios()
     $rutcentralizado = '08';
     $metodo_pago = obtener_metodo_pago($radio);
 
+    $accion_socio = '3';
+    $print = 0;
+
+    if ($medio_pago_anterior && $medio_pago_anterior != $metodo_pago) {
+        $accion_socio = '4';
+        if ($metodo_pago == '1') $print = 1;
+        if ($metodo_pago == '2') $print = 0;
+    }
+
+    // Comprueba si hay cambios en los datos del socio
+    if (($anio_vencimiento && $anio_vencimiento != $anio_e_anterior) ||
+        ($mes_vencimiento && $mes_vencimiento != $mes_e_anterior) ||
+        ($nombre_titular && $nombre_titular != $nombre_titular_anterior)
+    ) $accion_socio = '4';
+
+
     try {
         $sql = "UPDATE {$tabla} SET
-                 nombre = '$nombre_completo',
-                 tel = '$tel',
-                 direccion = '$direccion',
-                 sucursal = '$sucursal',
-                 ruta = '$ruta',
-                 radio = '$radio',
-                 activo = '1',
-                 fecha_nacimiento = '$fecha_nacimiento',
-                 edad = '$edad',
-                 tarjeta = '$tipo_tarjeta',
-                 tipo_tarjeta = '$tipo_tarjeta',
-                 numero_tarjeta = '$numero_tarjeta',
-                 nombre_titular = '$nombre_titular',
-                 cedula_titular = '$cedula_titular',
-                 telefono_titular = '$tel_titular',
-                 anio_e = '$anio_vencimiento',
-                 mes_e = '$mes_vencimiento',
-                 cuotas_mercadopago = '0', 
-                 sucursal_cobranzas = '$sucursal_cobranzas',
-                 sucursal_cobranza_num = '$sucursal_cobranza_num',
-                 empresa_marca = '$empresa_marca',
-                 flag = '1',
-                 count = '0',
-                 observaciones = '$observacion',
-                 grupo = '0',
-                 idrelacion = '$id_relacion',
-                 empresa_rut = '$empresa_rut',
-                 total_importe = '$importe_total',
-                 nactual = '1',
+                 `nombre` = '$nombre_completo',
+                 `tel` = '$tel',
+                 `direccion` = '$direccion',
+                 `sucursal` = '$sucursal',
+                 `ruta` = '$ruta',
+                 `radio` = '$radio',
+                 `activo` = 1,
+                 `fecha_nacimiento` = '$fecha_nacimiento',
+                 `edad` = $edad,
+                 `tipo_tarjeta` = '$tipo_tarjeta',
+                 `numero_tarjeta` = '$numero_tarjeta',
+                 `nombre_titular` = '$nombre_titular',
+                 `cedula_titular` = '$cedula_titular',
+                 `telefono_titular` = '$tel_titular',
+                 `anio_e` = '$anio_vencimiento',
+                 `mes_e` = '$mes_vencimiento',
+                 `sucursal_cobranzas` = '$sucursal_cobranzas',
+                 `sucursal_cobranza_num` = '$sucursal_cobranza_num',
+                 `empresa_marca` = '$empresa_marca',
+                 `flag` = 1,
+                 `count` = 0,
+                 `observaciones` = '$observacion',
+                 `grupo` = 0,
+                 `idrelacion` = '$id_relacion',
+                 `empresa_rut` = '$empresa_rut',
+                 `total_importe` = '$importe_total',
+                 `nactual` = '1',
                  `version` = '1',
-                 flagchange = '1',
-                 rutcentralizado = '$rutcentralizado',
-                 `PRINT` = '0',
-                 EMITIDO = '1',
-                 movimientoabm = 'ALTA',
-                 abm = 'ALTA',
-                 abmactual = '1',
+                 `flagchange` = '1',
+                 `rutcentralizado` = '$rutcentralizado',
+                 `PRINT` = $print,
+                 `EMITIDO` = '1',
+                 `movimientoabm` = 'ALTA',
+                 `abm` = 'ALTA',
+                 `abmactual` = '1',
                  `check` = '0',
-                 usuario = '0',
-                 usuariod = '0',
-                 fechafil = NOW(),
-                 radioViejo = '0',
-                 extra = '0',
-                 nomodifica = '0',
-                 metodo_pago = '$metodo_pago',
-                 cvv = '$cvv_tarjeta',
-                 existe_padron = '1',
-                 email = '$correo_electronico',
-                 email_titular = '$email_titular',
-                 tarjeta_vida = '0',
-                 banco_emisor = '$banco_emisor',
-                 accion = '4',
-                 estado = '1',
-                 localidad = '$id_localidad',
-                 dato_extra = '3',
-                 llamada_entrante = '0',
-                 origen_venta = '0',
-                 alta = '0',
-                 es_admin = '0',
-                 id_usuario = '0'
+                 `usuario` = '0',
+                 `usuariod` = '0',
+                 `radioViejo` = '0',
+                 `extra` = '0',
+                 `nomodifica` = '0',
+                 `metodo_pago` = '$metodo_pago',
+                 `cvv` = '$cvv_tarjeta',
+                 `existe_padron` = '1',
+                 `email` = '$correo_electronico',
+                 `email_titular` = '$email_titular',
+                 `banco_emisor` = '$banco_emisor',
+                 `accion` = '4',
+                 `estado` = 1,
+                 `localidad` = $id_localidad,
+                 `dato_extra` = '3',
+                 `origen_venta` = '0',
+                 `alta` = '0',
+                 `id_usuario` = '0'
                 WHERE
                  `cedula` = '$cedula'";
+
         $consulta = mysqli_query($conexion, $sql);
     } catch (\Throwable $error) {
         registrar_errores($sql, "completar_afiliacion_incremento.php", $error);
@@ -418,9 +271,9 @@ function modificar_padron_socios()
 
 
 /** Función para comprobar la dirección del socio */
-function comprobar_direccion_socio()
+function comprobar_direccion_socio($opcion)
 {
-    $conexion = connection(DB, false);
+    $conexion = $opcion == 1 ? connection(DB, false) : connection(DB, false);
     $tabla = TABLA_DIRECCIONES_SOCIOS;
 
     $array_datos_beneficiario = $_REQUEST['array_datos_beneficiario_incremento'];
@@ -440,9 +293,9 @@ function comprobar_direccion_socio()
 
 
 /** Función para registrar la dirección del socio */
-function registrar_direccion_socio($id_socio_padron)
+function registrar_direccion_socio($opcion, $id_socio_padron)
 {
-    $conexion = connection(DB, false);
+    $conexion = $opcion == 1 ? connection(DB, false) : connection(DB, false);
     $tabla = TABLA_DIRECCIONES_SOCIOS;
 
     $array_datos_beneficiario = $_REQUEST['array_datos_beneficiario_incremento'];
@@ -478,9 +331,9 @@ function registrar_direccion_socio($id_socio_padron)
 
 
 /** Función para actualizar la dirección del socio */
-function modificar_direccion_socio()
+function modificar_direccion_socio($opcion)
 {
-    $conexion = connection(DB, false);
+    $conexion = $opcion == 1 ? connection(DB, false) : connection(DB, false);
     $tabla = TABLA_DIRECCIONES_SOCIOS;
 
     $array_datos_beneficiario = $_REQUEST['array_datos_beneficiario_incremento'];
@@ -535,7 +388,8 @@ function agregar_padron_producto_socios($observacion, $id_metodo_pago)
         $cantidad_horas = $servicios['cantidad_horas'] != "" ? $servicios['cantidad_horas'] : 8;
         $modulos_horas = $cantidad_horas == 8 ? 1 : ($cantidad_horas == 16 ? 2 : 3);
         $promo_estaciones = $servicios['promo_estaciones'];
-        $numero_promo = obtener_datos_promocion($servicios['numero_promo']);
+        $numero_promo = $servicios['numero_promo'];
+        $numero_promo = !in_array($numero_promo, ["", null]) ? obtener_datos_promocion($numero_promo) : 0;
         $total_importe = $servicios['total_importe'];
         $total_importe = $total_importe != "false" ? $total_importe : calcular_precio_servicio($edad, $id_servicio, $cantidad_horas, $promo_estaciones, $total_importe);
         $empresa_rut = "05";

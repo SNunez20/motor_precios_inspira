@@ -156,14 +156,12 @@ function listar_personas_grupos_familiares() {
       if (cedula == val['cedula']) cedula_registrada++;
     }));
 
-    let btn_badge =
-      cedula_registrada != 0 ?
-        `<span class="badge text-bg-success rounded-pill me-2">✔</span>` :
-        `<button class="badge text-bg-primary rounded-pill" onclick="agregar_datos_beneficiario(true, ${cedula})">Agregar Datos</button>`;
-    let btn_ver_datos =
-      cedula_registrada != 0 ?
-        `<button class="btn btn-sm btn-outline-info" onclick="ver_datos_beneficiario_grupo_familiar(${cedula})">📝</button>` :
-        "";
+    let btn_badge = cedula_registrada != 0 ?
+      `<span class="badge text-bg-success rounded-pill me-2">✔</span>` :
+      `<button class="badge text-bg-primary rounded-pill" onclick="agregar_datos_beneficiario(true, ${cedula})">Agregar Datos</button>`;
+    let btn_ver_datos = cedula_registrada != 0 ?
+      `<button class="btn btn-sm btn-outline-info" onclick="ver_datos_beneficiario_grupo_familiar(${cedula})">📝</button>` :
+      "";
 
     html += `
     <li class="list-group-item d-flex justify-content-between align-items-start">

@@ -35,6 +35,7 @@ foreach ($array_servicios_agregados as $servicios) {
 }
 
 
+
 $id_socio_padron = agregar_padron_datos_socios();
 if ($id_socio_padron == false) devolver_error("Ocurrieron errores al registrar al socio");
 
@@ -63,27 +64,24 @@ if (count($array_servicio_grupo_familiar) > 0) {
         $array_servicio_grupo_familiar,
         $id_metodo_pago
     );
+
+    $agregar_beneficiarios_servicio_padron = agregar_padron_datos_socio_grupo_familiar();
+    if ($agregar_beneficiarios_servicio_padron == false)
+        devolver_error("Ocurrieron errores al registrar a los socios del grupo familiar");
+
     $registrar_productos = agregar_padron_productos_grupo_familiar(
         $array_datos_beneficiario,
         $array_beneficiarios_servicio,
         $array_servicio_grupo_familiar,
         $id_metodo_pago
     );
-    if ($registrar_productos == false) devolver_error("Ocurrieron errores al registrar los productos del grupo familiar");
+    if ($registrar_productos == false)
+        devolver_error("Ocurrieron errores al registrar los productos del grupo familiar");
 }
 
 
 $registro_historial = registrar_historial_venta($id_socio_padron, "ALTA A TRAVES DE CALL");
 if ($registrar_productos == false) devolver_error("Ocurrieron errores al registrar en el historial de venta");
-
-
-if ($convenio != "") {
-    $id_convenio = obtener_id_convenio($convenio);
-    if ($id_convenio == false) devolver_error("Ocurrieron errores al consultar el convenio");
-
-    $registro_relacion_socio_convenio = registrar_relacion_socio_convenio($id_socio_padron, $id_convenio);
-    if ($registro_relacion_socio_convenio == false) devolver_error("Ocurrieron errores al registrar el convenio");
-}
 
 
 
@@ -152,14 +150,11 @@ function agregar_padron_datos_socios()
 
     $obtener_radio_ruta = obtener_radio_ruta($id_metodo_pago, $metodo_pago, $nombre_localidad);
     $cantidad_radio_ruta = mysqli_num_rows($obtener_radio_ruta);
+    if ($id_metodo_pago == 3 && $cantidad_radio_ruta <= 0) devolver_error("No hay cobrador para esta ruta, seleccione otro método de pago");
     $resultados_radio_ruta = mysqli_fetch_assoc($obtener_radio_ruta);
-    /*
-    La ruta si es convenio con AJUPECS toma la ruta de la misma. Si no tiene convenio con AJUPECS y la localidad tiene varias rutas 
-    se ingresa vació para que en comercial lo actualicen y si se tiene solo una ruta de esa localidad entonces se registra la misma.
-    */
-    //$ruta = ($convenio == "1373") ? "000AJUPECS" : (($cantidad_radio_ruta > 1) ? "" : $resultados_radio_ruta['ruta']);
     $ruta = $cantidad_radio_ruta > 1 ? "" : $resultados_radio_ruta['ruta'];
     $radio = $resultados_radio_ruta['radio'];
+
 
     $sucursal = "1372";
     $sucursal_cobranzas = $convenio != "" ? $convenio : $sucursal;
@@ -169,6 +164,7 @@ function agregar_padron_datos_socios()
     $id_relacion = in_array($id_metodo_pago, ["4", "5", "6", "7", "8", "9", "10"]) ? "99-$cedula" : "$empresa_rut-$cedula"; // Si es tarjeta 99-cedula
     $rutcentralizado = '08';
     $metodo_pago = obtener_metodo_pago($radio);
+
 
     try {
         $sql = "INSERT INTO {$tabla} SET 
@@ -223,7 +219,7 @@ function agregar_padron_datos_socios()
                 existe_padron = '0',
                 email = '$correo_electronico',
                 email_titular = '$email_titular',
-                tarjeta_vida = '0',
+                tarjeta_vida = '1',
                 banco_emisor = '$banco_emisor',
                 accion = '1',
                 estado = '1',
@@ -247,13 +243,173 @@ function agregar_padron_datos_socios()
 }
 
 
-function registrar_direccion_socio($id_socio_padron)
+function agregar_padron_datos_socio_grupo_familiar()
+{
+    $conexion = connection(DB, false);
+    $tabla = TABLA_PADRON_DATOS_SOCIO;
+
+
+    $resultados = true;
+
+    foreach ($_REQUEST['array_beneficiarios_servicio'] as $beneficiarios_servicio) {
+        $nombre_completo = $beneficiarios_servicio["nombre"];
+        $cedula = $beneficiarios_servicio["cedula"];
+        $tel = $beneficiarios_servicio["telefono"];
+        $fecha_nacimiento = $beneficiarios_servicio["fecha_nacimiento"];
+        $edad = date("Y") - date("Y", strtotime($fecha_nacimiento));
+
+
+        $observacion = $_REQUEST['observacion'];
+        $id_metodo_pago = $_REQUEST['id_metodo_pago'];
+        $metodo_pago = $_REQUEST['metodo_pago'];
+        $nombre_titular_onajpu = $_REQUEST['nombre_titular_onajpu'];
+        $cedula_titular_onajpu = $_REQUEST['cedula_titular_onajpu'];
+        $array_tarjeta_titular = isset($_REQUEST['array_tarjeta_titular']) ? $_REQUEST['array_tarjeta_titular'] : [];
+        $importe_total = $_REQUEST['importe_total'];
+        $convenio = $_REQUEST['convenio'];
+
+        /** Datos del beneficiario **/
+        $array_datos_beneficiario = $_REQUEST['array_datos_beneficiario'];
+        $cedula_titular_grupo = $array_datos_beneficiario["cedula"];
+        $direccion = $array_datos_beneficiario["direccion"];
+        $id_localidad = $array_datos_beneficiario["id_localidad"];
+        $nombre_localidad = $array_datos_beneficiario["nombre_localidad"];
+        $correo_electronico = $array_datos_beneficiario["correo_electronico"] != "" ? $array_datos_beneficiario["correo_electronico"] : "";
+        $dato_extra = $array_datos_beneficiario["dato_extra"];
+        /** End Datos del beneficiario **/
+
+        /** Datos de la tarjeta **/
+        $numero_tarjeta = count($array_tarjeta_titular) > 0 ? $array_tarjeta_titular["numero_tarjeta"] : 0;
+        $tipo_tarjeta = count($array_tarjeta_titular) > 0 ? $array_tarjeta_titular["tipo_tarjeta"] : 0;
+        $cvv_tarjeta = count($array_tarjeta_titular) > 0 ? $array_tarjeta_titular["cvv_tarjeta"] : 0;
+        $banco_emisor = count($array_tarjeta_titular) > 0 ? $array_tarjeta_titular["banco_emisor"] : 0;
+        $cedula_titular = (count($array_tarjeta_titular) > 0) ? $array_tarjeta_titular["cedula_titular"] : ($id_metodo_pago == 1 ? $cedula_titular_onajpu : 0);
+        $nombre_titular = count($array_tarjeta_titular) > 0 ? $array_tarjeta_titular["nombre_titular"] : 0;
+        $nombre_titular = (count($array_tarjeta_titular) > 0) ? $array_tarjeta_titular["nombre_titular"] : ($id_metodo_pago == 1 ? $nombre_titular_onajpu : 0);
+        $mes_vencimiento = count($array_tarjeta_titular) > 0 ? $array_tarjeta_titular["mes_vencimiento"] : 0;
+        $anio_vencimiento = count($array_tarjeta_titular) > 0 ? $array_tarjeta_titular["anio_vencimiento"] : 0;
+        $email_titular = count($array_tarjeta_titular) > 0 ? $array_tarjeta_titular["email_titular"] : "";
+        $tel_titular = "";
+        if (count($array_tarjeta_titular) > 0) {
+            $celular_tarjeta_titular = $array_tarjeta_titular["celular_titular"];
+            $telefono_tarjeta_titular = $array_tarjeta_titular["telefono_titular"];
+            $tel_titular =
+                ($celular_tarjeta_titular != "" && $telefono_tarjeta_titular != "") ?
+                "$celular_tarjeta_titular $telefono_tarjeta_titular" : (($celular_tarjeta_titular != "" && $telefono_tarjeta_titular == "") ? $celular : (($telefono_tarjeta_titular != "" && $telefono_tarjeta_titular == "") ? $telefono_tarjeta_titular : ""));
+        }
+        /** End Datos de la tarjeta **/
+
+        $obtener_radio_ruta = obtener_radio_ruta($id_metodo_pago, $metodo_pago, $nombre_localidad);
+        $cantidad_radio_ruta = mysqli_num_rows($obtener_radio_ruta);
+        $resultados_radio_ruta = mysqli_fetch_assoc($obtener_radio_ruta);
+        $ruta = $cantidad_radio_ruta > 1 ? "" : $resultados_radio_ruta['ruta'];
+        $radio = $resultados_radio_ruta['radio'];
+
+        $sucursal = "1372";
+        $sucursal_cobranzas = $convenio != "" ? $convenio : $sucursal;
+        $sucursal_cobranza_num = in_array($radio, ["1372", "13728"]) ? '1372' : '99';
+        $empresa_marca = in_array($radio, ["1372", "13728"]) ? '18' : '99';
+        $empresa_rut = "08";
+        $id_relacion = in_array($id_metodo_pago, ["4", "5", "6", "7", "8", "9", "10"]) ? "99-$cedula_titular_grupo" : "$empresa_rut-$cedula_titular_grupo"; // Si es tarjeta 99-cedula
+        $rutcentralizado = '08';
+        $metodo_pago = obtener_metodo_pago($radio);
+
+
+        try {
+            $sql = "INSERT INTO {$tabla} SET 
+                id = NULL,
+                nombre = '$nombre_completo',
+                tel = '$tel',
+                cedula = '$cedula',
+                direccion = '$direccion',
+                sucursal = '$sucursal',
+                ruta = '$ruta',
+                radio = '$radio',
+                activo = '1',
+                fecha_nacimiento = '$fecha_nacimiento',
+                edad = '$edad',
+                tarjeta = '$tipo_tarjeta',
+                tipo_tarjeta = '$tipo_tarjeta',
+                numero_tarjeta = '$numero_tarjeta',
+                nombre_titular = '$nombre_titular',
+                cedula_titular = '$cedula_titular',
+                telefono_titular = '$tel_titular',
+                anio_e = '$anio_vencimiento',
+                mes_e = '$mes_vencimiento',
+                cuotas_mercadopago = '0', 
+                sucursal_cobranzas = '$sucursal_cobranzas',
+                sucursal_cobranza_num = '$sucursal_cobranza_num',
+                empresa_marca = '$empresa_marca',
+                flag = '1',
+                count = '0',
+                observaciones = '$observacion',
+                grupo = '0',
+                idrelacion = '$id_relacion',
+                empresa_rut = '$empresa_rut',
+                total_importe = '0',
+                nactual = '1',
+                `version` = '1',
+                flagchange = '1',
+                rutcentralizado = '$rutcentralizado',
+                `PRINT` = '0',
+                EMITIDO = '1',
+                movimientoabm = 'ALTA',
+                abm = 'ALTA',
+                abmactual = '1',
+                `check` = '0',
+                usuario = '0',
+                usuariod = '0',
+                fechafil = NOW(),
+                radioViejo = '0',
+                extra = '0',
+                nomodifica = '0',
+                metodo_pago = '$metodo_pago',
+                cvv = '$cvv_tarjeta',
+                existe_padron = '0',
+                email = '$correo_electronico',
+                email_titular = '$email_titular',
+                tarjeta_vida = '1',
+                banco_emisor = '$banco_emisor',
+                accion = '1',
+                estado = '1',
+                localidad = '$id_localidad',
+                dato_extra = '$dato_extra',
+                llamada_entrante = '0',
+                origen_venta = '0',
+                alta = '1',
+                es_admin = '0',
+                id_usuario = '0'";
+            $consulta = mysqli_query($conexion, $sql);
+        } catch (\Throwable $error) {
+            registrar_errores($sql, "completar_afiliacion_individual.php", $error);
+            $consulta = false;
+        }
+
+
+        $resultados = $consulta ? mysqli_insert_id($conexion) : false;
+
+        if ($resultados != false) {
+            $registro_historial = registrar_historial_venta($resultados, "ALTA A TRAVES DE CALL");
+            if ($registro_historial == false) devolver_error("Ocurrieron errores al registrar en el historial de venta");
+
+            $registrar_direccion = registrar_direccion_socio($resultados, $cedula);
+            if ($registrar_direccion == false) devolver_error("Ocurrieron errores al registrar la dirección del socio");
+        }
+    }
+
+
+    mysqli_close($conexion);
+    return $resultados;
+}
+
+
+function registrar_direccion_socio($id_socio_padron, $cedula_param = false)
 {
     $conexion = connection(DB, false);
     $tabla = TABLA_DIRECCIONES_SOCIOS;
 
     $array_datos_beneficiario = $_REQUEST['array_datos_beneficiario'];
-    $cedula = $array_datos_beneficiario["cedula"];
+    $cedula = $cedula_param != false ? $cedula_param : $array_datos_beneficiario["cedula"];
     $calle = mysqli_real_escape_string($conexion, $array_datos_beneficiario["calle"]);
     $puerta = $array_datos_beneficiario["puerta"];
     $manzana = $array_datos_beneficiario["manzana"];
@@ -301,17 +457,20 @@ function agregar_padron_producto_socios($datos_beneficiario, $observacion, $arra
         $cantidad_horas = $servicios['cantidad_horas'] != "" ? $servicios['cantidad_horas'] : 8;
         $modulos_horas = $cantidad_horas == 8 ? 1 : ($cantidad_horas == 16 ? 2 : 3);
         $promo_estaciones = $servicios['promo_estaciones'];
-        $numero_promo = obtener_datos_promocion($servicios['numero_promo']);
+        $numero_promo = $servicios['numero_promo'];
+        $numero_promo = !in_array($numero_promo, ["", null]) ? obtener_datos_promocion($numero_promo) : 0;
         $total_importe = $servicios['total_importe'];
         $total_importe = $total_importe != "false" ? $total_importe : calcular_precio_servicio($edad, $id_servicio, $cantidad_horas, $promo_estaciones, $total_importe);
         $empresa_rut = "05";
         $id_relacion = in_array($id_metodo_pago, ["4", "5", "6", "7", "8", "9", "10"]) ? "99-$cedula" : "$empresa_rut-$cedula"; // Si es tarjeta 99-cedula
-        if ($id_servicio == "13") $numeros_servicio = "63";
-        if ($id_servicio == "15") $numeros_servicio = "65";
+
 
         //Recorro los números de servicio
         while ($row = mysqli_fetch_assoc($numeros_servicio)) {
             $servicio = $row["numero_servicio"];
+            if ($id_servicio == "13") $servicio = "63";
+            if ($id_servicio == "15") $servicio = "65";
+
             //Registro los productos en módulos de 8 horas
             for ($i = 0; $i < $modulos_horas; $i++) {
                 try {
@@ -392,15 +551,17 @@ function agregar_padron_productos_grupo_familiar($datos_beneficiario, $array_ben
             $cantidad_horas = $array_servicios['cantidad_horas'] != "" ? $array_servicios['cantidad_horas'] : 8;
             $modulos_horas = $cantidad_horas == 8 ? 1 : ($cantidad_horas == 16 ? 2 : 3);
             $promo_estaciones = $array_servicios['promo_estaciones'] != "false" ? $array_servicios['promo_estaciones'] : "";
-            $numero_promo = obtener_datos_promocion($array_servicios['numero_promo']);
+            $numero_promo = $array_servicios['numero_promo'];
+            $numero_promo = !in_array($numero_promo, ["", null]) ? obtener_datos_promocion($numero_promo) : 0;
             $total_importe = $array_servicios['total_importe'];
             $total_importe = $total_importe != "false" ? $total_importe : calcular_precio_servicio($edad, $id_servicio, $cantidad_horas, $promo_estaciones, $total_importe);
-            if ($id_servicio == "13") $numeros_servicio = "64";
-            if ($id_servicio == "15") $numeros_servicio = "66";
+
 
             //Recorro los números de servicio
             while ($row = mysqli_fetch_assoc($numeros_servicio)) {
                 $servicio = $row["numero_servicio"];
+                if ($id_servicio == "13") $servicio = "64";
+                if ($id_servicio == "15") $servicio = "66";
 
                 //Registro los productos en módulos de 8 horas
                 for ($i = 0; $i < $modulos_horas; $i++) {

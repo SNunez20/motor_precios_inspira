@@ -9,6 +9,16 @@ function agregar_beneficiarios(openModal = false, numero_servicio) {
     let telefono = $("#txt_telefono_beneficiario_servicio").val();
     let fecha_nacimiento = $("#txt_fecha_nacimiento_beneficiario_servicio").val();
     let servicio = $("#txt_numero_servicio_beneficiarios_servicio").val();
+    let cedula_ya_existe = 0;
+    let edad_mayor_65 = 0;
+    let edad_mayor_50 = 0;
+    let edad_entre_18_y_49 = 0;
+    let fecha_nacimiento_titular = array_datos_beneficiario.fecha_nacimiento;
+    let edad_titular = fecha_actual("fecha").substr(0, 4) - fecha_nacimiento_titular.substr(0, 4);
+
+    if (edad_titular > 65) edad_mayor_65 = edad_mayor_65 + 1;
+    if (edad_titular >= 50 && edad_titular <= 65) edad_mayor_50 = edad_mayor_50 + 1;
+    if (edad_titular >= 18 && edad_titular <= 49) edad_entre_18_y_49 = edad_entre_18_y_49 + 1;
 
     if (nombre == "") {
       error("Debe ingresar el nombre del beneficiario");
@@ -44,21 +54,15 @@ function agregar_beneficiarios(openModal = false, numero_servicio) {
           - max 2 mayor de 50
           - Sin límite entre 18 y 49
       */
-      let cedula_ya_existe = 0;
-      let edad_mayor_65 = 0;
-      let edad_mayor_50 = 0;
-      let edad_entre_18_y_49 = 0;
       array_beneficiarios_servicio.map((val) => {
         if (val["cedula"] == cedula) cedula_ya_existe = 1;
         if (val["edad"] > 65) edad_mayor_65 = edad_mayor_65 + 1;
-        if (val["edad"] >= 50 && val["edad"] <= 65)
-          edad_mayor_50 = edad_mayor_50 + 1;
-        if (val["edad"] >= 18 && val["edad"] <= 49)
-          edad_entre_18_y_49 = edad_entre_18_y_49 + 1;
+        if (val["edad"] >= 50 && val["edad"] <= 65) edad_mayor_50 = edad_mayor_50 + 1;
+        if (val["edad"] >= 18 && val["edad"] <= 49) edad_entre_18_y_49 = edad_entre_18_y_49 + 1;
       });
 
       if (cedula_ya_existe != 0) {
-        error(`Ya se registro un beneficiario con la cedula "${cedula}"`);
+        error(`Ya se registro un beneficiario con la cédula ${cedula}`);
       } else if (edad < 18) {
         error("El beneficiario debe ser mayor de 18 años");
       } else if (servicio == "13" && edad > 65 && edad_mayor_65 >= 1) {

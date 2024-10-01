@@ -120,17 +120,3 @@ function vaciar_datos_titular_tarjeta() {
   $("#txt_celular_titular_tarjeta_pago").val("");
   $("#txt_telefono_titular_tarjeta_pago").val("");
 }
-
-
-function llenar_datos_tarjeta() {
-  $("#txt_numero_tarjeta_pago").val("5222222222222222");
-  $("#txt_numero_cvv_tarjeta_pago").val("123");
-  $("#select_banco_emisor_tarjeta_pago").val("1");
-  $("#txt_cedula_titular_tarjeta_pago").val("53249776");
-  $("#txt_nombre_titular_tarjeta_pago").val("Sebastian Nuñez");
-  $("#select_mes_vencimiento_tarjeta_pago").val("08");
-  $("#select_anio_vencimiento_tarjeta_pago").val("2024");
-  $("#txt_correo_electronico_titular_tarjeta_pago").val("sebanunez019@gmail.com");
-  $("#txt_celular_titular_tarjeta_pago").val("093300741");
-  $("#txt_telefono_titular_tarjeta_pago").val("52657894");
-}

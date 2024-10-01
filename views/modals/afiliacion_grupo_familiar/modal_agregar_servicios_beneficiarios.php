@@ -1,5 +1,5 @@
 <!-- Modal -->
-<div class="modal fade" id="modal_agregar_servicios_beneficiario_grupo_familiar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="modal_agregar_servicios_beneficiario_grupo_familiar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header bg-success">
@@ -61,7 +61,7 @@
 
 
                     <div class="col-auto div_lista_de_precios_grupo_familiar">
-                        <div class="form-check">
+                        <div class="form-check mt-3">
                             <input class="form-check-input" type="checkbox" value="" id="chbox_lista_de_precios_grupo_familiar">
                             <label class="form-check-label" for="chbox_lista_de_precios_grupo_familiar">
                                 Sanatorio Estaciones
@@ -70,7 +70,7 @@
                     </div>
 
                     <div class="col-auto div_socio_adeom_grupo_familiar">
-                        <div class="form-check">
+                        <div class="form-check mt-3">
                             <input class="form-check-input" type="checkbox" value="" id="chbox_socio_adeom_grupo_familiar">
                             <label class="form-check-label" for="chbox_socio_adeom_grupo_familiar">
                                 Socio por Adeom

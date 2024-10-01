@@ -69,6 +69,7 @@ function mostrar_divs_servicios(servicio) {
   });
 }
 
+
 function mostrar_promociones(res_mostrar_promociones, servicio) {
   let dato_extra = $("#select_dato_extra").val();
 
@@ -85,6 +86,7 @@ function mostrar_promociones(res_mostrar_promociones, servicio) {
     $(".div_promocion_servicios").css("display", "none");
   }
 }
+
 
 function select_promociones_servicios(servicio) {
   let html = `<option value="" selected>Seleccione una opción</option>`;
@@ -110,6 +112,7 @@ function select_promociones_servicios(servicio) {
     },
   });
 }
+
 
 function agregar_servicio() {
   let nro_servicio = $("#select_servicios_servicios").val();
@@ -165,6 +168,7 @@ function agregar_servicio() {
   }
 }
 
+
 function listar_servicios_agregados(calcular_precio = true) {
   $("#div_lista_servicios").html("");
   $("#select_servicios_servicios").val("");
@@ -181,19 +185,13 @@ function listar_servicios_agregados(calcular_precio = true) {
     let numero_servicio = val["numero_servicio"];
     let nombre_servicio = val["nombre_servicio"];
 
-    let promocion =
-      nombre_promo != ""
-        ? `/ <span class="text-danger">${nombre_promo}</span>`
-        : "";
+    let promocion = nombre_promo != "" ? `/ <span class="text-danger">${nombre_promo}</span>` : "";
     let horas = cantidad_horas != "" ? `/ ${cantidad_horas}hrs` : "";
-    promo_estaciones = promo_estaciones
-      ? `/ <span class="text-success">Sanatorio Estaciones</span>`
-      : "";
+    promo_estaciones = promo_estaciones ? `/ <span class="text-success">Sanatorio Estaciones</span>` : "";
 
-    let btn_agregar_beneficiario =
-      numero_servicio == 13 || numero_servicio == 15
-        ? `- <button class="btn btn-outline-success btn-sm" onclick="agregar_beneficiarios(true, ${numero_servicio})">Agregar Beneficiarios</button>`
-        : "";
+    let btn_agregar_beneficiario = ["13", "15"].includes(numero_servicio)
+      ? `- <button class="btn btn-outline-success btn-sm" onclick="agregar_beneficiarios(true, ${numero_servicio})">Agregar Beneficiarios</button>`
+      : "";
 
     document.getElementById("div_lista_servicios").innerHTML += `
         <li class="list-group-item d-flex justify-content-between align-items-start">
@@ -207,8 +205,9 @@ function listar_servicios_agregados(calcular_precio = true) {
   });
 }
 
+
 function quitar_servicio(numero_servicio, nombre_servicio) {
-  if (numero_servicio == 13 || numero_servicio == 15) {
+  if (["13", "15"].includes(numero_servicio)) {
     $("#txt_nombre_beneficiario_servicio").val("");
     $("#txt_cedula_beneficiario_servicio").val("");
     $("#txt_telefono_beneficiario_servicio").val("");
@@ -216,10 +215,9 @@ function quitar_servicio(numero_servicio, nombre_servicio) {
     array_beneficiarios_servicio = [];
     listar_beneficiarios_agregados();
   }
+
   $("#span_total_precio_servicios").text("?");
-  document.getElementById(
-    "select_servicios_servicios"
-  ).innerHTML += `<option value="${numero_servicio}">${nombre_servicio}</option>`;
+  document.getElementById("select_servicios_servicios").innerHTML += `<option value="${numero_servicio}">${nombre_servicio}</option>`;
 
   let selectList = $("#select_servicios_servicios option");
   selectList.sort(function (a, b) {
@@ -232,6 +230,7 @@ function quitar_servicio(numero_servicio, nombre_servicio) {
   );
   listar_servicios_agregados();
 }
+
 
 function calcular_total() {
   $("#span_total_precio_servicios").text("?");
@@ -249,10 +248,7 @@ function calcular_total() {
       },
       dataType: "JSON",
       beforeSend: function () {
-        showLoading();
-      },
-      complete: function () {
-        showLoading(false);
+        mostrar_spinning("span_total_precio_servicios", "danger");
       },
       success: function (response) {
         if (response.error == false) {
@@ -265,6 +261,7 @@ function calcular_total() {
     });
   }
 }
+
 
 function vaciar_datos_servicio() {
   //Elimino los datos del array

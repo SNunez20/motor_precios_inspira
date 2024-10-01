@@ -7,9 +7,7 @@ $datos = $_REQUEST['array_servicios_agregados'];
 if ($fecha_nacimiento == "" || !is_array($datos) || count($datos) <= 0) devolver_error(ERROR_GENERAL);
 
 
-$fecha_actual = date("Y-m-d");
-$edad = $fecha_actual - $fecha_nacimiento;
-
+$edad = date("Y") - date("Y", strtotime($fecha_nacimiento));
 
 $precio_total = 0;
 foreach ($datos as $data) {

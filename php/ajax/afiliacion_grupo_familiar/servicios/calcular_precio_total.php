@@ -5,6 +5,7 @@ include_once '../../../configuraciones.php';
 $cedula = $_REQUEST['cedula'];
 $fecha_nacimiento = $_REQUEST['fecha_nacimiento'];
 $datos = $_REQUEST['array_servicios_agregados_grupo_familiar'];
+$beneficiarios = $_REQUEST['array_datos_beneficiario_grupo_familiar'];
 if ($cedula == "" || $fecha_nacimiento == "" || !is_array($datos) || count($datos) <= 0) devolver_error(ERROR_GENERAL);
 
 
@@ -20,6 +21,17 @@ foreach ($datos as $data) {
         $total_importe = $data['total_importe'];
 
         $precio = calcular_precio_servicio($edad, $numero_servicio, $cantidad_horas, $promo_estaciones, $total_importe);
+
+        if ($numero_servicio == "01") {
+            $porcentaje = 0;
+            if (count($beneficiarios) == 2) $porcentaje = 0.10; //10%
+            if (count($beneficiarios) == 3) $porcentaje = 0.15; //15%
+            if (count($beneficiarios) >= 4) $porcentaje = 0.20; //20%
+
+            $descuento = $precio * $porcentaje;
+            $precio = round($precio - $descuento);
+        }
+
         $precio_total = $precio_total + $precio;
     }
 }

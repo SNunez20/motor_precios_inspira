@@ -27,7 +27,7 @@ if ($opcion == 2) {
         }
 
         $response['sin_convenios'] = true;
-    }else{
+    } else {
         $convenio = mysqli_fetch_assoc($socio_tiene_convenio)['sucursal_cobranza_num'];
         $obtener_datos = obtener_convenios("sucursal_cobranzas = '$convenio' AND");
         while ($row = mysqli_fetch_assoc($obtener_datos)) {
@@ -75,7 +75,7 @@ function comprobar_convenio_socio($cedula)
     $tabla = TABLA_PADRON_DATOS_SOCIO;
 
     try {
-        $sql = "SELECT sucursal_cobranza_num FROM padron_datos_socio WHERE cedula = '$cedula' AND sucursal_cobranza_num IN (1373, 1374, 1375, 1376)";
+        $sql = "SELECT sucursal_cobranza_num FROM {$tabla} WHERE cedula = '$cedula' AND sucursal_cobranza_num IN (1373, 1374, 1375, 1376)";
         $consulta = mysqli_query($conexion, $sql);
     } catch (\Throwable $error) {
         registrar_errores($sql, "select_convenios.php", $error);

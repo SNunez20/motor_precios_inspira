@@ -8,7 +8,6 @@ function acciones_formulario_grupo_familiar_formulario_1() {
         listar_personas_grupo_familiar(false);
     }
 
-
     $("#btn_atras_datos_venta_grupo_familiar").html(`<button type="button" class="btn btn-primary" onclick="volver_modal_tipo_afiliacion_grupo_familiar()">⬅ Atrás</button>`);
     $("#btn_siguente_datos_venta_grupo_familiar").html(`<button type="button" class="btn btn-primary" onclick="validar_formulario_grupo_familiar_1()">Siguiente ➡</button>`);
 }
@@ -44,30 +43,28 @@ function agregar_persona_grupo_familiar() {
             },
             dataType: "JSON",
             success: function (response) {
-                if(response.error == false){
-                    if(response.socio == false){
-                    $("#txt_cedula_persona_gropo_familiar").val("");
-                    array_personas_grupo_familiar.push({ cedula: cedula });
-                    listar_personas_grupo_familiar();
-                    }else{
+                if (response.error == false) {
+                    if (response.socio == false) {
+                        $("#txt_cedula_persona_gropo_familiar").val("");
+                        array_personas_grupo_familiar.push({ cedula: cedula });
+                        listar_personas_grupo_familiar();
+                    } else {
                         error("La cédula ingresada pertenece a un socio activo");
                     }
-                }else{
+                } else {
                     error(response.mensaje);
                 }
             }
         });
-        
+
     }
 }
 
 
 function listar_personas_grupo_familiar() {
     $("#div_lista_personas_grupo_familiar").html("");
-
     array_personas_grupo_familiar.map((val) => {
         let cedula = val["cedula"];
-
         document.getElementById("div_lista_personas_grupo_familiar").innerHTML += `
           <li class="list-group-item d-flex justify-content-between align-items-start list-group-item-info">
               <div class="ms-2 me-auto">
@@ -103,10 +100,10 @@ function validar_formulario_grupo_familiar_1() {
             },
             beforeSend: function () {
                 showLoading();
-              },
-              complete: function () {
+            },
+            complete: function () {
                 showLoading(false);
-              },
+            },
             dataType: "JSON",
             success: function (response) {
                 if (response.error === false) {

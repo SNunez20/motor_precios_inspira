@@ -140,17 +140,3 @@ function vaciar_datos_titular_tarjeta_grupo_familiar() {
   $("#txt_celular_titular_tarjeta_pago_grupo_familiar").val("");
   $("#txt_telefono_titular_tarjeta_pago_grupo_familiar").val("");
 }
-
-
-function llenar_datos_tarjeta_grupo_familiar() {
-  $("#txt_numero_tarjeta_pago_grupo_familiar").val("5222222222222222");
-  $("#txt_numero_cvv_tarjeta_pago_grupo_familiar").val("123");
-  $("#select_banco_emisor_tarjeta_pago_grupo_familiar").val("1");
-  $("#txt_cedula_titular_tarjeta_pago_grupo_familiar").val("53249776");
-  $("#txt_nombre_titular_tarjeta_pago_grupo_familiar").val("Sebastian Nuñez");
-  $("#select_mes_vencimiento_tarjeta_pago_grupo_familiar").val("08");
-  $("#select_anio_vencimiento_tarjeta_pago_grupo_familiar").val("2024");
-  $("#txt_correo_electronico_titular_tarjeta_pago_grupo_familiar").val("sebanunez019@gmail.com");
-  $("#txt_celular_titular_tarjeta_pago_grupo_familiar").val("093300741");
-  $("#txt_telefono_titular_tarjeta_pago_grupo_familiar").val("52657894");
-}
