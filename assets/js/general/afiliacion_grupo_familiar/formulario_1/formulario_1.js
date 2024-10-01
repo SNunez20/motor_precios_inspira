@@ -35,9 +35,29 @@ function agregar_persona_grupo_familiar() {
     } else if (cedula_ya_existe > 0) {
         error("La cédula ingresada ya fue agregada");
     } else {
-        $("#txt_cedula_persona_gropo_familiar").val("");
-        array_personas_grupo_familiar.push({ cedula: cedula });
-        listar_personas_grupo_familiar();
+
+        $.ajax({
+            type: "GET",
+            url: `${url_ajax}/comprobar_cedula_padron.php`,
+            data: {
+                cedula
+            },
+            dataType: "JSON",
+            success: function (response) {
+                if(response.error == false){
+                    if(response.socio == false){
+                    $("#txt_cedula_persona_gropo_familiar").val("");
+                    array_personas_grupo_familiar.push({ cedula: cedula });
+                    listar_personas_grupo_familiar();
+                    }else{
+                        error("La cédula ingresada pertenece a un socio activo");
+                    }
+                }else{
+                    error(response.mensaje);
+                }
+            }
+        });
+        
     }
 }
 

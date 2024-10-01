@@ -174,10 +174,11 @@ function agregar_padron_datos_socios()
 
     $sucursal = "1372";
     $sucursal_cobranzas = $convenio != "" ? $convenio : $sucursal;
-    $empresa_marca = '99';
-    $empresa_rut = "05";
+    $sucursal_cobranza_num = in_array($radio, ["1372", "13728"]) ? '1372' : '99';
+    $empresa_marca = in_array($radio, ["1372", "13728"]) ? '18' : '99';
+    $empresa_rut = "08";
     $id_relacion = in_array($id_metodo_pago, ["4", "5", "6", "7", "8", "9", "10"]) ? "99-$cedula" : "$empresa_rut-$cedula"; // Si es tarjeta 99-cedula
-    $rutcentralizado = $id_metodo_pago == '3' ? $empresa_rut : '99';
+    $rutcentralizado = '08';
     $metodo_pago = obtener_metodo_pago($radio);
 
     try {
@@ -203,7 +204,7 @@ function agregar_padron_datos_socios()
                 mes_e = '$mes_vencimiento',
                 cuotas_mercadopago = '0', 
                 sucursal_cobranzas = '$sucursal_cobranzas',
-                sucursal_cobranza_num = '$sucursal',
+                sucursal_cobranza_num = '$sucursal_cobranza_num',
                 empresa_marca = '$empresa_marca',
                 flag = '1',
                 count = '0',
@@ -334,10 +335,11 @@ function modificar_padron_socios()
 
     $sucursal = "1372";
     $sucursal_cobranzas = $convenio != "" ? $convenio : $sucursal;
-    $empresa_marca = '99';
-    $empresa_rut = "05";
+    $sucursal_cobranza_num = in_array($radio, ["1372", "13728"]) ? '1372' : '99';
+    $empresa_marca = in_array($radio, ["1372", "13728"]) ? '18' : '99';
+    $empresa_rut = "08";
     $id_relacion = in_array($id_metodo_pago, ["4", "5", "6", "7", "8", "9", "10"]) ? "99-$cedula" : "$empresa_rut-$cedula"; // Si es tarjeta 99-cedula
-    $rutcentralizado = $id_metodo_pago == '3' ? $empresa_rut : '99';
+    $rutcentralizado = '08';
     $metodo_pago = obtener_metodo_pago($radio);
 
     try {
@@ -361,7 +363,7 @@ function modificar_padron_socios()
                  mes_e = '$mes_vencimiento',
                  cuotas_mercadopago = '0', 
                  sucursal_cobranzas = '$sucursal_cobranzas',
-                 sucursal_cobranza_num = '$sucursal',
+                 sucursal_cobranza_num = '$sucursal_cobranza_num',
                  empresa_marca = '$empresa_marca',
                  flag = '1',
                  count = '0',

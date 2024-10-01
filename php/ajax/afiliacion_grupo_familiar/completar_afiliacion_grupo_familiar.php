@@ -122,10 +122,11 @@ function agregar_padron_datos_socios($cedula_persona, $id_metodo_pago, $metodo_p
 
     $sucursal = "1372";
     $sucursal_cobranzas = $convenio != "" ? $convenio : $sucursal;
-    $empresa_marca = '99';
-    $empresa_rut = "05";
+    $sucursal_cobranza_num = in_array($radio, ["1372", "13728"]) ? '1372' : '99';
+    $empresa_marca = in_array($radio, ["1372", "13728"]) ? '18' : '99';
+    $empresa_rut = "08";
     $id_relacion = "99-$cedula"; // Si es tarjeta 99-cedula
-    $rutcentralizado = '99';
+    $rutcentralizado = '08';
     $metodo_pago = obtener_metodo_pago($radio);
 
     try {
@@ -151,7 +152,7 @@ function agregar_padron_datos_socios($cedula_persona, $id_metodo_pago, $metodo_p
                 mes_e = '$mes_vencimiento',
                 cuotas_mercadopago = '0', 
                 sucursal_cobranzas = '$sucursal_cobranzas',
-                sucursal_cobranza_num = '$sucursal',
+                sucursal_cobranza_num = '$sucursal_cobranza_num',
                 empresa_marca = '$empresa_marca',
                 flag = '1',
                 count = '0',
