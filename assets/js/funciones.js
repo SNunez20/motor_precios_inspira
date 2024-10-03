@@ -387,7 +387,7 @@ function select_convenios_servicios(opcion, div) {
 
 function mostrar_spinning(div, color) {
   $(`#${div}`).html(`
-    <div class="btn-toolbar">
+    <div class="btn-toolbar ms-3 mb-3">
       <div class="spinner-border text-${color}" role="status">
         <span class="visually-hidden">Cargando ...</span>
       </div>
