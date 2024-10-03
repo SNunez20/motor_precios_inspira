@@ -49,7 +49,7 @@ function agregar_persona_grupo_familiar() {
                         array_personas_grupo_familiar.push({ cedula: cedula });
                         listar_personas_grupo_familiar();
                     } else {
-                        error("La cédula ingresada pertenece a un socio activo");
+                        error("La cédula ingresada ya está en proceso de afiliación");
                     }
                 } else {
                     error(response.mensaje);

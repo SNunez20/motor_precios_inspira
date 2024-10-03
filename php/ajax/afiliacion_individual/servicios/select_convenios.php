@@ -71,7 +71,7 @@ function obtener_convenios($where = "")
 
 function comprobar_convenio_socio($cedula)
 {
-    $conexion = connection(DB);
+    $conexion = connection(DB_CALL);
     $tabla = TABLA_PADRON_DATOS_SOCIO;
 
     try {

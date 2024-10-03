@@ -94,7 +94,7 @@ echo json_encode($response);
 
 function agregar_padron_datos_socios()
 {
-    $conexion = connection(DB, false);
+    $conexion = connection(DB_CALL, false);
     $tabla = TABLA_PADRON_DATOS_SOCIO;
 
     $array_datos_beneficiario = $_REQUEST['array_datos_beneficiario'];
@@ -245,7 +245,7 @@ function agregar_padron_datos_socios()
 
 function agregar_padron_datos_socio_grupo_familiar()
 {
-    $conexion = connection(DB, false);
+    $conexion = connection(DB_CALL, false);
     $tabla = TABLA_PADRON_DATOS_SOCIO;
 
 
@@ -405,7 +405,7 @@ function agregar_padron_datos_socio_grupo_familiar()
 
 function registrar_direccion_socio($id_socio_padron, $cedula_param = false)
 {
-    $conexion = connection(DB, false);
+    $conexion = connection(DB_CALL, false);
     $tabla = TABLA_DIRECCIONES_SOCIOS;
 
     $array_datos_beneficiario = $_REQUEST['array_datos_beneficiario'];
@@ -442,7 +442,7 @@ function registrar_direccion_socio($id_socio_padron, $cedula_param = false)
 
 function agregar_padron_producto_socios($datos_beneficiario, $observacion, $array_servicios, $id_metodo_pago)
 {
-    $conexion = connection(DB, false);
+    $conexion = connection(DB_CALL, false);
     $tabla = TABLA_PADRON_PRODUCTO_SOCIO;
 
     $cedula = $datos_beneficiario['cedula'];
@@ -530,7 +530,7 @@ function agregar_padron_producto_socios($datos_beneficiario, $observacion, $arra
 
 function agregar_padron_productos_grupo_familiar($datos_beneficiario, $array_beneficiarios_servicio, $array_servicio_grupo_familiar, $id_metodo_pago)
 {
-    $conexion = connection(DB, false);
+    $conexion = connection(DB_CALL, false);
     $tabla = TABLA_PADRON_PRODUCTO_SOCIO;
 
     $cedula = $datos_beneficiario['cedula'];

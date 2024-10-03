@@ -49,7 +49,7 @@ echo json_encode($response);
 
 function agregar_padron_datos_socios($cedula_persona, $id_metodo_pago, $metodo_pago)
 {
-    $conexion = connection(DB, false);
+    $conexion = connection(DB_CALL, false);
     $tabla = TABLA_PADRON_DATOS_SOCIO;
 
 
@@ -224,7 +224,7 @@ function agregar_padron_datos_socios($cedula_persona, $id_metodo_pago, $metodo_p
 
 function registrar_direccion_socio($id_socio_padron, $cedula)
 {
-    $conexion = connection(DB, false);
+    $conexion = connection(DB_CALL, false);
     $tabla = TABLA_DIRECCIONES_SOCIOS;
 
 
@@ -265,7 +265,7 @@ function registrar_direccion_socio($id_socio_padron, $cedula)
 
 function agregar_padron_producto_socios($cedula_persona, $id_metodo_pago)
 {
-    $conexion = connection(DB, false);
+    $conexion = connection(DB_CALL, false);
     $tabla = TABLA_PADRON_PRODUCTO_SOCIO;
 
 

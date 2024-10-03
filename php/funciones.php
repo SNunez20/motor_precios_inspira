@@ -20,7 +20,7 @@ function registrar_errores($consulta, $nombre_archivo, $error)
 /** Obtener datos de padron del socio **/
 function obtener_datos_padron_del_socio($cedula, $opcion = 1)
 {
-    $conexion = $opcion == 1 ? connection(DB) : connection(DB);
+    $conexion = $opcion == 1 ? connection(DB_ABMMOD) : connection(DB_CALL);
     $tabla = TABLA_PADRON_DATOS_SOCIO;
 
     try {
@@ -41,7 +41,7 @@ function obtener_datos_padron_del_socio($cedula, $opcion = 1)
 /** Obtener datos de padron del socio **/
 function obtener_productos_del_socio($cedula)
 {
-    $conexion = connection(DB);
+    $conexion = connection(DB_ABMMOD);
     $tabla = TABLA_PADRON_PRODUCTO_SOCIO;
 
     try {
@@ -202,7 +202,7 @@ function calcular_precio_servicio($edad, $id_servicio, $cantidad_horas, $promo_e
 
 function registrar_historial_venta($id_padron, $observacion)
 {
-    $conexion = connection(DB, false);
+    $conexion = connection(DB_CALL, false);
     $tabla = TABLA_HISTORICO_VENTA;
 
     try {

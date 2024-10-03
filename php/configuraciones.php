@@ -46,8 +46,8 @@ const DB_ABMMOD_PROD = array("host" => "192.168.1.250", "user" => "root", "passw
 
 //DEV O DB TEST
 const DB_TEST        = array("host" => "192.168.13.10", "user" => "root", "password" => "sist.2k8", "db" => "motor_de_precios_inspira");
-const DB_CALL_TEST   = array("host" => "192.168.1.13", "user" => "root", "password" => "sist.2k8", "db" => "call");
-const DB_ABMMOD_TEST = array("host" => "192.168.1.250", "user" => "root", "password" => "sist.2k8", "db" => "abmmod");
+const DB_CALL_TEST   = array("host" => "192.168.1.13", "user" => "root", "password" => "sist.2k8", "db" => "call_test");
+const DB_ABMMOD_TEST = array("host" => "192.168.1.250", "user" => "root", "password" => "sist.2k8", "db" => "abmmod_test");
 
 
 //BD PROD O TEST

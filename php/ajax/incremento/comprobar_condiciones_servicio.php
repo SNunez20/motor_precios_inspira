@@ -16,7 +16,7 @@ if ($cedula == "" || $numero_servicio_nuevo == "") devolver_error(ERROR_GENERAL)
 
 
 $comprobacion = comprobar_servicio($cedula, $numero_servicio_nuevo);
-if ($comprobacion == false) devolver_error("Ocurrieron errores al comprobar el servicio");
+if (!$comprobacion) devolver_error("Ocurrieron errores al comprobar el servicio");
 $cantidad_registros = mysqli_num_rows($comprobacion);
 
 if ($cantidad_registros > 0) {
@@ -28,6 +28,19 @@ if ($cantidad_registros > 0) {
 
         $validar_ingreso_servicio = comprobar_servicio_ya_ingresado($numero_servicio_registrado);
         if ($validar_ingreso_servicio == 0) devolver_error("El servicio ya fue agregado");
+
+        /*
+        if ($numero_servicio_registrado == "01") {
+            $es_promo_estaciones = comprobar_promo_estaciones($importe);
+            if (!$es_promo_estaciones) devolver_error("Ocurrieron errores al corroborar Sanatorio Estaciones");
+
+            if (mysqli_num_rows($es_promo_estaciones) > 0 && $promo_estaciones_nuevo == "false") {
+                devolver_error("El servicio esta con Sanatorio Estaciones, deberá incrementar con la misma linea de precios");
+            } else if (mysqli_num_rows($es_promo_estaciones) <= 0 && $promo_estaciones_nuevo == "true") {
+                devolver_error("El servicio no esta registrado con Sanatorio Estaciones");
+            }
+        }
+        */
 
         if ($numero_servicio_registrado != $numero_servicio_nuevo) devolver_error(ERROR_GENERAL);
         if ($horas == 24) devolver_error("No se le pueden agregar más horas a este servicio");
@@ -47,7 +60,7 @@ echo json_encode($response);
 
 function comprobar_servicio($cedula, $numero_servicio)
 {
-    $conexion = connection(DB);
+    $conexion = connection(DB_CALL, false);
     $tabla = TABLA_PADRON_PRODUCTO_SOCIO;
 
     //Con el "NOT IN" filtro los servicios son "duplicados" porque se ofrecen en paquetes EJ. 06 y 08 es Reintegro Opcional.
@@ -67,7 +80,7 @@ function comprobar_servicio($cedula, $numero_servicio)
 
 function comprobar_servicio_ya_ingresado($numero_servicio)
 {
-    $conexion = connection(DB);
+    $conexion = connection(DB, false);
     $tabla1 = TABLA_SERVICIOS;
     $tabla2 = TABLA_NUMEROS_SERVICIOS;
 
@@ -82,4 +95,21 @@ function comprobar_servicio_ya_ingresado($numero_servicio)
     $resultados = $consulta != false ? mysqli_fetch_assoc($consulta)['horas_servicio'] : false;
 
     return $resultados;
+}
+
+
+function comprobar_promo_estaciones($importe)
+{
+    $conexion = connection(DB, false);
+    $tabla = TABLA_PRECIOS_PROMO_ESTACIONES;
+
+    try {
+        $sql = "SELECT * FROM {$tabla} WHERE precio = '$importe' LIMIT 1";
+        $consulta = mysqli_query($conexion, $sql);
+    } catch (\Throwable $error) {
+        registrar_errores($sql, "comprobar_condiciones_servicio.php", $error);
+        $consulta = false;
+    }
+
+    return $consulta;
 }

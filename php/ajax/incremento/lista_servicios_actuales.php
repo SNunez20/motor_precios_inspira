@@ -32,7 +32,7 @@ while ($row = mysqli_fetch_assoc($servicios_actuales)) {
     $cod_promo = $cod_promo != "" ? "- 🚀 $nombre_promo" : "";
     $promo_estaciones = 0;
     if ($numero_servicio == "01" && in_array($importe, ["530", "1060", "1590"])) $promo_estaciones++;
-    $promo_estaciones = $promo_estaciones > 0 ? "- <span class='text-success'>Promo Estaciones</span>" : "";
+    $promo_estaciones = $promo_estaciones > 0 ? "- <span class='text-success'>Sanatorio Estaciones</span>" : "";
 
     $lista_servicios[] = "<li class='list-group-item list-group-item-secondary'><strong>" . $count++ . ".</strong> {$nombre_servicio} - ⏰ {$horas}hrs {$promo_estaciones} {$cod_promo}</li>";
     $total_importe = $total_importe + $importe;
@@ -55,7 +55,7 @@ echo json_encode($response);
 
 function obtener_servicios_actuales($opcion, $cedula)
 {
-    $conexion = $opcion == 1 ? connection(DB) : connection(DB);
+    $conexion = $opcion == 1 ? connection(DB_CALL) : connection(DB_ABMMOD);
     $tabla = TABLA_PADRON_PRODUCTO_SOCIO;
 
     //Con el "NOT IN" filtro los servicios son "duplicados" porque se ofrecen en paquetes EJ. 06 y 08 es Reintegro Opcional.

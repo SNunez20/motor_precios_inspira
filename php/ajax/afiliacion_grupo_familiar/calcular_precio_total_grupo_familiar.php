@@ -21,7 +21,7 @@ foreach ($array_servicios as $servicio) {
     $total_importe = $servicio['total_importe'];
     $precio = calcular_precio_servicio($edad, $id_servicio, $cantidad_horas, $promo_estaciones, $total_importe);
 
-    if ($id_servicio == 1) {
+    if ($id_servicio == 1 && $promo_estaciones == "false") {
         $porcentaje = 0;
         if (count($beneficiarios) == 2) $porcentaje = 0.10; //10%
         if (count($beneficiarios) == 3) $porcentaje = 0.15; //15%

@@ -79,7 +79,7 @@ echo json_encode($response);
 /** Función para comprobar si existe el socio con $opcion=1 piscina y $opcion=2 padron */
 function comprobar_existe_socio($opcion, $cedula)
 {
-    $conexion = $opcion == 1 ? connection(DB) : connection(DB, false);
+    $conexion = $opcion == 1 ? connection(DB_CALL) : connection(DB_ABMMOD, false);
     $tabla = TABLA_PADRON_DATOS_SOCIO;
 
     try {
@@ -97,7 +97,7 @@ function comprobar_existe_socio($opcion, $cedula)
 
 function actualizar_datos_piscina($datos_actuales_padron)
 {
-    $conexion = connection(DB, false);
+    $conexion = connection(DB_CALL, false);
     $tabla = TABLA_PADRON_DATOS_SOCIO;
 
 
@@ -273,7 +273,7 @@ function actualizar_datos_piscina($datos_actuales_padron)
 /** Función para comprobar la dirección del socio */
 function comprobar_direccion_socio($opcion)
 {
-    $conexion = $opcion == 1 ? connection(DB, false) : connection(DB, false);
+    $conexion = $opcion == 1 ? connection(DB_CALL, false) : connection(DB_ABMMOD, false);
     $tabla = TABLA_DIRECCIONES_SOCIOS;
 
     $array_datos_beneficiario = $_REQUEST['array_datos_beneficiario_incremento'];
@@ -295,7 +295,7 @@ function comprobar_direccion_socio($opcion)
 /** Función para registrar la dirección del socio */
 function registrar_direccion_socio($opcion, $id_socio_padron)
 {
-    $conexion = $opcion == 1 ? connection(DB, false) : connection(DB, false);
+    $conexion = $opcion == 1 ? connection(DB_CALL, false) : connection(DB_ABMMOD, false);
     $tabla = TABLA_DIRECCIONES_SOCIOS;
 
     $array_datos_beneficiario = $_REQUEST['array_datos_beneficiario_incremento'];
@@ -333,7 +333,7 @@ function registrar_direccion_socio($opcion, $id_socio_padron)
 /** Función para actualizar la dirección del socio */
 function modificar_direccion_socio($opcion)
 {
-    $conexion = $opcion == 1 ? connection(DB, false) : connection(DB, false);
+    $conexion = $opcion == 1 ? connection(DB_CALL, false) : connection(DB_ABMMOD, false);
     $tabla = TABLA_DIRECCIONES_SOCIOS;
 
     $array_datos_beneficiario = $_REQUEST['array_datos_beneficiario_incremento'];
@@ -371,7 +371,7 @@ function modificar_direccion_socio($opcion)
 /** Función para agregar los productos */
 function agregar_padron_producto_socios($observacion, $id_metodo_pago)
 {
-    $conexion = connection(DB, false);
+    $conexion = connection(DB_CALL, false);
     $tabla = TABLA_PADRON_PRODUCTO_SOCIO;
 
     $datos_beneficiario = $_REQUEST['array_datos_beneficiario_incremento'];
