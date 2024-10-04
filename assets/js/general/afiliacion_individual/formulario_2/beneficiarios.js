@@ -30,7 +30,7 @@ function agregar_beneficiarios(openModal = false, numero_servicio) {
       error("La cédula del beneficiario no puede ser igual a la del titular del servicio");
     } else if (telefono == "") {
       error("Debe ingresar el teléfono del beneficiario");
-    } else if (!comprobarTelefono(telefono, 52) && !comprobarCelular(telefono)) {
+    } else if (!comprobarTelefono(telefono, 52) && !comprobarTelefono(telefono, 45) && !comprobarCelular(telefono)) {
       error("Debe ingresar un teléfono válido");
     } else if (fecha_nacimiento == "") {
       error("Debe ingresar la fecha de nacimiento del beneficiario");

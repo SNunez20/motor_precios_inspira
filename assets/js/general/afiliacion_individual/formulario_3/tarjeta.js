@@ -53,7 +53,7 @@ function validar_datos_tarjeta(openModal = false) {
       error("Debe ingresar un celular válido");
     } else if (telefono_titular == "") {
       error("Debe ingresar el teléfono del titular de la tarjeta");
-    } else if (!comprobarTelefono(telefono_titular, 52)) {
+    } else if (!comprobarTelefono(telefono_titular, 52) && !comprobarTelefono(telefono_titular, 45)) {
       error("Debe ingresar un teléfono válido");
     } else if (array_tarjeta_titular.length > 0) {
       error("Ya ha ingresado los datos del titular de la tarjeta");

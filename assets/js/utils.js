@@ -22,9 +22,7 @@ function comprobarCelular(celular) {
 
 function comprobarTelefono(telefono, codigo) {
   let primeros_dos_digitos = telefono.substring(0, 2);
-  return primeros_dos_digitos != `${codigo}` || telefono.length != 8
-    ? false
-    : true;
+  return primeros_dos_digitos != `${codigo}` || telefono.length != 8 ? false : true;
 }
 
 function validarEmail(email) {
@@ -148,13 +146,13 @@ function mostrarLoader(opcion = "M") {
   $loader =
     opcion == "M"
       ? Swal.fire({
-          title: "Cargando...",
-          allowEscapeKey: false,
-          allowOutsideClick: false,
-          didOpen: () => {
-            swal.showLoading();
-          },
-        })
+        title: "Cargando...",
+        allowEscapeKey: false,
+        allowOutsideClick: false,
+        didOpen: () => {
+          swal.showLoading();
+        },
+      })
       : $loader.close();
 }
 
