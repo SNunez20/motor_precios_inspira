@@ -27,12 +27,12 @@ while ($row = mysqli_fetch_assoc($servicios_actuales)) {
     $nombre_servicio = obtener_datos_servicio($numero_servicio);
     $horas = $row['horas'];
     $importe = $row['importe'];
-    $cod_promo = $row['cod_promo'];
-    $nombre_promo = in_array($cod_promo, ["", null]) ? obtener_nombre_promo($cod_promo) : "";
-    $cod_promo = $cod_promo != "" ? "- 🚀 $nombre_promo" : "";
     $promo_estaciones = 0;
     if ($numero_servicio == "01" && in_array($importe, ["530", "1060", "1590"])) $promo_estaciones++;
     $promo_estaciones = $promo_estaciones > 0 ? "- <span class='text-success'>Sanatorio Estaciones</span>" : "";
+    $cod_promo = $row['cod_promo'];
+    $nombre_promo = in_array($cod_promo, ["", null]) ? obtener_nombre_promo($cod_promo) : "";
+    $cod_promo = $cod_promo != "" && !$nombre_promo ? "- 🚀 $nombre_promo" : "";
 
     $lista_servicios[] = "<li class='list-group-item list-group-item-secondary'><strong>" . $count++ . ".</strong> {$nombre_servicio} - ⏰ {$horas}hrs {$promo_estaciones} {$cod_promo}</li>";
     $total_importe = $total_importe + $importe;

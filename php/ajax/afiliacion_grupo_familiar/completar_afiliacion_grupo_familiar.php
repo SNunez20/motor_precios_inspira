@@ -113,7 +113,7 @@ function agregar_padron_datos_socios($cedula_persona, $id_metodo_pago, $metodo_p
     $array_tarjeta_titular = $_REQUEST['array_tarjeta_titular_grupo_familiar'];
     $numero_tarjeta = $array_tarjeta_titular["numero_tarjeta"];
     $tipo_tarjeta = $array_tarjeta_titular["tipo_tarjeta"];
-    $cvv_tarjeta = $array_tarjeta_titular["cvv_tarjeta"];
+    $cvv_tarjeta = $array_tarjeta_titular["cvv_tarjeta"] != "" ? $array_tarjeta_titular["cvv_tarjeta"] : 0;
     $banco_emisor = $array_tarjeta_titular["banco_emisor"];
     $cedula_titular = $array_tarjeta_titular["cedula_titular"];
     $nombre_titular = $array_tarjeta_titular["nombre_titular"];

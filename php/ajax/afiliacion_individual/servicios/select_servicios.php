@@ -25,7 +25,8 @@ function obtener_servicios($opcion)
     $conexion = connection(DB);
     $tabla = TABLA_SERVICIOS;
 
-    $where = $opcion == 2 ? "id NOT IN (13, 15) AND" : "";
+    //$where = $opcion == 2 ? "id NOT IN (13, 15) AND" : "";
+    $where = $opcion == 2 ? "id IN (1, 2) AND" : "";
 
     try {
         $sql = "SELECT id, nombre_servicio AS 'nombre' FROM {$tabla} WHERE $where mostrar = 1 AND activo = 1";

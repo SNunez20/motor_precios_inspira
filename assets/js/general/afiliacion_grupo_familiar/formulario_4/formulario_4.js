@@ -87,9 +87,11 @@ function afiliar_socios_grupo_familiar() {
   }
 }
 
+
 function vaciar_datos_formulario_3_grupo_familiar() {
   $("#select_metodo_de_pago_pago_grupo_familiar").val("");
 }
+
 
 function vaciar_todo_alta_grupo_familiar() {
   vaciar_datos_personas_grupo_familiar();

@@ -50,12 +50,13 @@ function contador_caracteres(div, span, cantidad) {
 }
 
 
-function select_localidades(div) {
-  let html = `<option value="" selected>Seleccione una opción</option>`;
+function select_localidades(div, valor_actual = false) {
+  let html = "";
+  if (!valor_actual) html = `<option value="" selected>Seleccione una opción</option>`;
 
   $.ajax({
     type: "GET",
-    url: `${url_ajax}afiliacion_individual/beneficiario/select_localidades.php`,
+    url: `${url_ajax}afiliacion_individual/beneficiario/select_localidades.php?valor_actual=${valor_actual}`,
     dataType: "JSON",
     beforeSend: function () {
       showLoading();
