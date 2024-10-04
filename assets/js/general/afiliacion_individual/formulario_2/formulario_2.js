@@ -2,7 +2,12 @@ let array_servicios_agregados = [];
 function acciones_formulario_nueva_alta_2() {
   if (array_servicios_agregados.length <= 0) {
     select_convenios_servicios(1, "select_convenio_servicios");
-    select_servicios(1, "select_servicios_servicios");
+
+
+    let dato_extra = $("#select_dato_extra").val();
+    if (dato_extra == 2) select_servicios(2, "select_servicios_servicios");
+    else select_servicios(1, "select_servicios_servicios");
+
 
     $("#div_lista_servicios").html("");
     $(".div_cantidad_horas_servicios").css("display", "none");
@@ -14,6 +19,7 @@ function acciones_formulario_nueva_alta_2() {
   } else {
     listar_servicios_agregados(false);
   }
+
 
   $("#select_servicios_servicios").on("change", function () {
     let servicio = $("#select_servicios_servicios").val();
