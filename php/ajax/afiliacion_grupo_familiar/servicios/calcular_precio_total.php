@@ -9,7 +9,7 @@ $beneficiarios = $_REQUEST['array_datos_beneficiario_grupo_familiar'];
 if ($cedula == "" || $fecha_nacimiento == "" || !is_array($datos) || count($datos) <= 0) devolver_error(ERROR_GENERAL);
 
 
-$edad = date("Y") - date("Y", strtotime($fecha_nacimiento));
+$edad = calcular_edad($fecha_nacimiento);
 
 
 $precio_total = 0;

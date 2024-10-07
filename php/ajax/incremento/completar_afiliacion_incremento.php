@@ -131,7 +131,7 @@ function actualizar_datos_piscina($datos_actuales_padron)
     $id_localidad = $array_datos_beneficiario["id_localidad"];
     $nombre_localidad = $array_datos_beneficiario["nombre_localidad"];
     $fecha_nacimiento = $array_datos_beneficiario["fecha_nacimiento"];
-    $edad = date("Y") - date("Y", strtotime($fecha_nacimiento));
+    $edad = calcular_edad($fecha_nacimiento);
     $correo_electronico = $array_datos_beneficiario["correo_electronico"] != "" ? $array_datos_beneficiario["correo_electronico"] : "";
     /** End Datos del beneficiario **/
 
@@ -377,7 +377,7 @@ function agregar_padron_producto_socios($observacion, $id_metodo_pago)
     $datos_beneficiario = $_REQUEST['array_datos_beneficiario_incremento'];
     $cedula = $datos_beneficiario['cedula'];
     $fecha_nacimiento = $datos_beneficiario['fecha_nacimiento'];
-    $edad = date("Y") - date("Y", strtotime($fecha_nacimiento));
+    $edad = calcular_edad($fecha_nacimiento);
 
     $array_servicios = $_REQUEST['array_servicios_agregados_incremento'];
     $errores = 0;

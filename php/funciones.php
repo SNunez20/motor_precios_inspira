@@ -144,7 +144,7 @@ function calcular_precios($numero_servicio, $cantidad_horas, $edad)
 
     $where = "";
     if (in_array($numero_servicio, [1, 2])) {
-        $where = $edad < 65 ? "AND $edad BETWEEN edad_desde AND edad_hasta" : "AND edad_desde > 65";
+        $where = $edad <= 65 ? "AND $edad BETWEEN edad_desde AND edad_hasta" : "AND edad_desde > 65";
     }
 
     try {
@@ -602,4 +602,13 @@ function texto_con_boton_ver_mas($campo, $largo)
         $campo = mb_convert_encoding($campo, 'UTF-8', 'UTF-8');
     }
     return $campo;
+}
+
+
+function calcular_edad($birthday)
+{
+    $cumpleanos = new DateTime($birthday);
+    $hoy = new DateTime();
+    $annos = $hoy->diff($cumpleanos);
+    return $annos->y;
 }

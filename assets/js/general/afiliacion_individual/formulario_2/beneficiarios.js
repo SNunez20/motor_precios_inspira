@@ -14,7 +14,7 @@ function agregar_beneficiarios(openModal = false, numero_servicio) {
     let edad_mayor_50 = 0;
     let edad_entre_18_y_49 = 0;
     let fecha_nacimiento_titular = array_datos_beneficiario.fecha_nacimiento;
-    let edad_titular = fecha_actual("fecha").substr(0, 4) - fecha_nacimiento_titular.substr(0, 4);
+    let edad_titular = calcular_edad(fecha_nacimiento_titular);
 
     if (edad_titular > 65) edad_mayor_65 = edad_mayor_65 + 1;
     if (edad_titular >= 50 && edad_titular <= 65) edad_mayor_50 = edad_mayor_50 + 1;
@@ -30,7 +30,7 @@ function agregar_beneficiarios(openModal = false, numero_servicio) {
       error("La cédula del beneficiario no puede ser igual a la del titular del servicio");
     } else if (telefono == "") {
       error("Debe ingresar el teléfono del beneficiario");
-    } else if (!comprobarTelefono(telefono, 52) && !comprobarTelefono(telefono, 45) && !comprobarCelular(telefono)) {
+    } else if ((telefono.length < 8 || telefono.length > 9) && !comprobarCelular(telefono)) {
       error("Debe ingresar un teléfono válido");
     } else if (fecha_nacimiento == "") {
       error("Debe ingresar la fecha de nacimiento del beneficiario");
@@ -41,7 +41,7 @@ function agregar_beneficiarios(openModal = false, numero_servicio) {
     } else if (servicio == "15" && array_beneficiarios_servicio.length > 4) {
       error("Para el servicio G6 se permiten hasta 5 beneficiarios");
     } else {
-      let edad = fecha_actual("fecha").substr(0, 4) - fecha_nacimiento.substr(0, 4);
+      let edad = calcular_edad(fecha_nacimiento);
       /* Servicio #13 - G5 (Grupo familiar 1):
           - Hasta 4 beneficiarios
           - max 1 mayor de 65

@@ -70,7 +70,7 @@ function agregar_padron_datos_socios($cedula_persona, $id_metodo_pago, $metodo_p
             $id_localidad = $datos_beneficiario["id_localidad"];
             $nombre_localidad = $datos_beneficiario["nombre_localidad"];
             $fecha_nacimiento = $datos_beneficiario["fecha_nacimiento"];
-            $edad = date("Y") - date("Y", strtotime($fecha_nacimiento));
+            $edad = calcular_edad($fecha_nacimiento);
             $correo_electronico = $datos_beneficiario["correo_electronico"] != "" ? $datos_beneficiario["correo_electronico"] : "";
             $dato_extra = $datos_beneficiario["dato_extra"];
             /** End Datos del beneficiario **/
@@ -282,7 +282,7 @@ function agregar_padron_producto_socios($cedula_persona, $id_metodo_pago)
             if ($telefono_alternativo != "") $tel .= $telefono_alternativo;
             $tel = trim($tel);
             $fecha_nacimiento = $datos_beneficiario["fecha_nacimiento"];
-            $edad = date("Y") - date("Y", strtotime($fecha_nacimiento));
+            $edad = calcular_edad($fecha_nacimiento);
             /** End Datos del beneficiario **/
         }
     }

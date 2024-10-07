@@ -106,9 +106,9 @@ function agregar_datos_beneficiario(openModal = false, cedula = null) {
       error("Debe ingresar un celular");
     } else if (!comprobarCelular(celular)) {
       error("Debe ingresar un celular válido");
-    } else if (telefono_fijo != "" && !comprobarTelefono(telefono_fijo, 52) && !comprobarTelefono(telefono_fijo, 45)) {
+    } else if (telefono_fijo != "" && (telefono_fijo.length < 8 || telefono_fijo.length > 9)) {
       error("Debe ingresar un telefono fijo válido");
-    } else if (telefono_alternativo != "" && !comprobarTelefono(telefono_alternativo, 52) && !comprobarTelefono(telefono_alternativo, 45)) {
+    } else if (telefono_alternativo != "" && (telefono_alternativo.length < 8 || telefono_alternativo.length > 9)) {
       error("Debe ingresar un telefono alternativo válido");
     } else if (dato_extra == "") {
       error("Debe seleccionar un dato adicional");
@@ -259,9 +259,9 @@ function editar_datos_beneficiario(openModal, cedula) {
       error("Debe ingresar un celular");
     } else if (!comprobarCelular(celular)) {
       error("Debe ingresar un celular válido");
-    } else if (telefono_fijo != "" && !comprobarTelefono(telefono_fijo, 52) && !comprobarTelefono(telefono_fijo, 45)) {
+    } else if (telefono_fijo != "" && (telefono_fijo.length < 8 || telefono_fijo.length > 9)) {
       error("Debe ingresar un telefono fijo válido");
-    } else if (telefono_alternativo != "" && !comprobarTelefono(telefono_alternativo, 52) && !comprobarTelefono(telefono_alternativo, 45)) {
+    } else if (telefono_alternativo != "" && (telefono_alternativo.length < 8 || telefono_alternativo.length > 9)) {
       error("Debe ingresar un telefono alternativo válido");
     } else if (dato_extra == "") {
       error("Debe seleccionar un dato adicional");

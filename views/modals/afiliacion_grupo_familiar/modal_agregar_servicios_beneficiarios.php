@@ -84,7 +84,9 @@
                             <select class="form-select" id="select_promocion_servicios_grupo_familiar" aria-label="Seleccione un servicio">
                             </select>
                             <label for="select_promocion_servicios_grupo_familiar">Seleccione una promo:</label>
-                            <div class="form-text" id="basic-addon4">Esta promoción sólo es válida para pago con tarjeta.</div>
+                            <div class="form-text d-none" id="basic-addon4">
+                                Esta promoción sólo es válida para pago con tarjeta.
+                            </div>
                         </div>
                     </div>
 

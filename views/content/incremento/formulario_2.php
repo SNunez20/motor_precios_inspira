@@ -92,7 +92,7 @@
             <select class="form-select" id="select_promocion_servicios_incremento" aria-label="Seleccione un servicio">
             </select>
             <label for="select_promocion_servicios_incremento">Seleccione una promo:</label>
-            <div class="form-text" id="basic-addon4">
+            <div class="form-text d-none" id="basic-addon4">
                 Esta promoción sólo es válida para pago con tarjeta.
             </div>
         </div>

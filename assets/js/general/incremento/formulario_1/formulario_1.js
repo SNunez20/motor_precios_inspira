@@ -99,9 +99,9 @@ function validar_nuevo_incremento_1() {
         error("Debe ingresar un celular");
     } else if (!comprobarCelular(celular)) {
         error("Debe ingresar un celular válido");
-    } else if (telefono_fijo != "" && !comprobarTelefono(telefono_fijo, 52) && !comprobarTelefono(telefono_fijo, 45)) {
+    } else if (telefono_fijo != "" && (telefono_fijo.length < 8 || telefono_fijo.length > 9)) {
         error("Debe ingresar un telefono fijo válido");
-    } else if (telefono_alternativo != "" && !comprobarTelefono(telefono_alternativo, 52) && !comprobarTelefono(telefono_alternativo, 45)) {
+    } else if (telefono_alternativo != "" && (telefono_alternativo.length < 8 || telefono_alternativo.length > 9)) {
         error("Debe ingresar un telefono alternativo válido");
     } else {
         let direccion = formar_direccion(radio_buttons, apartamento, calle, puerta, esquina, manzana, solar);

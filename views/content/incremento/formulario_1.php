@@ -175,7 +175,7 @@
 
     <div class="col-auto">
         <div class="form-floating mb-4">
-            <input type="text" class="form-control solo_numeros" id="txt_telefono_alternativo_beneficiario_incremento" placeholder="Teléfono alternativo" maxlength="8">
+            <input type="text" class="form-control solo_numeros" id="txt_telefono_alternativo_beneficiario_incremento" placeholder="Teléfono alternativo" maxlength="9">
             <label for="txt_telefono_alternativo_beneficiario_incremento">Teléfono alternativo:</label>
         </div>
     </div>

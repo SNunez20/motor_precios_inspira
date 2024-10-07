@@ -22,7 +22,9 @@ function comprobarCelular(celular) {
 
 function comprobarTelefono(telefono, codigo) {
   let primeros_dos_digitos = telefono.substring(0, 2);
-  return primeros_dos_digitos != `${codigo}` || telefono.length != 8 ? false : true;
+  return primeros_dos_digitos != `${codigo}` || telefono.length != 8
+    ? false
+    : true;
 }
 
 function validarEmail(email) {
@@ -146,13 +148,13 @@ function mostrarLoader(opcion = "M") {
   $loader =
     opcion == "M"
       ? Swal.fire({
-        title: "Cargando...",
-        allowEscapeKey: false,
-        allowOutsideClick: false,
-        didOpen: () => {
-          swal.showLoading();
-        },
-      })
+          title: "Cargando...",
+          allowEscapeKey: false,
+          allowOutsideClick: false,
+          didOpen: () => {
+            swal.showLoading();
+          },
+        })
       : $loader.close();
 }
 
@@ -255,4 +257,17 @@ function maxLengthCheck(object) {
 
 function cambiar_formato_fecha(fecha) {
   return fecha.replace(/^(\d{4})-(\d{2})-(\d{2})$/g, "$3/$2/$1");
+}
+
+function calcular_edad(birthday) {
+  birthday = cambiar_formato_fecha(birthday);
+  var birthday_arr = birthday.split("/");
+  var birthday_date = new Date(
+    birthday_arr[2],
+    birthday_arr[1] - 1,
+    birthday_arr[0]
+  );
+  var ageDifMs = Date.now() - birthday_date.getTime();
+  var ageDate = new Date(ageDifMs);
+  return Math.abs(ageDate.getUTCFullYear() - 1970);
 }

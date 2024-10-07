@@ -1,22 +1,42 @@
-Panel de Nicolas:
--> Tabla (Nombre, Cédula, Radio, Ruta, Sucursal, Método de pago, Estado, Fecha de carga, observación, Tipo Afiliación).
--> Acciones en tabla:
-	*Editar datos.
-	*Ver y editar servicios contratados.
-	*Aprobar.
-	*Seleccionar ruta.
-	*Historial.
-	*Eliminar afiliación.
-	*Marcar como pendiente.
--> Filtros: (Fecha desde y hasta, Ruta, Sucursal, Método de pago, Estado, Tipo de Afiliación).
+➡ FALTA LOCALIDAD: CARDONA, SEMILLERO. ✅
+* Se agregaron las localidades.
 
 
-
--> Modal editar datos: 
-*Datos: (Nombre, Cédula, Télefono, Localidad, Sucursal, Rutas, Dirección, Radio, Observación, Fecha nacimiento, Tarjeta, Tipo tarjeta, Nombre títular, Cédula títular, Télefono títular, Año vencimiento, Mes vencimiento, Cuotas mercadopago, CVV, Count, Email, Email títular, Total importe $UY, Cédula vendedor, Nombre vendedor, Títular grupo familiar, Banco emisor).
-*Acciones: (Confirmar dirección, Ver servicios contratados).
+➡ PCI PROMO COMPETENCIA: FIGURA UN ITEM PROMO SOLO VALIDA PARA TARJETA. QUE SERIA? ✅
+* Se quito porque en el manual no figura solo pago por tarjeta.
 
 
+➡ FALTA PARA INGRESAR COMPROBANTE(NICOLAS NOS INFORME QUE ES AL IGUAL QUE VIDA, AGREGAR COMPROBANTE DE COMPETENCIA. ESO LO APRUEBA VERONICA DEMEDICCI NO CALIDAD).
+* Esto por ahora que lo escaneen y lo manden manual ya que se tienen que modificar otros paneles y quedaría como pendiente.
 
--> Modal ver y editar servicios contratados:
-*Datos: (Lista de productos con sus horas y importe, permitir actualizar observación y mostrar precio total).
+
+➡ FALTA PARA LOGUEAR VENDEDOR QUE REALIZA LA VENTA, PARA COMISIONES.
+* Se va a agregar un login para identificar al vendedor y para eso se necesitan las cedulas de los vendedores.
+
+
+➡ DONDE INGRESAMOS SI ES UN CONTRATO GRABADO (POR EJ SI LO PONEMOS EN OBSERVACIONES Y REALIZA MODIFICACION SE BORRA Y ES IMPORTANTE SABERLO SIEMPRE).
+* No se puede agregar esta opción porque se tiene que ajustar al formato de vida, se tiene que agregar en la observación.
+
+
+➡ INGRESAMOS CI DE SOCIO Y NO NOS TIRA INCREMENTO (YA ESTA EN PADRON Y BV OK, CI 28490504).
+* No aparecía el formulario de incremento porque no estaba en el padrón de testing.
+
+
+➡ AGREGAR PARA INGRESAR BARRIO EN LA DIRECCION. ❌
+* No se puede agregar esta opción porque se tiene que ajustar al formato de vida.
+
+
+➡ INCREMENTO 27892121 (FIGURA CON LO ACTUAL 16HS POR $490 Y SERIA $980) Y EN EL TOTAL SOLO SUMA LO QUE INCREMENTO $530. ❌
+* La cédula es invalida.
+
+
+➡ ALTA DE 65 AÑOS CI 33590587 SISTEMA LO TOMA COMO MAS DE 66 AÑOS POR $935 Y TENDRIA QUE SER POR $715. ❌
+* No esta registrado.
+
+
+➡ TELEFONO FIJO DA COMO NO VALIDO (45369893 CARDONA- 45226270 COLONIA). ✅
+* Se arreglo para que puedan ingresar.
+
+
+➡ TELEFONO ALTERNATIVO NO PERMITE CELULAR. ✅
+* Ya pueden ingresar celular en teléfono alternativo.

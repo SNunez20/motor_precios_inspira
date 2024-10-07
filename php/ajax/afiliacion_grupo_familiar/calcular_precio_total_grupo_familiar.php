@@ -11,7 +11,7 @@ foreach ($array_servicios as $servicio) {
     foreach ($beneficiarios as $datos_beneficiario) {
         if ($servicio['cedula'] == $datos_beneficiario['cedula']) {
             $fecha_nacimiento = $datos_beneficiario["fecha_nacimiento"];
-            $edad = date("Y") - date("Y", strtotime($fecha_nacimiento));
+            $edad = calcular_edad($fecha_nacimiento);
         }
     }
 

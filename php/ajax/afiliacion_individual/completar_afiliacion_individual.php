@@ -122,7 +122,7 @@ function agregar_padron_datos_socios()
     $id_localidad = $array_datos_beneficiario["id_localidad"];
     $nombre_localidad = $array_datos_beneficiario["nombre_localidad"];
     $fecha_nacimiento = $array_datos_beneficiario["fecha_nacimiento"];
-    $edad = date("Y") - date("Y", strtotime($fecha_nacimiento));
+    $edad = calcular_edad($fecha_nacimiento);
     $correo_electronico = $array_datos_beneficiario["correo_electronico"] != "" ? $array_datos_beneficiario["correo_electronico"] : "";
     $dato_extra = $array_datos_beneficiario["dato_extra"];
     /** End Datos del beneficiario **/
@@ -256,7 +256,7 @@ function agregar_padron_datos_socio_grupo_familiar()
         $cedula = $beneficiarios_servicio["cedula"];
         $tel = $beneficiarios_servicio["telefono"];
         $fecha_nacimiento = $beneficiarios_servicio["fecha_nacimiento"];
-        $edad = date("Y") - date("Y", strtotime($fecha_nacimiento));
+        $edad = calcular_edad($fecha_nacimiento);
 
 
         $observacion = $_REQUEST['observacion'];
@@ -447,7 +447,7 @@ function agregar_padron_producto_socios($datos_beneficiario, $observacion, $arra
 
     $cedula = $datos_beneficiario['cedula'];
     $fecha_nacimiento = $datos_beneficiario['fecha_nacimiento'];
-    $edad = date("Y") - date("Y", strtotime($fecha_nacimiento));
+    $edad = calcular_edad($fecha_nacimiento);
 
     $errores = 0;
     //Recorro los servicios
@@ -535,7 +535,7 @@ function agregar_padron_productos_grupo_familiar($datos_beneficiario, $array_ben
 
     $cedula = $datos_beneficiario['cedula'];
     $fecha_nacimiento = $datos_beneficiario['fecha_nacimiento'];
-    $edad = date("Y") - date("Y", strtotime($fecha_nacimiento));
+    $edad = calcular_edad($fecha_nacimiento);
 
     $errores = 0;
     //Recorro los beneficiarios
