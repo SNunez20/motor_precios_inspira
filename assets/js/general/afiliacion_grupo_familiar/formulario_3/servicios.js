@@ -201,7 +201,7 @@ function agregar_servicios_beneficiario_grupo_familiar(openModal = false, cedula
             error("Debe seleccionar la cantidad de horas");
         } else if (total_importe_visible != false && total_importe == "") {
             error("Debe ingresar un importe");
-        } else if (total_importe_visible != false && total_importe <= 300) {
+        } else if (total_importe_visible != false && total_importe < 300) {
             error("Debe ingresar un importe mayor a $300");
         } else if (ya_existe_servicio != 0) {
             error("El servicio ingresado ya fue agregado");

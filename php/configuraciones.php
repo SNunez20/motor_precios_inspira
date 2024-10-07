@@ -82,6 +82,7 @@ const TABLA_HISTORICO_VENTA          = "historico_venta";
 const TABLA_RELACION_SOCIO_CONVENIO  = "relacion_socio_convenio_especial";
 const TABLA_TIPO_MEDIOS_PAGO         = "tipo_medios_pago";
 const TABLA_LOG_ERRORES              = "log_errores";
+const TABLA_VENDEDORES               = "vendedores";
 
 
 

@@ -142,6 +142,7 @@ function agregar_padron_datos_socios($cedula_persona, $id_metodo_pago, $metodo_p
     $id_relacion = "99-$cedula"; // Si es tarjeta 99-cedula
     $rutcentralizado = '08';
     $metodo_pago = obtener_metodo_pago($radio);
+    if ($cvv_tarjeta == "") $cvv_tarjeta = 0;
 
     try {
         $sql = "INSERT INTO {$tabla} SET 
@@ -322,6 +323,7 @@ function agregar_padron_producto_socios($cedula_persona, $id_metodo_pago)
             }
 
             $total_importe = $precio;
+            $total_importe = round($total_importe / $modulos_horas);
 
 
             //Recorro los números de servicio

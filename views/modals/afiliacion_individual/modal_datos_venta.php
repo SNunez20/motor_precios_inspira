@@ -1,6 +1,6 @@
-<div class="modal fade" id="modal_datos_venta" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel">
+<div class="modal fade mt-5 mb-5" id="modal_datos_venta" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel">
     <div class="modal-dialog modal-xl">
-        <div class="modal-content">
+        <div class="modal-content modal_margin">
             <div class="modal-header bg-primary">
                 <h1 class="modal-title fs-5" id="staticBackdropLabel">Datos de la venta</h1>
             </div>

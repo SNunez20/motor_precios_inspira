@@ -32,7 +32,7 @@ while ($row = mysqli_fetch_assoc($servicios_actuales)) {
     $promo_estaciones = $promo_estaciones > 0 ? "- <span class='text-success'>Sanatorio Estaciones</span>" : "";
     $cod_promo = $row['cod_promo'];
     $nombre_promo = in_array($cod_promo, ["", null]) ? obtener_nombre_promo($cod_promo) : "";
-    $cod_promo = $cod_promo != "" && !$nombre_promo ? "- 🚀 $nombre_promo" : "";
+    $cod_promo = $cod_promo != "" && $nombre_promo != "" ? "- 🚀 $nombre_promo" : "";
 
     $lista_servicios[] = "<li class='list-group-item list-group-item-secondary'><strong>" . $count++ . ".</strong> {$nombre_servicio} - ⏰ {$horas}hrs {$promo_estaciones} {$cod_promo}</li>";
     $total_importe = $total_importe + $importe;
@@ -62,7 +62,7 @@ function obtener_servicios_actuales($opcion, $cedula)
     $filtro_paquete = "AND servicio NOT IN (08, 110)";
 
     try {
-        $sql = "SELECT servicio, SUM(hora) AS 'horas', importe, cod_promo FROM {$tabla} WHERE cedula = '$cedula' $filtro_paquete GROUP BY servicio";
+        $sql = "SELECT servicio, SUM(hora) AS 'horas', SUM(importe) AS 'importe', cod_promo FROM {$tabla} WHERE cedula = '$cedula' $filtro_paquete GROUP BY servicio";
         $consulta = mysqli_query($conexion, $sql);
     } catch (\Throwable $error) {
         registrar_errores($sql, "lista_servicios_actuales.php", $error);

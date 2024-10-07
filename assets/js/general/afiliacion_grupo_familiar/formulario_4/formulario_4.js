@@ -1,5 +1,7 @@
 function acciones_formulario_grupo_familiar_formulario_4() {
-  if (array_tarjeta_titular_grupo_familiar.length <= 0) {
+  let id_metodo = $("#select_metodo_de_pago_pago").val();
+
+  if (id_metodo == "" || id_metodo == null) {
     select_metodos_de_pago(2, "select_metodo_de_pago_pago_grupo_familiar");
 
     $(".div_formulario_datos_tarjeta_grupo_familiar").css("display", "none");
@@ -9,7 +11,6 @@ function acciones_formulario_grupo_familiar_formulario_4() {
       mostrar_campos_segun_metodo_pago_grupo_familiar(id_metodo);
     });
   } else {
-    let id_metodo = $("#select_metodo_de_pago_pago_grupo_familiar").val();
     mostrar_campos_segun_metodo_pago_grupo_familiar(id_metodo);
     if (["4", "5", "6", "7", "8", "9", "10"].includes(id_metodo))
       $(".div_formulario_datos_tarjeta_grupo_familiar").css("display", "block");

@@ -1,4 +1,4 @@
-<div class="modal fade" id="modal_agregar_beneficiarios" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+<div class="modal fade mt-5 mb-5" id="modal_agregar_beneficiarios" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">

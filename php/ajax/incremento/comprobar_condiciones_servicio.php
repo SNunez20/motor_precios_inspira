@@ -17,9 +17,9 @@ if ($cedula == "" || $numero_servicio_nuevo == "") devolver_error(ERROR_GENERAL)
 
 $comprobacion = comprobar_servicio($cedula, $numero_servicio_nuevo);
 if (!$comprobacion) devolver_error("Ocurrieron errores al comprobar el servicio");
-$cantidad_registros = mysqli_num_rows($comprobacion);
 
-if ($cantidad_registros > 0) {
+
+if (mysqli_num_rows($comprobacion) > 0) {
     while ($row = mysqli_fetch_assoc($comprobacion)) {
         $numero_servicio_registrado = $row['servicio'];
         $horas = $row['horas'];
@@ -60,7 +60,7 @@ echo json_encode($response);
 
 function comprobar_servicio($cedula, $numero_servicio)
 {
-    $conexion = connection(DB_CALL, false);
+    $conexion = connection(DB_ABMMOD, false);
     $tabla = TABLA_PADRON_PRODUCTO_SOCIO;
 
     //Con el "NOT IN" filtro los servicios son "duplicados" porque se ofrecen en paquetes EJ. 06 y 08 es Reintegro Opcional.

@@ -136,7 +136,7 @@ function agregar_servicio() {
     error("Debe seleccionar la cantidad de horas");
   } else if (total_importe_visible != false && total_importe == "") {
     error("Debe ingresar un importe");
-  } else if (total_importe_visible != false && total_importe <= 300) {
+  } else if (total_importe_visible != false && total_importe < 300) {
     error("Debe ingresar un importe mayor a $300");
   } else if (["13", "15"].includes(nro_servicio) && cant_grupo_familiar == 1) {
     error("No puede agregar servicio G5 y G6 al mismo titular");

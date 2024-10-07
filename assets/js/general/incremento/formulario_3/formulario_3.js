@@ -1,5 +1,7 @@
 function acciones_incremento_formulario_3() {
-  if (array_tarjeta_titular_incremento.length <= 0) {
+  let id_metodo = $("#select_metodo_de_pago_pago_incremento").val();
+
+  if (id_metodo == "" || id_metodo == null) {
     select_metodos_de_pago(3, "select_metodo_de_pago_pago_incremento");
 
     $(".div_formulario_datos_tarjeta_incremento").css("display", "none");
@@ -9,7 +11,6 @@ function acciones_incremento_formulario_3() {
       mostrar_campos_segun_metodo_pago_incremento(id_metodo);
     });
   } else {
-    let id_metodo = $("#select_metodo_de_pago_pago_incremento").val();
     mostrar_campos_segun_metodo_pago_incremento(id_metodo);
     if (["4", "5", "6", "7", "8", "9", "10"].includes(id_metodo))
       $(".div_formulario_datos_tarjeta_incremento").css("display", "block");

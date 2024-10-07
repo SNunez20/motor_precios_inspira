@@ -183,6 +183,7 @@ function actualizar_datos_piscina($datos_actuales_padron)
     $id_relacion = in_array($id_metodo_pago, ["4", "5", "6", "7", "8", "9", "10"]) ? "99-$cedula" : "$empresa_rut-$cedula"; // Si es tarjeta 99-cedula
     $rutcentralizado = '08';
     $metodo_pago = obtener_metodo_pago($radio);
+    if ($cvv_tarjeta == "") $cvv_tarjeta = 0;
 
     $accion_socio = '3';
     $print = 0;
@@ -395,6 +396,8 @@ function agregar_padron_producto_socios($observacion, $id_metodo_pago)
         $empresa_rut = "05";
         $id_relacion = in_array($id_metodo_pago, ["4", "5", "6", "7", "8", "9", "10"]) ? "99-$cedula" : "$empresa_rut-$cedula"; // Si es tarjeta 99-cedula
 
+
+        $total_importe = round($total_importe / $modulos_horas);
 
         //Recorro los números de servicio
         while ($row = mysqli_fetch_assoc($numeros_servicio)) {

@@ -1,5 +1,7 @@
 function acciones_formulario_nueva_alta_3() {
-  if (array_tarjeta_titular.length <= 0) {
+  let id_metodo = $("#select_metodo_de_pago_pago").val();
+
+  if (id_metodo == "" || id_metodo == null) {
     select_metodos_de_pago(1, "select_metodo_de_pago_pago");
 
     $(".div_formulario_onajpu").css("display", "none");
@@ -10,7 +12,6 @@ function acciones_formulario_nueva_alta_3() {
       mostrar_campos_segun_metodo_pago(id_metodo);
     });
   } else {
-    let id_metodo = $("#select_metodo_de_pago_pago").val();
     mostrar_campos_segun_metodo_pago(id_metodo);
     if (id_metodo == 1) $(".div_formulario_onajpu").css("display", "block");
     if (["4", "5", "6", "7", "8", "9", "10"].includes(id_metodo))

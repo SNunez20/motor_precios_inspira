@@ -154,6 +154,7 @@ function agregar_padron_datos_socios()
     $resultados_radio_ruta = mysqli_fetch_assoc($obtener_radio_ruta);
     $ruta = $cantidad_radio_ruta > 1 ? "" : $resultados_radio_ruta['ruta'];
     $radio = $resultados_radio_ruta['radio'];
+    if ($cvv_tarjeta == "") $cvv_tarjeta = 0;
 
 
     $sucursal = "1372";
@@ -464,6 +465,8 @@ function agregar_padron_producto_socios($datos_beneficiario, $observacion, $arra
         $empresa_rut = "05";
         $id_relacion = in_array($id_metodo_pago, ["4", "5", "6", "7", "8", "9", "10"]) ? "99-$cedula" : "$empresa_rut-$cedula"; // Si es tarjeta 99-cedula
 
+
+        $total_importe = round($total_importe / $modulos_horas);
 
         //Recorro los números de servicio
         while ($row = mysqli_fetch_assoc($numeros_servicio)) {

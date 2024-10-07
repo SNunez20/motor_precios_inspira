@@ -120,7 +120,7 @@ function agregar_servicio_incremento() {
     error("Debe seleccionar la cantidad de horas");
   } else if (total_importe_visible != false && total_importe == "") {
     error("Debe ingresar un importe");
-  } else if (total_importe_visible != false && total_importe <= 300) {
+  } else if (total_importe_visible != false && total_importe < 300) {
     error("Debe ingresar un importe mayor a $300");
   } else {
     let cedula = $("#txt_cedula_beneficiario_incremento").val();
