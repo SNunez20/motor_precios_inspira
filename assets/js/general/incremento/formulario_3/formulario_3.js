@@ -38,7 +38,7 @@ function afiliar_socios_incremento() {
   let id_metodo_pago = $("#select_metodo_de_pago_pago_incremento").val();
   let metodo_pago = $("#select_metodo_de_pago_pago_incremento option:selected").text();
   let observacion = $("#txt_observacion_servicios_incremento").val();
-  let importe_total = $("#span_total_precio_servicios_incremento").text();
+  let importe_total = $("#span_total_incremento_precio_servicios_incremento").text();
   let convenio = $("#select_convenio_servicios_incremento").val();
 
   if (id_metodo_pago == "") {

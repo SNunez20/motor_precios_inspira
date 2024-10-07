@@ -57,6 +57,8 @@ function validar_nuevo_incremento_2() {
 
 function listar_servicios_actuales_incremento() {
   $("#div_listado_servicios_actuales_incremento").html("");
+  localStorage.removeItem("incremento_importe_total_servicios_actuales");
+  $("#span_total_precio_servicios_incremento").text("0");
 
   let cedula = $("#txt_cedula_beneficiario_incremento").val();
   if (cedula == "") {
@@ -91,6 +93,9 @@ function listar_servicios_actuales_incremento() {
             Total ($UY): <span class="text-danger">${importe_total}</span>
           </li>`;
           $("#div_listado_servicios_actuales_incremento").html(html);
+
+          localStorage.setItem("incremento_importe_total_servicios_actuales", importe_total);
+          $("#span_total_precio_servicios_incremento").text(importe_total);
 
           let acotado = response.acotado;
           let array_numeros_servicios = response.numeros_servicios;

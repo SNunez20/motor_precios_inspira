@@ -208,7 +208,7 @@ function listar_servicios_agregados_incremento(calcular_precio = true) {
 
 
 function quitar_servicio_incremento(numero_servicio, nombre_servicio) {
-  $("#span_total_precio_servicios_incremento").text("?");
+  $("#span_total_incremento_precio_servicios_incremento").text("?");
   document.getElementById("select_servicios_servicios_incremento").innerHTML += `<option value="${numero_servicio}">${nombre_servicio}</option>`;
 
   let selectList = $("#select_servicios_servicios_incremento option");
@@ -226,11 +226,14 @@ function quitar_servicio_incremento(numero_servicio, nombre_servicio) {
 
 
 function calcular_total_incremento() {
-  $("#span_total_precio_servicios_incremento").text("?");
+  $("#span_total_incremento_precio_servicios_incremento").text("?");
   let fecha_nacimiento = $("#txt_fecha_nacimiento_beneficiario_incremento").val();
+  let importe_actual = localStorage.getItem("incremento_importe_total_servicios_actuales");
+  $("#span_total_precio_servicios_incremento").text(importe_actual);
+
 
   if (array_servicios_agregados_incremento.length == 0) {
-    $("#span_total_precio_servicios_incremento").text("0");
+    $("#span_total_incremento_precio_servicios_incremento").text("0");
   } else {
     $.ajax({
       type: "GET",
@@ -241,14 +244,17 @@ function calcular_total_incremento() {
       },
       dataType: "JSON",
       beforeSend: function () {
-        mostrar_spinning("span_total_precio_servicios_incremento", "danger");
+        mostrar_spinning("span_total_incremento_precio_servicios_incremento", "danger");
       },
       success: function (response) {
         if (response.error == false) {
           let precio = response.precio;
-          $("#span_total_precio_servicios_incremento").text(`${precio}`);
+          $("#span_total_incremento_precio_servicios_incremento").text(`${precio}`);
+
+          let suma_importes = parseInt(importe_actual) + parseInt(precio);
+          $("#span_total_precio_servicios_incremento").text(suma_importes);
         } else {
-          $("#span_total_precio_servicios_incremento").text("?");
+          $("#span_total_incremento_precio_servicios_incremento").text("?");
         }
       },
     });
@@ -275,5 +281,6 @@ function vaciar_datos_servicio_incremento() {
   $(".div_promocion_servicios_incremento").css("display", "none");
   $(".div_ingresar_importe_total_incremento").css("display", "none");
   //Cambio el precio a "0"
+  $("#span_total_incremento_precio_servicios_incremento").text("0");
   $("#span_total_precio_servicios_incremento").text("0");
 }

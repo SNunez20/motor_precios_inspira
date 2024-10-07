@@ -129,9 +129,19 @@
     </div>
     <div class="col-lg-6 col-md-6 col-sm-4">
         <div class="alert alert-success border-success d-flex align-items-center justify-content-center" role="alert" style="height: 100px">
-            <p class="fw-bolder">Total ($UY):
-                <span class="text-danger" id="span_total_precio_servicios_incremento">0</span>
-            </p>
+
+            <div class="row">
+                <div class="col-12">
+                    <p class="fw-bolder">Total Incremento ($UY):
+                        <span class="text-danger" id="span_total_incremento_precio_servicios_incremento">0</span>
+                    </p>
+                </div>
+                <div class="col-12">
+                    <p class="fw-bolder">Total ($UY):
+                        <span class="text-danger" id="span_total_precio_servicios_incremento">0</span>
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
 </div>
