@@ -153,6 +153,8 @@ function agregar_servicio_incremento() {
 
           nombre_promo = nro_promo != "" ? nombre_promo : "";
           total_importe = total_importe_visible ? total_importe : false;
+          let fecha_nacimiento = $("#txt_fecha_nacimiento_beneficiario_incremento").val();
+          let importe_servicio = obtener_precio_servicio(fecha_nacimiento, nro_servicio, cant_horas, promo_estaciones, total_importe, false);
 
           let array_servicio = {
             numero_servicio: nro_servicio,
@@ -162,6 +164,7 @@ function agregar_servicio_incremento() {
             numero_promo: nro_promo,
             nombre_promo: nombre_promo,
             total_importe: total_importe,
+            importe_servicio: importe_servicio,
           };
           array_servicios_agregados_incremento.push(array_servicio);
           listar_servicios_agregados_incremento();
@@ -189,6 +192,7 @@ function listar_servicios_agregados_incremento(calcular_precio = true) {
     let promo_estaciones = val["promo_estaciones"];
     let numero_servicio = val["numero_servicio"];
     let nombre_servicio = val["nombre_servicio"];
+    let importe_servicio = val["importe_servicio"];
 
     let promocion = nombre_promo != "" ? `/ <span class="text-danger">${nombre_promo}</span>` : "";
     let horas = cantidad_horas != "" ? `/ ${cantidad_horas}hrs` : "";
@@ -200,6 +204,7 @@ function listar_servicios_agregados_incremento(calcular_precio = true) {
             <div class="fw-bold">
                 ${nombre_servicio} ${horas} ${promo_estaciones} ${promocion}
             </div>
+            <small>$${importe_servicio}</small>
         </div>
         <button class="btn btn-sm btn-danger rounded-circle" onclick="quitar_servicio_incremento(${numero_servicio}, '${nombre_servicio}')">❌</button>
     </li>`;
@@ -260,6 +265,7 @@ function calcular_total_incremento() {
     });
   }
 }
+
 
 
 function vaciar_datos_servicio_incremento() {

@@ -386,6 +386,35 @@ function select_convenios_servicios(opcion, div) {
 }
 
 
+function obtener_precio_servicio(fecha_nacimiento, numero_servicio, cantidad_horas, promo_estaciones, importe_total, integrantes_nucleo) {
+  let resultado = "";
+
+  $.ajax({
+    async: false,
+    type: "GET",
+    url: `${url_ajax}obtener_precio_servicio.php`,
+    data: {
+      fecha_nacimiento,
+      numero_servicio,
+      cantidad_horas,
+      promo_estaciones,
+      importe_total,
+      integrantes_nucleo
+    },
+    dataType: "JSON",
+    success: function (response) {
+      if (response.error == false) {
+        resultado = response.precio;
+      } else {
+        resultado = false;
+      }
+    },
+  });
+
+  return resultado;
+}
+
+
 function mostrar_spinning(div, color) {
   $(`#${div}`).html(`
     <div class="btn-toolbar ms-3 mb-3">
