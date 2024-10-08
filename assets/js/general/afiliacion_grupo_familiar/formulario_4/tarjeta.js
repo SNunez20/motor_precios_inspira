@@ -1,7 +1,6 @@
 let array_tarjeta_titular_grupo_familiar = [];
 function validar_datos_tarjeta_grupo_familiar(openModal = false) {
   if (openModal == true) {
-    calcular_total_precio_grupo_familiar();
     select_bancos_emisores("select_banco_emisor_tarjeta_pago_grupo_familiar");
     select_anio_vencimiento("select_anio_vencimiento_tarjeta_pago_grupo_familiar");
     $("#txt_numero_tarjeta_pago_grupo_familiar").on("change", function () {
@@ -100,27 +99,6 @@ function setPaymentMethod_grupo_familiar(status, response) {
   } else {
     error("Compruebe que el número de la tarjeta sea correcto");
   }
-}
-
-
-function calcular_total_precio_grupo_familiar() {
-  $.ajax({
-    type: "GET",
-    url: `${url_ajax}afiliacion_grupo_familiar/calcular_precio_total_grupo_familiar.php`,
-    data: {
-      array_datos_beneficiario_grupo_familiar,
-      array_servicios_agregados_grupo_familiar
-    },
-    dataType: "JSON",
-    success: function (response) {
-      if (response.error == false) {
-        let importe_total = response.importe_total;
-        $("#span_precio_total_a_pagar_pago_grupo_familiar").text(`$UY ${importe_total}`);
-      } else {
-        $("#span_precio_total_a_pagar_pago_grupo_familiar").text(`$UY 0`);
-      }
-    }
-  });
 }
 
 

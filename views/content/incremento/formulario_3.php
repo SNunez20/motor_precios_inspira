@@ -11,6 +11,15 @@
 </div>
 
 
+
+<div class="fs-5 text-center mt-4 mb-3">
+    <div class="text-decoration-underline fw-bolder">
+        Importe Total:
+    </div>
+    <span class="fw-bolder text-warning" id="span_precio_total_a_pagar_metodo_pago_incremento" title="Suma de los importes de los servicios a incrementar más la suma de los importes de los servicios actuales.">?</span>
+</div>
+
+
 <h4 class="mb-4">Método de pago</h4>
 
 

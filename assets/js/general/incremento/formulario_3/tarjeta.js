@@ -1,7 +1,7 @@
 let array_tarjeta_titular_incremento = [];
 function validar_datos_tarjeta_incremento(openModal = false) {
   if (openModal == true) {
-    let precio = $("#span_total_incremento_precio_servicios_incremento").text();
+    let precio = $("#span_total_precio_servicios_incremento").text();
     $("#span_precio_total_a_pagar_pago_incremento").text(`$UY ${precio}`);
     select_bancos_emisores("select_banco_emisor_tarjeta_pago_incremento");
     select_anio_vencimiento("select_anio_vencimiento_tarjeta_pago_incremento");

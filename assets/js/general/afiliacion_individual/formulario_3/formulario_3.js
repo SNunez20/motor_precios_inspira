@@ -18,6 +18,9 @@ function acciones_formulario_nueva_alta_3() {
       $(".div_formulario_datos_tarjeta").css("display", "block");
   }
 
+  let precio = $("#span_total_precio_servicios").text();
+  $("#span_precio_total_a_pagar_metodo_pago_individual").text(`$UY ${precio}`);
+
   $("#btn_atras_datos_venta").html(`<button type="button" class="btn btn-primary" onclick="mostrar_div_datos_venta(2), acciones_formulario_nueva_alta_2()">⬅ Atrás</button>`);
   $("#btn_siguente_datos_venta").html(`<button type="button" class="btn btn-primary" onclick="afiliar_socios()">Siguiente ➡</button>`);
 }

@@ -41,6 +41,12 @@ function agregar_persona_grupo_familiar() {
             data: {
                 cedula
             },
+            beforeSend: function () {
+                mostrarLoader();
+            },
+            complete: function () {
+                mostrarLoader("O");
+            },
             dataType: "JSON",
             success: function (response) {
                 if (response.error == false) {
@@ -87,33 +93,42 @@ function quitar_persona_grupo_familiar(cedula) {
 
 
 function validar_formulario_grupo_familiar_1() {
-    if (array_personas_grupo_familiar.length <= 0) {
-        error("No hay personas agregadas");
-    } else if (array_personas_grupo_familiar.length < 2) {
-        error("Debe ingresar al menos dos personas");
+    if (array_datos_beneficiario_grupo_familiar.length > 0) {
+        mostrar_div_datos_venta_grupo_familiar(2);
+        acciones_formulario_grupo_familiar_formulario_2();
     } else {
-        $.ajax({
-            type: "POST",
-            url: `${url_ajax}/afiliacion_grupo_familiar/validar_padron_grupo.php`,
-            data: {
-                array_personas_grupo_familiar
-            },
-            beforeSend: function () {
-                showLoading();
-            },
-            complete: function () {
-                showLoading(false);
-            },
-            dataType: "JSON",
-            success: function (response) {
-                if (response.error === false) {
-                    mostrar_div_datos_venta_grupo_familiar(2);
-                    acciones_formulario_grupo_familiar_formulario_2();
-                } else {
-                    error(response.mensaje);
+
+        if (array_personas_grupo_familiar.length <= 0) {
+            error("No hay personas agregadas");
+        } else if (array_personas_grupo_familiar.length < 2) {
+            error("Debe ingresar al menos dos personas");
+        } else {
+
+            $.ajax({
+                type: "POST",
+                url: `${url_ajax}/afiliacion_grupo_familiar/validar_padron_grupo.php`,
+                data: {
+                    array_personas_grupo_familiar
+                },
+                beforeSend: function () {
+                    showLoading();
+                },
+                complete: function () {
+                    showLoading(false);
+                },
+                dataType: "JSON",
+                success: function (response) {
+                    if (response.error === false) {
+                        mostrar_div_datos_venta_grupo_familiar(2);
+                        acciones_formulario_grupo_familiar_formulario_2();
+                    } else {
+                        error(response.mensaje);
+                    }
                 }
-            }
-        });
+            });
+
+        }
+
     }
 }
 

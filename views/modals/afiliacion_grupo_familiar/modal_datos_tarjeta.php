@@ -16,7 +16,7 @@
                 </div>
 
                 <span class="fs-5">
-                    Total a pagar:
+                    Importe Total:
                     <span class="fw-bolder text-warning" id="span_precio_total_a_pagar_pago_grupo_familiar">?</span>
                 </span>
 

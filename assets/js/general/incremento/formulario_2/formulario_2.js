@@ -90,7 +90,7 @@ function listar_servicios_actuales_incremento() {
 
           html += `
           <li class="list-group-item active text-end fw-bolder list-group-item-secondary" aria-current="true">
-            Total ($UY): <span class="text-danger">${importe_total}</span>
+            Total ($UY): <span class="text-danger" title="Suma de los importes de los servicios actuales.">${importe_total}</span>
           </li>`;
           $("#div_listado_servicios_actuales_incremento").html(html);
 

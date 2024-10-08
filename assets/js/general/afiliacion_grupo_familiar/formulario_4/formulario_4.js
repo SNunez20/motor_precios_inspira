@@ -16,6 +16,8 @@ function acciones_formulario_grupo_familiar_formulario_4() {
       $(".div_formulario_datos_tarjeta_grupo_familiar").css("display", "block");
   }
 
+  calcular_total_precio_grupo_familiar();
+
   $("#btn_atras_datos_venta_grupo_familiar").html(
     `<button type="button" class="btn btn-primary" onclick="mostrar_div_datos_venta_grupo_familiar(3), acciones_formulario_grupo_familiar_formulario_3()">⬅ Atrás</button>`
   );
@@ -24,6 +26,7 @@ function acciones_formulario_grupo_familiar_formulario_4() {
   );
 }
 
+
 function mostrar_campos_segun_metodo_pago_grupo_familiar(id_metodo) {
   $(".div_formulario_datos_tarjeta_grupo_familiar").css("display", "none");
 
@@ -31,20 +34,17 @@ function mostrar_campos_segun_metodo_pago_grupo_familiar(id_metodo) {
     $(".div_formulario_datos_tarjeta_grupo_familiar").css("display", "block");
 }
 
+
 function afiliar_socios_grupo_familiar() {
   let id_metodo_pago = $("#select_metodo_de_pago_pago_grupo_familiar").val();
-  let metodo_pago = $(
-    "#select_metodo_de_pago_pago_grupo_familiar option:selected"
-  ).text();
+  let metodo_pago = $("#select_metodo_de_pago_pago_grupo_familiar option:selected").text();
 
   if (id_metodo_pago == "") {
     error("Debe seleccionar un método de pago");
-  } else if (
-    ["4", "5", "6", "7", "8", "9", "10"].includes(id_metodo_pago) &&
-    array_tarjeta_titular_grupo_familiar.length <= 0
-  ) {
+  } else if (["4", "5", "6", "7", "8", "9", "10"].includes(id_metodo_pago) && array_tarjeta_titular_grupo_familiar.length <= 0) {
     error("Debe ingresar los datos del titular de la tarjeta");
   } else {
+
     $.ajax({
       type: "POST",
       url: `${url_ajax}afiliacion_grupo_familiar/completar_afiliacion_grupo_familiar.php`,
@@ -85,7 +85,34 @@ function afiliar_socios_grupo_familiar() {
         }
       },
     });
+
   }
+}
+
+
+function calcular_total_precio_grupo_familiar() {
+  $.ajax({
+    type: "GET",
+    url: `${url_ajax}afiliacion_grupo_familiar/calcular_precio_total_grupo_familiar.php`,
+    data: {
+      array_datos_beneficiario_grupo_familiar,
+      array_servicios_agregados_grupo_familiar
+    },
+    beforeSend: function () {
+      mostrar_spinning("span_precio_total_a_pagar_metodo_pago_grupo_familiar", "warning");
+    },
+    dataType: "JSON",
+    success: function (response) {
+      if (response.error == false) {
+        let importe_total = response.importe_total;
+        $("#span_precio_total_a_pagar_metodo_pago_grupo_familiar").text(`$UY ${importe_total}`);
+        $("#span_precio_total_a_pagar_pago_grupo_familiar").text(`$UY ${importe_total}`);
+      } else {
+        $("#span_precio_total_a_pagar_metodo_pago_grupo_familiar").text(`$UY 0`);
+        $("#span_precio_total_a_pagar_pago_grupo_familiar").text(`$UY 0`);
+      }
+    }
+  });
 }
 
 

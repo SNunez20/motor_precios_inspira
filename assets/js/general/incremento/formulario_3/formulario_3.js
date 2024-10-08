@@ -16,6 +16,9 @@ function acciones_incremento_formulario_3() {
       $(".div_formulario_datos_tarjeta_incremento").css("display", "block");
   }
 
+  let precio = $("#span_total_precio_servicios_incremento").text();
+  $("#span_precio_total_a_pagar_metodo_pago_incremento").text(`$UY ${precio}`);
+
   $("#btn_atras_datos_venta_incremento").html(`<button type="button" class="btn btn-primary" onclick="
     mostrar_div_datos_venta_incremento(2), 
     acciones_incremento_formulario_2();
