@@ -25,7 +25,14 @@ function validar_afiliacion() {
 
 /** Si esta abierto el modal se autoselecciona el campo password **/
 $("#modal_validar_cedula").on("shown.bs.modal", function (e) {
+  //Auto seleccionar campo
   $("#txt_cedula").focus();
+
+  //Si se presiona enter con el campo seleccionado se ejecuta la función
+  $('#txt_cedula').keypress(function (event) {
+    var keycode = (event.keyCode ? event.keyCode : event.which);
+    if (keycode == '13') validar_cedula();
+  });
 });
 
 
