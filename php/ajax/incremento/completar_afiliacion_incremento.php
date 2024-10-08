@@ -375,6 +375,11 @@ function agregar_padron_producto_socios($observacion, $id_metodo_pago)
     $conexion = connection(DB_CALL, false);
     $tabla = TABLA_PADRON_PRODUCTO_SOCIO;
 
+
+    $id_vendedor = $_SESSION["mpi_id_vendedor"];
+    $nombre_vendedor = $_SESSION["mpi_nombre_vendedor"];
+    $numero_vendedor = $_SESSION["mpi_cedula_vendedor"];
+
     $datos_beneficiario = $_REQUEST['array_datos_beneficiario_incremento'];
     $cedula = $datos_beneficiario['cedula'];
     $fecha_nacimiento = $datos_beneficiario['fecha_nacimiento'];
@@ -415,14 +420,14 @@ function agregar_padron_producto_socios($observacion, $id_metodo_pago)
                     fecha_registro = NOW(),
                     numero_contrato = '0',
                     fecha_afiliacion = NOW(),
-                    nombre_vendedor = '0',
+                    nombre_vendedor = '$nombre_vendedor',
                     observaciones = '$observacion',
                     lugar_venta = '0',
                     vendedor_independiente = '0',
                     activo = '999',
                     movimiento = 'ALTA',
                     fecha_inicio_derechos = '2015-09-15',
-                    numero_vendedor = '0',
+                    numero_vendedor = '$numero_vendedor',
                     keepprice1 = '$total_importe',
                     promoactivo = '0',
                     tipo_de_cobro = '0',
@@ -437,7 +442,7 @@ function agregar_padron_producto_socios($observacion, $id_metodo_pago)
                     `version` = '1',
                     abm = 'ALTA-PRODUCTO',
                     abmactual = '1',
-                    usuario = '0',
+                    usuario = '$id_vendedor',
                     usuariod = '0',
                     extra = '0',
                     nomodifica = '0',

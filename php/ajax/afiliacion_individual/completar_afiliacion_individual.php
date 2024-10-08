@@ -97,6 +97,11 @@ function agregar_padron_datos_socios()
     $conexion = connection(DB_CALL, false);
     $tabla = TABLA_PADRON_DATOS_SOCIO;
 
+
+    $id_vendedor = $_SESSION["mpi_id_vendedor"];
+    $nombre_vendedor = $_SESSION["mpi_nombre_vendedor"];
+    $numero_vendedor = $_SESSION["mpi_cedula_vendedor"];
+
     $array_datos_beneficiario = $_REQUEST['array_datos_beneficiario'];
     $observacion = $_REQUEST['observacion'];
     $id_metodo_pago = $_REQUEST['id_metodo_pago'];
@@ -209,7 +214,7 @@ function agregar_padron_datos_socios()
                 abm = 'ALTA',
                 abmactual = '1',
                 `check` = '0',
-                usuario = '0',
+                usuario = '$numero_vendedor',
                 usuariod = '0',
                 fechafil = NOW(),
                 radioViejo = '0',
@@ -230,7 +235,7 @@ function agregar_padron_datos_socios()
                 origen_venta = '0',
                 alta = '1',
                 es_admin = '0',
-                id_usuario = '0'";
+                id_usuario = '$id_vendedor'";
         $consulta = mysqli_query($conexion, $sql);
     } catch (\Throwable $error) {
         registrar_errores($sql, "completar_afiliacion_individual.php", $error);
@@ -249,6 +254,10 @@ function agregar_padron_datos_socio_grupo_familiar()
     $conexion = connection(DB_CALL, false);
     $tabla = TABLA_PADRON_DATOS_SOCIO;
 
+
+    $id_vendedor = $_SESSION["mpi_id_vendedor"];
+    $nombre_vendedor = $_SESSION["mpi_nombre_vendedor"];
+    $numero_vendedor = $_SESSION["mpi_cedula_vendedor"];
 
     $resultados = true;
 
@@ -358,7 +367,7 @@ function agregar_padron_datos_socio_grupo_familiar()
                 abm = 'ALTA',
                 abmactual = '1',
                 `check` = '0',
-                usuario = '0',
+                usuario = '$numero_vendedor',
                 usuariod = '0',
                 fechafil = NOW(),
                 radioViejo = '0',
@@ -379,7 +388,7 @@ function agregar_padron_datos_socio_grupo_familiar()
                 origen_venta = '0',
                 alta = '1',
                 es_admin = '0',
-                id_usuario = '0'";
+                id_usuario = '$id_vendedor'";
             $consulta = mysqli_query($conexion, $sql);
         } catch (\Throwable $error) {
             registrar_errores($sql, "completar_afiliacion_individual.php", $error);
@@ -450,6 +459,10 @@ function agregar_padron_producto_socios($datos_beneficiario, $observacion, $arra
     $fecha_nacimiento = $datos_beneficiario['fecha_nacimiento'];
     $edad = calcular_edad($fecha_nacimiento);
 
+    $id_vendedor = $_SESSION["mpi_id_vendedor"];
+    $nombre_vendedor = $_SESSION["mpi_nombre_vendedor"];
+    $numero_vendedor = $_SESSION["mpi_cedula_vendedor"];
+
     $errores = 0;
     //Recorro los servicios
     foreach ($array_servicios as $servicios) {
@@ -487,14 +500,14 @@ function agregar_padron_producto_socios($datos_beneficiario, $observacion, $arra
                     fecha_registro = NOW(),
                     numero_contrato = '0',
                     fecha_afiliacion = NOW(),
-                    nombre_vendedor = '0',
+                    nombre_vendedor = '$nombre_vendedor',
                     observaciones = '$observacion',
                     lugar_venta = '0',
                     vendedor_independiente = '0',
                     activo = '999',
                     movimiento = 'ALTA',
                     fecha_inicio_derechos = '2015-09-15',
-                    numero_vendedor = '0',
+                    numero_vendedor = '$numero_vendedor',
                     keepprice1 = '$total_importe',
                     promoactivo = '0',
                     tipo_de_cobro = '0',
@@ -509,7 +522,7 @@ function agregar_padron_producto_socios($datos_beneficiario, $observacion, $arra
                     `version` = '1',
                     abm = 'ALTA',
                     abmactual = '1',
-                    usuario = '0',
+                    usuario = '$id_vendedor',
                     usuariod = '0',
                     extra = '0',
                     nomodifica = '0',
@@ -539,6 +552,10 @@ function agregar_padron_productos_grupo_familiar($datos_beneficiario, $array_ben
     $cedula = $datos_beneficiario['cedula'];
     $fecha_nacimiento = $datos_beneficiario['fecha_nacimiento'];
     $edad = calcular_edad($fecha_nacimiento);
+
+    $id_vendedor = $_SESSION["mpi_id_vendedor"];
+    $nombre_vendedor = $_SESSION["mpi_nombre_vendedor"];
+    $numero_vendedor = $_SESSION["mpi_cedula_vendedor"];
 
     $errores = 0;
     //Recorro los beneficiarios
@@ -579,14 +596,14 @@ function agregar_padron_productos_grupo_familiar($datos_beneficiario, $array_ben
                                 fecha_registro = NOW(),
                                 numero_contrato = '0',
                                 fecha_afiliacion = NOW(),
-                                nombre_vendedor = '0',
+                                nombre_vendedor = '$nombre_vendedor',
                                 observaciones = 'Pendiente Revision',
                                 lugar_venta = '0',
                                 vendedor_independiente = '0',
                                 activo = '999',
                                 movimiento = 'ALTA',
                                 fecha_inicio_derechos = '2015-09-15',
-                                numero_vendedor = '0',
+                                numero_vendedor = '$numero_vendedor',
                                 keepprice1 = '0',
                                 promoactivo = '0',
                                 tipo_de_cobro = '0',
@@ -601,7 +618,7 @@ function agregar_padron_productos_grupo_familiar($datos_beneficiario, $array_ben
                                 `version` = '1',
                                 abm = 'ALTA',
                                 abmactual = '1',
-                                usuario = '0',
+                                usuario = '$id_vendedor',
                                 usuariod = '0',
                                 extra = '0',
                                 nomodifica = '0',

@@ -53,6 +53,10 @@ function agregar_padron_datos_socios($cedula_persona, $id_metodo_pago, $metodo_p
     $tabla = TABLA_PADRON_DATOS_SOCIO;
 
 
+    $id_vendedor = $_SESSION["mpi_id_vendedor"];
+    $nombre_vendedor = $_SESSION["mpi_nombre_vendedor"];
+    $numero_vendedor = $_SESSION["mpi_cedula_vendedor"];
+
     foreach ($_REQUEST['array_datos_beneficiario_grupo_familiar'] as $datos_beneficiario) {
         if ($cedula_persona == $datos_beneficiario["cedula"]) {
             /** Datos del beneficiario **/
@@ -186,7 +190,7 @@ function agregar_padron_datos_socios($cedula_persona, $id_metodo_pago, $metodo_p
                 abm = 'ALTA',
                 abmactual = '1',
                 `check` = '0',
-                usuario = '0',
+                usuario = '$numero_vendedor',
                 usuariod = '0',
                 fechafil = NOW(),
                 radioViejo = '0',
@@ -207,7 +211,7 @@ function agregar_padron_datos_socios($cedula_persona, $id_metodo_pago, $metodo_p
                 origen_venta = '0',
                 alta = '1',
                 es_admin = '0',
-                id_usuario = '0'";
+                id_usuario = '$id_vendedor'";
         $consulta = mysqli_query($conexion, $sql);
     } catch (\Throwable $error) {
         registrar_errores($sql, "completar_afiliacion_grupo_familiar.php", $error);
@@ -269,6 +273,10 @@ function agregar_padron_producto_socios($cedula_persona, $id_metodo_pago)
     $conexion = connection(DB_CALL, false);
     $tabla = TABLA_PADRON_PRODUCTO_SOCIO;
 
+
+    $id_vendedor = $_SESSION["mpi_id_vendedor"];
+    $nombre_vendedor = $_SESSION["mpi_nombre_vendedor"];
+    $numero_vendedor = $_SESSION["mpi_cedula_vendedor"];
 
     foreach ($_REQUEST['array_datos_beneficiario_grupo_familiar'] as $datos_beneficiario) {
         if ($cedula_persona == $datos_beneficiario["cedula"]) {
@@ -342,14 +350,14 @@ function agregar_padron_producto_socios($cedula_persona, $id_metodo_pago)
                                 fecha_registro = NOW(),
                                 numero_contrato = '0',
                                 fecha_afiliacion = NOW(),
-                                nombre_vendedor = '0',
+                                nombre_vendedor = '$nombre_vendedor',
                                 observaciones = '$observacion',
                                 lugar_venta = '0',
                                 vendedor_independiente = '0',
                                 activo = '999',
                                 movimiento = 'ALTA',
                                 fecha_inicio_derechos = '2015-09-15',
-                                numero_vendedor = '0',
+                                numero_vendedor = '$numero_vendedor',
                                 keepprice1 = '$total_importe',
                                 promoactivo = '0',
                                 tipo_de_cobro = '0',
@@ -364,7 +372,7 @@ function agregar_padron_producto_socios($cedula_persona, $id_metodo_pago)
                                 `version` = '1',
                                 abm = 'ALTA',
                                 abmactual = '1',
-                                usuario = '0',
+                                usuario = '$id_vendedor',
                                 usuariod = '0',
                                 extra = '0',
                                 nomodifica = '0',
