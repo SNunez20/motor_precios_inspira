@@ -258,15 +258,12 @@ function obtener_metodo_pago($radio)
 }
 
 
-function obtener_datos_actuales_pago($cedula)
+function obtener_datos_actuales_pago($opcion, $metodo_pago, $radio_pago)
 {
-    $datos_padron = obtener_datos_padron_del_socio($cedula, 2);
-    if ($datos_padron == false) devolver_error("Ocurrieron errores al obtener el medio de pago de piscina");
-    $metodo_pago = $datos_padron['metodo_pago'];
-    $radio_pago = $datos_padron['radio'];
-
     $conexion = connection(DB);
     $tabla = TABLA_METODOS_DE_PAGO;
+
+    $where = $opcion == 1 ? "id_tipo_medios_pago = '$metodo_pago' AND" : "";
 
     try {
         $sql = "SELECT
@@ -277,7 +274,7 @@ function obtener_datos_actuales_pago($cedula)
                 FROM
 	             {$tabla}
                 WHERE
-                 id_tipo_medios_pago = '$metodo_pago' AND
+                 $where
 	             radio = '$radio_pago' AND 
                  activo = 1";
         $consulta = mysqli_query($conexion, $sql);

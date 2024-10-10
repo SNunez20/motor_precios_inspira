@@ -1,5 +1,5 @@
 <?php
-$version = '?v=1.0.23';
+$version = '?v=1.0.24';
 ?>
 
 <!DOCTYPE html>
