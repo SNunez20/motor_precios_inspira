@@ -1,7 +1,7 @@
 const produccion = true;
 const protocolo = produccion ? "https" : "http";
 const server = produccion ? "vida-apps.com" : "localhost";
-const app = produccion ? "motor_precios_inspira" : "carga_inspira";
+const app = produccion ? "motor_precios_inspira" : "motor_precios_inspira_test";
 const url_app = `${protocolo}://${server}/${app}`;
 const url_ajax = `${url_app}/php/ajax/`;
 const url_lenguage = `${url_app}/assets/js/lenguage.json`;
