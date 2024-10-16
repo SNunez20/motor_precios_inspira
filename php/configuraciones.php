@@ -6,7 +6,7 @@ date_default_timezone_set('America/Montevideo');
 
 define("PATH_APP", __DIR__);
 
-const PRODUCCION = false; // para definir si es test o produccion la APP
+const PRODUCCION = true; // para definir si es test o produccion la APP
 const PROTOCOL = "https";
 const SERVER = PRODUCCION ? "vida-apps.com" : "vida-apps.com";
 const APP = PRODUCCION ? "motor_precios_inspira" : "motor_precios_inspira_test";

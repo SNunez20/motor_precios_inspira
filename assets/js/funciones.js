@@ -1,6 +1,6 @@
 const produccion = true;
 const protocolo = produccion ? "https" : "http";
-const server = produccion ? "vida-apps.com" : "localhost";
+const server = produccion ? "vida-apps.com" : "vida-apps.com";
 const app = produccion ? "motor_precios_inspira" : "motor_precios_inspira_test";
 const url_app = `${protocolo}://${server}/${app}`;
 const url_ajax = `${url_app}/php/ajax/`;
