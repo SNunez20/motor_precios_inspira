@@ -44,6 +44,8 @@ function afiliar_socios_incremento() {
   let observacion = $("#txt_observacion_servicios_incremento").val();
   let importe_total = $("#span_total_incremento_precio_servicios_incremento").text();
   let convenio = $("#select_convenio_servicios_incremento").val();
+  let nombre_titular_onajpu = $("#txt_nombre_titular_onajpu_incremento").val();
+  let cedula_titular_onajpu = $("#txt_cedula_titular_onajpu_incremento").val();
 
   if (id_metodo_pago == "") {
     error("Debe seleccionar un método de pago");
@@ -62,6 +64,8 @@ function afiliar_socios_incremento() {
         array_tarjeta_titular_incremento,
         importe_total,
         convenio,
+        nombre_titular_onajpu,
+        cedula_titular_onajpu
       },
       dataType: "JSON",
       beforeSend: function () {

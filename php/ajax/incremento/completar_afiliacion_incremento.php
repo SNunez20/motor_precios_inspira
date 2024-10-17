@@ -179,9 +179,9 @@ function agregar_padron_datos_socios_piscina($datos_actuales_padron)
     $tipo_tarjeta = count($array_tarjeta_titular) > 0 ? $array_tarjeta_titular["tipo_tarjeta"] : 0;
     $cvv_tarjeta = count($array_tarjeta_titular) > 0 ? $array_tarjeta_titular["cvv_tarjeta"] : 0;
     $banco_emisor = count($array_tarjeta_titular) > 0 ? $array_tarjeta_titular["banco_emisor"] : 0;
-    $cedula_titular = (count($array_tarjeta_titular) > 0) ? $array_tarjeta_titular["cedula_titular"] : ($id_metodo_pago == 1 ? $cedula_titular_onajpu : 0);
+    $cedula_titular = (count($array_tarjeta_titular) > 0) ? $array_tarjeta_titular["cedula_titular"] : 0;
     $nombre_titular = count($array_tarjeta_titular) > 0 ? $array_tarjeta_titular["nombre_titular"] : 0;
-    $nombre_titular = (count($array_tarjeta_titular) > 0) ? $array_tarjeta_titular["nombre_titular"] : ($id_metodo_pago == 1 ? $nombre_titular_onajpu : 0);
+    $nombre_titular = (count($array_tarjeta_titular) > 0) ? $array_tarjeta_titular["nombre_titular"] : 0;
     $mes_vencimiento = count($array_tarjeta_titular) > 0 ? $array_tarjeta_titular["mes_vencimiento"] : 0;
     $anio_vencimiento = count($array_tarjeta_titular) > 0 ? $array_tarjeta_titular["anio_vencimiento"] : 0;
     $email_titular = count($array_tarjeta_titular) > 0 ? $array_tarjeta_titular["email_titular"] : "";
@@ -196,7 +196,7 @@ function agregar_padron_datos_socios_piscina($datos_actuales_padron)
     /** End Datos de la tarjeta **/
 
     /** Datos Convenio OJAJPU */
-    if (isset($_REQUEST['nombre_titular_onajpu']) && isset($_REQUEST['cedula_titular_onajpu'])) {
+    if ($id_metodo_pago == 1 && isset($_REQUEST['nombre_titular_onajpu']) && isset($_REQUEST['cedula_titular_onajpu'])) {
         $nombre_titular = $_REQUEST['nombre_titular_onajpu'];
         $cedula_titular = $_REQUEST['cedula_titular_onajpu'];
     }
@@ -375,7 +375,7 @@ function actualizar_datos_piscina($datos_actuales_padron)
     /** End Datos de la tarjeta **/
 
     /** Datos Convenio OJAJPU */
-    if (isset($_REQUEST['nombre_titular_onajpu']) && isset($_REQUEST['cedula_titular_onajpu'])) {
+    if ($id_metodo_pago == 1 && isset($_REQUEST['nombre_titular_onajpu']) && isset($_REQUEST['cedula_titular_onajpu'])) {
         $nombre_titular = $_REQUEST['nombre_titular_onajpu'];
         $cedula_titular = $_REQUEST['cedula_titular_onajpu'];
     }

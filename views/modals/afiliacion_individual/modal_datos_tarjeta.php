@@ -83,7 +83,7 @@
                                 min="1"
                                 maxlength="8"
                                 data-checkout="docNumber" oninput="maxLengthCheck(this)" />
-                            <label for="txt_cedula_titular_tarjeta_pago">Cédula del títular de la tarjeta: <span class="fw-bolder text-danger">*</span></label>
+                            <label for="txt_cedula_titular_tarjeta_pago">Cédula del titular de la tarjeta: <span class="fw-bolder text-danger">*</span></label>
                         </div>
                     </div>
 
@@ -93,10 +93,10 @@
                                 type="text"
                                 class="form-control solo_letras"
                                 id="txt_nombre_titular_tarjeta_pago"
-                                placeholder="Nombre del títular de la tarjeta"
+                                placeholder="Nombre del titular de la tarjeta"
                                 maxlength="200"
                                 data-checkout="cardholderName" />
-                            <label for="txt_nombre_titular_tarjeta_pago">Nombre del títular de la tarjeta: <span class="fw-bolder text-danger">*</span></label>
+                            <label for="txt_nombre_titular_tarjeta_pago">Nombre del titular de la tarjeta: <span class="fw-bolder text-danger">*</span></label>
                         </div>
                     </div>
 
@@ -143,9 +143,9 @@
                                 type="email"
                                 class="form-control"
                                 id="txt_correo_electronico_titular_tarjeta_pago"
-                                placeholder="Correo eléctronico del títular de la tarjeta"
+                                placeholder="Correo electrónico del titular de la tarjeta"
                                 maxlength="250" />
-                            <label for="txt_correo_electronico_titular_tarjeta_pago">Correo eléctronico del títular de la tarjeta: <span class="fw-bolder text-danger">*</span></label>
+                            <label for="txt_correo_electronico_titular_tarjeta_pago">Correo electrónico del titular de la tarjeta: <!-- <span class="fw-bolder text-danger">*</span> --> </label>
                         </div>
                     </div>
 
@@ -155,10 +155,10 @@
                                 type="text"
                                 class="form-control solo_numeros"
                                 id="txt_celular_titular_tarjeta_pago"
-                                placeholder="Celular del títular de la tarjeta"
+                                placeholder="Celular del titular de la tarjeta"
                                 pattern="\d*"
                                 maxlength="9" />
-                            <label for="txt_celular_titular_tarjeta_pago">Celular del títular de la tarjeta: <span class="fw-bolder text-danger">*</span></label>
+                            <label for="txt_celular_titular_tarjeta_pago">Celular del titular de la tarjeta: <span class="fw-bolder text-danger">*</span></label>
                         </div>
                     </div>
 
@@ -168,10 +168,10 @@
                                 type="text"
                                 class="form-control solo_numeros"
                                 id="txt_telefono_titular_tarjeta_pago"
-                                placeholder="Teléfono del títular de la tarjeta"
+                                placeholder="Teléfono del titular de la tarjeta"
                                 pattern="\d*"
                                 maxlength="8" />
-                            <label for="txt_telefono_titular_tarjeta_pago">Teléfono del títular de la tarjeta: <span class="fw-bolder text-danger">*</span></label>
+                            <label for="txt_telefono_titular_tarjeta_pago">Teléfono del titular de la tarjeta: <!-- <span class="fw-bolder text-danger">*</span> --> </label>
                         </div>
                     </div>
                 </div>

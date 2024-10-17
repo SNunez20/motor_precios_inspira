@@ -39,9 +39,11 @@ function validar_datos_tarjeta_grupo_familiar(openModal = false) {
       error("Debe seleccionar el año de vencimiento de la tarjeta");
     } else if (Number(anio_vencimiento) < fecha_actual("anio") || (Number(anio_vencimiento) == fecha_actual("anio") && Number(mes_vencimiento) < fecha_actual("mes"))) {
       error("La tarjeta se encuentra vencida");
-    } else if (email_titular == "") {
-      error("Debe ingresar el email del titular de la tarjeta");
-    } else if (!validarEmail(email_titular)) {
+      /*
+      } else if (email_titular == "") {
+        error("Debe ingresar el email del titular de la tarjeta");
+      */
+    } else if (email_titular != "" && !validarEmail(email_titular)) {
       error("Debe ingresar un correo electrónico válido");
     } else if (nombre_titular == "") {
       error("Debe ingresar el nombre del titular de la tarjeta");
@@ -49,9 +51,11 @@ function validar_datos_tarjeta_grupo_familiar(openModal = false) {
       error("Debe ingresar el celular del titular de la tarjeta");
     } else if (!comprobarCelular(celular_titular)) {
       error("Debe ingresar un celular válido");
-    } else if (telefono_titular == "") {
-      error("Debe ingresar el teléfono del titular de la tarjeta");
-    } else if (telefono_titular.length < 8 || telefono_titular.length > 9) {
+      /*
+      } else if (telefono_titular == "") {
+        error("Debe ingresar el teléfono del titular de la tarjeta");
+      */
+    } else if (telefono_titular != "" && (telefono_titular.length < 8 || telefono_titular.length > 9)) {
       error("Debe ingresar un teléfono válido");
     } else if (array_tarjeta_titular_grupo_familiar.length > 0) {
       error("Ya ha ingresado los datos del titular de la tarjeta");
